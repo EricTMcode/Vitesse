@@ -16,9 +16,17 @@ class LoginViewModel: ObservableObject {
     @Published var isAuthenticated = false
 
     private let loginService: LoginServiceProtocol
+    private let validationService: ValidationService
 
-    init(service: LoginServiceProtocol = LoginService()) {
+    init(service: LoginServiceProtocol = LoginService(), validationService: ValidationService = ValidationService()) {
         self.loginService = service
+        self.validationService = validationService
+    }
+
+    var formIsValid: Bool {
+        validationService.validateEmail(email) &&
+        !password.isEmpty &&
+        password.count >= 6
     }
 
     func login() async {
