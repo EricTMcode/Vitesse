@@ -58,6 +58,32 @@ struct LoginView: View {
                             }
                         }
                 }
+//                .disabled(!viewModel.formIsValid)
+//                .opacity(!viewModel.formIsValid ? 0.7 : 1.0)
+                .padding(.vertical)
+                .padding(.top, 10)
+
+                CustomSeparatorView()
+
+                NavigationLink {
+
+                } label: {
+                    Text("Creer un compte")
+                        .primaryButtonStyle()
+                }
+                .padding(.vertical, 16)
+
+                Spacer()
+
+                Divider()
+
+                NavigationLink {
+
+                } label: {
+                    Text("Pas de compte ? **Inscrivez-vous**")
+                        .font(.footnote)
+                }
+                .padding(.vertical, 16)
             }
         }
     }
@@ -65,4 +91,26 @@ struct LoginView: View {
 
 #Preview {
     LoginView(viewModel: LoginViewModel())
+}
+
+struct CustomSeparatorView: View {
+    var body: some View {
+        GeometryReader { proxy in
+            let width = (proxy.size.width / 2) - 40
+            HStack {
+                Rectangle()
+                    .frame(width: width, height: 0.5)
+
+                Text("ou")
+                    .font(.footnote)
+                    .fontWeight(.semibold)
+
+                Rectangle()
+                    .frame(width: width, height: 0.5)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            .foregroundStyle(.gray)
+        }
+        .frame(height: 20)
+    }
 }
