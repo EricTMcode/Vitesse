@@ -68,7 +68,7 @@ extension HTTPURLResponse {
             throw APIError.serverError("Server error, please try again later.")
 
         default:
-            break
+            throw APIError.serverError("Unexpected response: \(statusCode)")
         }
     }
 }
