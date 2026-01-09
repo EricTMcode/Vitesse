@@ -51,7 +51,7 @@ struct LoginView: View {
                     Task { await viewModel.login() }
                 } label: {
                     Text("Connexion")
-//                        .primaryButtonStyle()
+                        .primaryButtonStyle()
                         .overlay {
                             if viewModel.isLoading {
                                 ProgressView()

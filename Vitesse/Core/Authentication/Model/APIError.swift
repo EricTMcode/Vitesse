@@ -14,10 +14,9 @@ enum APIError: LocalizedError {
     case decodingError(String)
     case serverError(String)
     case networkError
-    case invalidStatusCode(statusCode: Int)
-    case unknownError(error: Error)
+    case unknown
 
-    var errorDescription: String {
+    var errorDescription: String? {
         switch self {
         case .invalidCredentials:
             return "Email or password incorrect"
@@ -31,10 +30,8 @@ enum APIError: LocalizedError {
             return message
         case .networkError:
             return "No internet connection"
-        case .invalidStatusCode(let statusCode):
-            return "Invalid status code: \(statusCode)"
-        case .unknownError(let error):
-            return "An unknown error occurred: \(error.localizedDescription)"
+        case .unknown:
+            return "An unexpected error occurred"
         }
     }
 }
