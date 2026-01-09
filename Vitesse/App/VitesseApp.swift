@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct VitesseApp: App {
+    @StateObject var viewModel = LoginViewModel()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LoginView(viewModel: viewModel)
         }
     }
 }
