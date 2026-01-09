@@ -30,11 +30,12 @@ struct LoginView: View {
                 SecureField("Mot de passe", text: $viewModel.password)
                     .textFieldModifier()
 
-                Text(viewModel.errorMessage ?? "")
+                Text(viewModel.errorMessage ?? " ")
                     .foregroundStyle(.red)
                     .font(.callout)
                     .padding(.top, -1)
                     .opacity(viewModel.errorMessage == nil ? 0 : 1)
+                    .frame(minHeight: 20)
 
                 Button {
                     print("DEBUG: Show forgot password")
@@ -58,8 +59,8 @@ struct LoginView: View {
                             }
                         }
                 }
-//                .disabled(!viewModel.formIsValid)
-//                .opacity(!viewModel.formIsValid ? 0.7 : 1.0)
+                .disabled(!viewModel.formIsValid)
+                .opacity(!viewModel.formIsValid ? 0.7 : 1.0)
                 .padding(.vertical)
                 .padding(.top, 10)
 
