@@ -17,15 +17,15 @@ class HTTPClient: HTTPClientProtocol {
         guard let url = endpoint.request else {
             throw APIError.invalidURL
         }
-
+        
         let (data, response) = try await URLSession.shared.data(for: url)
-
+        
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.networkError
         }
-
+        
         try httpResponse.validate(data: data)
-
+        
         do {
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
@@ -37,13 +37,13 @@ class HTTPClient: HTTPClientProtocol {
         guard let url = endpoint.request else {
             throw APIError.invalidURL
         }
-
+        
         let (data, response) = try await URLSession.shared.data(for: url)
-
+        
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.invalidResponse
         }
-
+        
         try httpResponse.validate(data: data)
     }
 }
@@ -53,20 +53,20 @@ extension HTTPURLResponse {
         switch self.statusCode {
         case 200...299:
             return
-
+            
         case 401:
             throw APIError.invalidCredentials
-
+            
         case 400...499:
             let message = String(data: data, encoding: .utf8) ?? "Request error"
             throw APIError.serverError(message)
-
+            
         case 500:
             throw APIError.serverError("RegistrationFailed: The email is already in use.")
-
+            
         case 500...599:
             throw APIError.serverError("Server error, please try again later.")
-
+            
         default:
             throw APIError.serverError("Unexpected response: \(statusCode)")
         }
