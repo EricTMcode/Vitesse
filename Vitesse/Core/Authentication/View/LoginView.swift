@@ -35,6 +35,7 @@ struct LoginView: View {
                     .font(.callout)
                     .padding(.top, -1)
                     .opacity(viewModel.errorMessage == nil ? 0 : 1)
+                    .animation(.easeInOut(duration: 0.2), value: viewModel.errorMessage)
                     .frame(minHeight: 20)
 
                 Button {
