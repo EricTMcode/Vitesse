@@ -14,29 +14,29 @@ class LoginViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var userToken: String?
     @Published var isAuthenticated = false
-
+    
     private let loginService: LoginServiceProtocol
     private let validationService: ValidationService
-
+    
     init(service: LoginServiceProtocol = LoginService(), validationService: ValidationService = ValidationService()) {
         self.loginService = service
         self.validationService = validationService
     }
-
+    
     var formIsValid: Bool {
         validationService.validateEmail(email) &&
         !password.isEmpty &&
         password.count >= 6
     }
-
+    
     func login() async {
         self.errorMessage = nil
         self.isLoading = true
-
+        
         let request = LoginRequest(email: email, password: password)
-
+        
         defer { isLoading = false }
-
+        
         do {
             let response = try await loginService.login(with: request)
             self.userToken = response.token

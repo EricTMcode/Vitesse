@@ -13,11 +13,11 @@ protocol LoginServiceProtocol {
 
 class LoginService: LoginServiceProtocol {
     private let client: HTTPClientProtocol
-
+    
     init(client: HTTPClientProtocol = HTTPClient()) {
         self.client = client
     }
-
+    
     func login(with request: LoginRequest) async throws -> AuthResonse {
         try await client.fetchData(.login(credentials: request))
     }
