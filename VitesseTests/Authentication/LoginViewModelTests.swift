@@ -44,8 +44,9 @@ final class LoginViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isLoading)
 
         XCTAssertEqual(mockService.lastReceivedRequest?.email, "test@vitesse.com")
+        XCTAssertEqual(mockService.lastReceivedRequest?.password, "Test123")
     }
 
-    
+
 
 }
