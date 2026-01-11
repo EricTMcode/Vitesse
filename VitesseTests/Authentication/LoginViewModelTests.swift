@@ -82,4 +82,15 @@ final class LoginViewModelTests: XCTestCase {
         
         XCTAssertFalse(viewModel.formIsValid)
     }
+
+    func test_login_success_setsIsAuthenticatedTrue() async {
+        mockService.resultToReturn = .success(AuthResponse(token: "token", isAdmin: false))
+
+        viewModel.email = "test@vitesse.com"
+        viewModel.password = "123456"
+        
+        await viewModel.login()
+        
+        XCTAssertTrue(viewModel.isAuthenticated)
+    }
 }
