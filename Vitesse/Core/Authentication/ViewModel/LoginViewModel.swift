@@ -25,8 +25,8 @@ class LoginViewModel: ObservableObject {
     
     var formIsValid: Bool {
         validationService.validateEmail(email) &&
-        validationService.validatePassword(password) &&
-        !password.isEmpty
+        !password.isEmpty &&
+        password.count >= 6
     }
     
     func login() async {
@@ -46,5 +46,12 @@ class LoginViewModel: ObservableObject {
         } catch {
             self.errorMessage = error.localizedDescription
         }
+    }
+
+    func logout() {
+        userToken = nil
+        isAuthenticated = false
+        print("Logout Successfull!")
+        print("Token: \(userToken)")
     }
 }

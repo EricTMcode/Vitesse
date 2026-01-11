@@ -12,7 +12,7 @@ struct RootView: View {
     var body: some View {
         Group {
             if viewModel.isAuthenticated {
-
+                CandidatsListView(viewModel: viewModel)
             } else {
                 LoginView(viewModel: viewModel)
             }
