@@ -15,8 +15,8 @@ class ValidationService {
     }
 
     func validatePassword(_ password: String) -> Bool {
-        // At least 8 characters
-        guard password.count >= 8 else { return false }
+        // At least 6 characters
+        guard password.count >= 6 else { return false }
 
         // Contains uppercase letter
         let uppercaseRegex = ".*[A-Z]+.*"
