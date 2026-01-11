@@ -25,11 +25,27 @@ final class LoginViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-//    func testInit() {
-//        let service = MockLoginService()
-//        let viewModel = LoginViewModel(service: service)
-//
-//        XCTAssertNotNil(viewModel, "The view model should not be nil")
-//    }
+    func testInit() {
+        XCTAssertNotNil(viewModel, "The view model should not be nil")
+    }
+
+    func test_login_success_setsUserToken() async {
+        let expectedToken = "abc-123-token"
+        let mockResponse = AuthResponse(token: expectedToken, isAdmin: true)
+        mockService.resultToReturn = Result<AuthResponse, Error>.success(mockResponse)
+
+        viewModel.email = "test@vitesse.com"
+        viewModel.password = "Test123"
+
+        await viewModel.login()
+
+        XCTAssertEqual(viewModel.userToken, expectedToken)
+        XCTAssertNil(viewModel.errorMessage)
+        XCTAssertFalse(viewModel.isLoading)
+
+        XCTAssertEqual(mockService.lastReceivedRequest?.email, "test@vitesse.com")
+    }
+
+    
 
 }
