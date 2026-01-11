@@ -47,6 +47,18 @@ final class LoginViewModelTests: XCTestCase {
         XCTAssertEqual(mockService.lastReceivedRequest?.password, "Test123")
     }
 
+    func test_login_failure_setsErrorMessage() async {
+        let expectedErrorMessage = APIError.invalidCredentials
+        mockService.resultToReturn = Result<AuthResponse, Error>.failure(expectedErrorMessage)
 
+        viewModel.email = "wrong@vitesse.com"
+        viewModel.password = "wrongpass"
 
+        await viewModel.login()
+
+        XCTAssertNotNil(viewModel.errorMessage)
+        XCTAssertEqual(viewModel.errorMessage, "Email or password incorrect")
+        XCTAssertNil(viewModel.userToken)
+        XCTAssertFalse(viewModel.isLoading)
+    }
 }
