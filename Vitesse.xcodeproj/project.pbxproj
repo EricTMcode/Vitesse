@@ -29,6 +29,13 @@
 			);
 			target = 07D3B50B2F114C5700EDB6E5 /* Vitesse */;
 		};
+		07D3B5C32F13AC2000EDB6E5 /* Exceptions for "VitesseTests" folder in "VitesseTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Authentication/MockLoginService.swift,
+			);
+			target = 07D3B5AF2F13A5B100EDB6E5 /* VitesseTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -41,6 +48,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				07D3B5BF2F13A60C00EDB6E5 /* Exceptions for "VitesseTests" folder in "Vitesse" target */,
+				07D3B5C32F13AC2000EDB6E5 /* Exceptions for "VitesseTests" folder in "VitesseTests" target */,
 			);
 			path = VitesseTests;
 			sourceTree = "<group>";

@@ -1,5 +1,5 @@
 //
-//  AuthResonse.swift
+//  AuthResponse.swift
 //  Vitesse
 //
 //  Created by Eric on 09/01/2026.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AuthResonse: Codable {
+struct AuthResponse: Codable {
     let token: String
     let isAdmin: Bool
 }

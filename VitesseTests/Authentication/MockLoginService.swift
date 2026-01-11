@@ -8,10 +8,10 @@
 import Foundation
 
 class MockLoginService: LoginServiceProtocol {
-    var resultToReturn: Result<AuthResonse, Error>?
+    var resultToReturn: Result<AuthResponse, Error>?
     var lastReceivedRequest: LoginRequest?
 
-    func login(with request: LoginRequest) async throws -> AuthResonse {
+    func login(with request: LoginRequest) async throws -> AuthResponse {
         lastReceivedRequest = request
 
         switch resultToReturn {
@@ -20,7 +20,7 @@ class MockLoginService: LoginServiceProtocol {
         case .failure(let error):
             throw error
         case nil:
-            fatalError("Result to return was not set in the test setup")
+            fatalError("Result to return was not set in test setup")
         }
     }
 }

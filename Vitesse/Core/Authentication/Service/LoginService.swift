@@ -8,7 +8,7 @@
 import Foundation
 
 protocol LoginServiceProtocol {
-    func login(with request: LoginRequest) async throws -> AuthResonse
+    func login(with request: LoginRequest) async throws -> AuthResponse
 }
 
 class LoginService: LoginServiceProtocol {
@@ -18,7 +18,7 @@ class LoginService: LoginServiceProtocol {
         self.client = client
     }
     
-    func login(with request: LoginRequest) async throws -> AuthResonse {
+    func login(with request: LoginRequest) async throws -> AuthResponse {
         try await client.fetchData(.login(credentials: request))
     }
 }
