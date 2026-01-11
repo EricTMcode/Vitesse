@@ -50,6 +50,8 @@ class KeychainHelper {
         ] as [CFString: Any]
 
         SecItemDelete(query as CFDictionary)
+
+        print("DEBUG: Token successfully deleted")
     }
 }
 

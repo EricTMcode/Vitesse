@@ -12,10 +12,6 @@ struct CandidatsListView: View {
     var body: some View {
         VStack(spacing: 30) {
             Text("Welcome! 🎉")
-
-            Text("JWT Token: \(viewModel.userToken ?? "none")")
-                .font(.caption)
-                .foregroundColor(.gray)
 //
 //            Text("Is Admin ? \(authManager.isAdmin ? "Yes" : "No")")
 

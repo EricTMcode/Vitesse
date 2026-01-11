@@ -12,7 +12,6 @@ class LoginViewModel: ObservableObject {
     @Published var password = ""
     @Published var isLoading = false
     @Published var errorMessage: String?
-    @Published var userToken: String?
     @Published var isAuthenticated = false
     
     private let loginService: LoginServiceProtocol
@@ -28,30 +27,43 @@ class LoginViewModel: ObservableObject {
         !password.isEmpty &&
         password.count >= 6
     }
-    
+
     func login() async {
         self.errorMessage = nil
         self.isLoading = true
-        
+
         let request = LoginRequest(email: email, password: password)
-        
-        defer { isLoading = false }
-        
+
+        defer { self.isLoading = false }
         do {
-            let response = try await loginService.login(with: request)
-            self.userToken = response.token
+            try await loginService.login(with: request)
             self.isAuthenticated = true
-            print("Login Successfull! Is Admin: \(response.isAdmin)")
-            print("Token: \(response.token)")
         } catch {
             self.errorMessage = error.localizedDescription
         }
     }
 
     func logout() {
-        userToken = nil
-        isAuthenticated = false
-        print("Logout Successfull!")
-        print("Token: \(userToken)")
+        loginService.logout()
+        self.isAuthenticated = false
     }
+
+//    func login() async {
+//        self.errorMessage = nil
+//        self.isLoading = true
+//        
+//        let request = LoginRequest(email: email, password: password)
+//        
+//        defer { isLoading = false }
+//        
+//        do {
+//            let response = try await loginService.login(with: request)
+//            self.userToken = response.token
+//            self.isAuthenticated = true
+//            print("Login Successfull! Is Admin: \(response.isAdmin)")
+//            print("Token: \(response.token)")
+//        } catch {
+//            self.errorMessage = error.localizedDescription
+//        }
+//    }
 }
