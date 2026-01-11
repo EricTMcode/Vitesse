@@ -93,4 +93,15 @@ final class LoginViewModelTests: XCTestCase {
         
         XCTAssertTrue(viewModel.isAuthenticated)
     }
+
+    func test_login_failure_doesNotAuthenticateUser() async {
+        mockService.resultToReturn = .failure(APIError.invalidCredentials)
+
+        viewModel.email = "test@vitesse.com"
+        viewModel.password = "wrongpass"
+
+        await viewModel.login()
+
+        XCTAssertFalse(viewModel.isAuthenticated)
+    }
 }
