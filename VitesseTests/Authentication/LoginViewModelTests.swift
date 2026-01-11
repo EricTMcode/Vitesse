@@ -68,4 +68,18 @@ final class LoginViewModelTests: XCTestCase {
 
         XCTAssertTrue(viewModel.formIsValid)
     }
+
+    func test_formIsValid_withInvalidEmail_returnFalse() {
+        viewModel.email = "testvitesse-com"
+        viewModel.password = "123"
+
+        XCTAssertFalse(viewModel.formIsValid)
+    }
+
+    func test_formIsValid_withShortPassword_returnFalse() {
+        viewModel.email = "test@vitesse.com"
+        viewModel.password = "123"
+        
+        XCTAssertFalse(viewModel.formIsValid)
+    }
 }
