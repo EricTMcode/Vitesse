@@ -13,7 +13,8 @@ class LoginViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var isAuthenticated = false
-    
+    @Published var userToken: String?
+
     private let loginService: LoginServiceProtocol
     private let validationService: ValidationService
     
@@ -35,6 +36,7 @@ class LoginViewModel: ObservableObject {
         let request = LoginRequest(email: email, password: password)
 
         defer { self.isLoading = false }
+        
         do {
             try await loginService.login(with: request)
             self.isAuthenticated = true

@@ -1,36 +1,35 @@
-////
-////  MockLoginService.swift
-////  VitesseTests
-////
-////  Created by Eric on 11/01/2026.
-////
 //
-//import Foundation
+//  MockLoginService.swift
+//  VitesseTests
 //
-//class MockLoginService: LoginServiceProtocol {
-//    func login(with request: LoginRequest) async throws {
-//        <#code#>
-//    }
-//    
-//    func logout() {
-//        <#code#>
-//    }
-//    
-//    var isAuthenticated: Bool
-//    
-//    var resultToReturn: Result<AuthResponse, Error>?
-//    var lastReceivedRequest: LoginRequest?
+//  Created by Eric on 11/01/2026.
 //
-//    func login(with request: LoginRequest) async throws {
-//        lastReceivedRequest = request
-//
-//        switch resultToReturn {
-//        case .success(let response):
-//            return response
-//        case .failure(let error):
-//            throw error
-//        case nil:
-//            fatalError("Result to return was not set in test setup")
-//        }
-//    }
-//}
+
+import Foundation
+
+class MockLoginService: LoginServiceProtocol {
+    var lastReceivedRequest: LoginRequest?
+    var didLougout = false
+
+    var resultToReturn: Result<Void, Error>?
+    var isAuthenticated: Bool = false
+
+    func login(with request: LoginRequest) async throws {
+        lastReceivedRequest = request
+
+        switch resultToReturn {
+        case .success():
+            isAuthenticated = true
+            return
+        case .failure(let error):
+            throw error
+        case .none:
+            fatalError("Result to return was not set in test setup")
+        }
+    }
+
+    func logout() {
+        didLougout = true
+        isAuthenticated = false
+    }
+}
