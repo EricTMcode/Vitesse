@@ -214,6 +214,8 @@ private extension RegisterView {
                     }
                 }
         }
+        .disabled(!viewModel.isFormValid)
+        .opacity(!viewModel.isFormValid ? 0.7 : 1.0)
         .padding(.vertical)
         .padding(.top, 10)
     }

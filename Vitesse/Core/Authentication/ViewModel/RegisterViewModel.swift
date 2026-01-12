@@ -16,6 +16,8 @@ class RegisterViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var emailError: String?
+    @Published var passwordError: String?
+    @Published var confirmPasswordError: String?
 
     private let registerService: RegisterServiceProtocol
     private let validationService: ValidationService
@@ -23,6 +25,17 @@ class RegisterViewModel: ObservableObject {
     init(service: RegisterServiceProtocol = RegisterService(), validationService: ValidationService = ValidationService()) {
         self.registerService = service
         self.validationService = validationService
+    }
+
+    var isFormValid: Bool {
+        !registerRequest.firstName.isEmpty &&
+        !registerRequest.lastName.isEmpty &&
+        emailError == nil &&
+        passwordError == nil &&
+        confirmPasswordError == nil &&
+        validationService.validateEmail(registerRequest.email) &&
+        validationService.validatePassword(registerRequest.password) &&
+        validationService.validatePasswordsMatch(registerRequest.password, registerRequest.confirmPassword)
     }
 
 
