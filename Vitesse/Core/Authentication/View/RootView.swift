@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RootView: View {
     @StateObject var viewModel = LoginViewModel()
+
     var body: some View {
         Group {
             if viewModel.isAuthenticated {

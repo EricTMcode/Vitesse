@@ -20,6 +20,7 @@ class LoginViewModel: ObservableObject {
     
     init(service: LoginServiceProtocol = LoginService(), validationService: ValidationService = ValidationService()) {
         self.loginService = service
+        self.isAuthenticated = service.isAuthenticated
         self.validationService = validationService
     }
     
