@@ -30,28 +30,20 @@ final class LoginViewModelTests: XCTestCase {
     }
 
     func test_login_success_setsAuthenticatedTrue() async {
-        let service = MockLoginService()
-        service.resultToReturn = .success(())
+        mockService.resultToReturn = .success(())
 
-        let viewModel = LoginViewModel(
-            service: service)
-
-        viewModel.email = "test@mail.com"
+        viewModel.email = "test@vitesse.com"
         viewModel.password = "123456"
 
         await viewModel.login()
 
         XCTAssertTrue(viewModel.isAuthenticated)
-        XCTAssertEqual(service.lastReceivedRequest?.email, "test@mail.com")
+        XCTAssertEqual(mockService.lastReceivedRequest?.email, "test@vitesse.com")
     }
 
     func test_login_failure_setsErrorMessage() async {
-        let service = MockLoginService()
         let expectedErrorMessage = APIError.invalidCredentials
-        service.resultToReturn = .failure(expectedErrorMessage)
-
-        let viewModel = LoginViewModel(
-            service: service)
+        mockService.resultToReturn = .failure(expectedErrorMessage)
 
         await viewModel.login()
 
@@ -59,44 +51,12 @@ final class LoginViewModelTests: XCTestCase {
         XCTAssertNotNil(viewModel.errorMessage)
     }
 
-//    func test_login_success_setsUserToken() async {
-//        // GIVEN
-//        let expectedToken = "abc-123-token"
-//        let mockResponse = AuthResponse(token: expectedToken, isAdmin: true)
-//        mockService.resultToReturn = Result<AuthResponse, Error>.success(mockResponse)
-//
-//        viewModel.email = "test@vitesse.com"
-//        viewModel.password = "Test123"
-//
-//        // WHEN
-//        await viewModel.login()
-//
-//        // THEN
-//        XCTAssertEqual(viewModel.userToken, expectedToken)
-//        XCTAssertNil(viewModel.errorMessage)
-//        XCTAssertFalse(viewModel.isLoading)
-//
-//        XCTAssertEqual(mockService.lastReceivedRequest?.email, "test@vitesse.com")
-//        XCTAssertEqual(mockService.lastReceivedRequest?.password, "Test123")
-//    }
-//
-//    func test_login_failure_setsErrorMessage() async {
-//        // GIVEN
-//        let expectedErrorMessage = APIError.invalidCredentials
-//        mockService.resultToReturn = Result<AuthResponse, Error>.failure(expectedErrorMessage)
-//
-//        viewModel.email = "wrong@vitesse.com"
-//        viewModel.password = "wrongpass"
-//
-//        // WHEN
-//        await viewModel.login()
-//
-//        // THEN
-//        XCTAssertNotNil(viewModel.errorMessage)
-//        XCTAssertEqual(viewModel.errorMessage, "Email or password incorrect")
-//        XCTAssertNil(viewModel.userToken)
-//        XCTAssertFalse(viewModel.isLoading)
-//    }
+    func test_logout_resetsAuthentication() {
+        viewModel.logout()
+
+        XCTAssertFalse(viewModel.isAuthenticated)
+        XCTAssertTrue(mockService.didLogout)
+    }
 
     func test_formIsValid_withEmailAndPassword_returnsTrue() {
         viewModel.email = "test@vitesse.com"
@@ -119,20 +79,6 @@ final class LoginViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.formIsValid)
     }
 
-//    func test_login_success_setsIsAuthenticatedTrue() async {
-//        // GIVEN
-//        mockService.resultToReturn = .success(AuthResponse(token: "token", isAdmin: false))
-//
-//        viewModel.email = "test@vitesse.com"
-//        viewModel.password = "123456"
-//
-//        // WHEN
-//        await viewModel.login()
-//
-//        // THEN
-//        XCTAssertTrue(viewModel.isAuthenticated)
-//    }
-
     func test_login_failure_doesNotAuthenticateUser() async {
         // GIVEN
         mockService.resultToReturn = .failure(APIError.invalidCredentials)
@@ -147,21 +93,21 @@ final class LoginViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isAuthenticated)
     }
 
-//    func test_login_clearsPreviousErrorBeforeNewAttempt() async {
-//        // Error login attempt
-//        mockService.resultToReturn = .failure(APIError.invalidCredentials)
-//
-//        viewModel.email = "test@vitesse.com"
-//        viewModel.password = "wrongpass"
-//
-//        await viewModel.login()
-//        XCTAssertNotNil(viewModel.errorMessage)
-//
-//        // Login success attempt
-//        mockService.resultToReturn = .success(AuthResponse(token: "token", isAdmin: false))
-//
-//        await viewModel.login()
-//
-//        XCTAssertNil(viewModel.errorMessage)
-//    }
+    func test_login_clearsPreviousErrorBeforeNewAttempt() async {
+        // Error login attempt
+        mockService.resultToReturn = .failure(APIError.invalidCredentials)
+
+        viewModel.email = "test@vitesse.com"
+        viewModel.password = "wrongpass"
+
+        await viewModel.login()
+        XCTAssertNotNil(viewModel.errorMessage)
+
+        // Login success attempt
+        mockService.resultToReturn = .success(())
+
+        await viewModel.login()
+
+        XCTAssertNil(viewModel.errorMessage)
+    }
 }

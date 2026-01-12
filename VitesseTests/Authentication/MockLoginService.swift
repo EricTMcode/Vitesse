@@ -9,7 +9,7 @@ import Foundation
 
 class MockLoginService: LoginServiceProtocol {
     var lastReceivedRequest: LoginRequest?
-    var didLougout = false
+    var didLogout = false
 
     var resultToReturn: Result<Void, Error>?
     var isAuthenticated: Bool = false
@@ -29,7 +29,7 @@ class MockLoginService: LoginServiceProtocol {
     }
 
     func logout() {
-        didLougout = true
-        isAuthenticated = false
+        self.didLogout = true
+        self.isAuthenticated = false
     }
 }
