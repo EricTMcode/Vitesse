@@ -68,7 +68,8 @@ struct LoginView: View {
                 CustomSeparatorView()
                 
                 NavigationLink {
-                    
+                    RegisterView()
+                        .navigationBarBackButtonHidden()
                 } label: {
                     Text("Creer un compte")
                         .primaryButtonStyle()
@@ -80,7 +81,8 @@ struct LoginView: View {
                 Divider()
                 
                 NavigationLink {
-                    
+                    RegisterView()
+                        .navigationBarBackButtonHidden()
                 } label: {
                     Text("Pas de compte ? **Inscrivez-vous**")
                         .font(.footnote)

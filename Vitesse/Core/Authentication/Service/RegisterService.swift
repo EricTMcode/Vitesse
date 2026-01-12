@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RegisterServiceProtocol {
-    func register(with request: Register) async throws
+    func register(with request: User) async throws
 }
 
 class RegisterService: RegisterServiceProtocol {
@@ -18,7 +18,7 @@ class RegisterService: RegisterServiceProtocol {
         self.client = client
     }
 
-    func register(with request: Register) async throws {
+    func register(with request: User) async throws {
         try await client.perform(.register(user: request))
     }
 }

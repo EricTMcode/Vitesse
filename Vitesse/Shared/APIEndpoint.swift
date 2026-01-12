@@ -9,7 +9,7 @@ import Foundation
 
 enum APIEndpoint {
     case login(credentials: LoginRequest)
-    case register(user: Register)
+    case register(user: User)
     
     var baseURL: String { "http://localhost:8080" }
     

@@ -12,14 +12,18 @@ class RegisterViewModel: ObservableObject {
     @Published var lastname = ""
     @Published var email = ""
     @Published var password = ""
+    @Published var registerRequest = User()
     @Published var isLoading = false
     @Published var errorMessage: String?
 
     private let registerService: RegisterServiceProtocol
+    private let validationService: ValidationService
 
-    init(service: RegisterServiceProtocol = RegisterService()) {
+    init(service: RegisterServiceProtocol = RegisterService(), validationService: ValidationService = ValidationService()) {
         self.registerService = service
+        self.validationService = validationService
     }
+
 
     func register() async {
         self.errorMessage = nil
@@ -27,14 +31,14 @@ class RegisterViewModel: ObservableObject {
 
         defer { isLoading = false }
 
-        let request = Register(firstName: firstname, lastName: lastname, email: email, password: password, confirmPassword: password)
-
         do {
-            try await registerService.register(with: request)
+            try await registerService.register(with: registerRequest)
             print("DEBUG: REGISTRATION Successfull!")
         } catch {
             print("DEBUG: ERROR: \(error.localizedDescription)")
             errorMessage = error.localizedDescription
         }
     }
+
+    
 }
