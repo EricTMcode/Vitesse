@@ -18,24 +18,16 @@ struct RegisterView: View {
 
     var body: some View {
         VStack {
-            Image(.vitesseLogo)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 220, height: 120)
-                .accessibilityLabel("Vitesse Logo")
-
+            header
             VStack(spacing: 16) {
-                Text("Enregistrez-vous")
-                    .font(.title2.bold())
-                    .padding(.bottom, 30)
 
                 VStack(spacing: 10) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("First Name")
+                        Text("Nom")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
 
-                        TextField("Enter your first name", text: $viewModel.registerRequest.firstName)
+                        TextField("Entrez votre Nom", text: $viewModel.registerRequest.firstName)
                             .font(.subheadline)
                             .padding(12)
                             .background(Color(.systemGray6))
@@ -45,16 +37,16 @@ struct RegisterView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Last Name")
+                        Text("Prémom")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
 
-                        TextField("Enter your last name", text: $viewModel.registerRequest.lastName)
+                        TextField("Entrez votre Prénom", text: $viewModel.registerRequest.lastName)
                             .font(.subheadline)
                             .padding(12)
                             .background(Color(.systemGray6))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .textContentType(.familyName)
+                            .textContentType(.name)
                             .focused($focusedField, equals: .lastname)
                     }
 
@@ -63,28 +55,28 @@ struct RegisterView: View {
                             .font(.subheadline)
                             .foregroundColor(.secondary)
 
-                        TextField("Enter your email", text: $viewModel.registerRequest.email)
+                        TextField("Entrer votre Email", text: $viewModel.registerRequest.email)
                             .font(.subheadline)
                             .padding(12)
                             .background(Color(.systemGray6))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .textContentType(.emailAddress)
                             .keyboardType(.emailAddress)
-                            .autocapitalization(.none)
+                            .textInputAutocapitalization(.never)
                             .focused($focusedField, equals: .email)
-//                            .onChange(of: viewModel.registerRequest.email) { _ in
-//                                viewModel.validateEmail()
-//                            }
+                        //                            .onChange(of: viewModel.registerRequest.email) { _ in
+                        //                                viewModel.validateEmail()
+                        //                            }
 
-//                        if let error = viewModel.emailError {
-//                            Text(error)
-//                                .font(.caption)
-//                                .foregroundColor(.red)
-//                        }
+                        //                        if let error = viewModel.emailError {
+                        //                            Text(error)
+                        //                                .font(.caption)
+                        //                                .foregroundColor(.red)
+                        //                        }
                     }
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Password")
+                        Text("Mot de passe")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
 
@@ -95,11 +87,11 @@ struct RegisterView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .textContentType(.password)
                             .focused($focusedField, equals: .password)
-                            .autocapitalization(.none)
+                            .textInputAutocapitalization(.never)
                     }
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Password")
+                        Text("Confirmation mot de passe")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
 
@@ -110,22 +102,41 @@ struct RegisterView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .textContentType(.password)
                             .focused($focusedField, equals: .comfirmPassword)
-                            .autocapitalization(.none)
+                            .textInputAutocapitalization(.never)
                     }
-
                 }
-
-                    
             }
             .padding(.horizontal, 25)
+            registerButton
+            Spacer()
+            footer
         }
 
+    }
+}
+
+private extension RegisterView {
+    var header: some View {
+        VStack {
+            Image(.vitesseLogo)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 220, height: 120)
+                .accessibilityLabel("Vitesse Logo")
+
+            Text("Enregistrez-vous")
+                .font(.title2.bold())
+                .padding(.bottom, 30)
+        }
+    }
+}
+
+private extension RegisterView {
+    var registerButton: some View {
         Button {
-            Task {
-                await viewModel.register()
-            }
+            Task { await viewModel.register() }
         } label: {
-            Text("Creez votre compte")
+            Text("Créez votre compte")
                 .primaryButtonStyle()
                 .overlay {
                     if viewModel.isLoading {
@@ -135,20 +146,25 @@ struct RegisterView: View {
         }
         .padding(.vertical)
         .padding(.top, 10)
-
-        Spacer()
-
-        Divider()
-
-        Button {
-            dismiss()
-        } label: {
-            Text("Vous avez-déjà un compte ? **Connectez-vous**")
-                .font(.footnote)
-        }
-        .padding(.vertical, 16)
     }
 }
+
+private extension RegisterView {
+    var footer: some View {
+        VStack {
+            Divider()
+
+            Button {
+                dismiss()
+            } label: {
+                Text("Vous avez déjà un compte ? **Connectez-vous**")
+                    .font(.footnote)
+            }
+            .padding(.vertical, 16)
+        }
+    }
+}
+
 
 #Preview {
     RegisterView()

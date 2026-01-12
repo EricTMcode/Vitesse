@@ -25,11 +25,16 @@ struct LoginView: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .textFieldModifier()
+                    .textContentType(.emailAddress)
+                    .keyboardType(.emailAddress)
                     .padding(.bottom, 10)
                 
                 SecureField("Mot de passe", text: $viewModel.password)
                     .textFieldModifier()
-                
+                    .textContentType(.password)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+
                 Text(viewModel.errorMessage ?? " ")
                     .foregroundStyle(.red)
                     .font(.callout)
