@@ -19,95 +19,97 @@ struct RegisterView: View {
     var body: some View {
         VStack {
             header
-            form
-//            VStack(spacing: 16) {
-//
-//                VStack(spacing: 10) {
-//                    VStack(alignment: .leading, spacing: 4) {
-//                        Text("Nom")
-//                            .font(.subheadline)
-//                            .foregroundStyle(.secondary)
-//
-//                        TextField("Entrez votre Nom", text: $viewModel.registerRequest.firstName)
-//                            .font(.subheadline)
-//                            .padding(12)
-//                            .background(Color(.systemGray6))
-//                            .clipShape(RoundedRectangle(cornerRadius: 10))
-//                            .textContentType(.familyName)
-//                            .focused($focusedField, equals: .firstname)
-//                    }
-//
-//                    VStack(alignment: .leading, spacing: 4) {
-//                        Text("Prémom")
-//                            .font(.subheadline)
-//                            .foregroundColor(.secondary)
-//
-//                        TextField("Entrez votre Prénom", text: $viewModel.registerRequest.lastName)
-//                            .font(.subheadline)
-//                            .padding(12)
-//                            .background(Color(.systemGray6))
-//                            .clipShape(RoundedRectangle(cornerRadius: 10))
-//                            .textContentType(.name)
-//                            .focused($focusedField, equals: .lastname)
-//                    }
-//
-//                    VStack(alignment: .leading, spacing: 4) {
-//                        Text("Email")
-//                            .font(.subheadline)
-//                            .foregroundColor(.secondary)
-//
-//                        TextField("Entrer votre Email", text: $viewModel.registerRequest.email)
-//                            .font(.subheadline)
-//                            .padding(12)
-//                            .background(Color(.systemGray6))
-//                            .clipShape(RoundedRectangle(cornerRadius: 10))
-//                            .textContentType(.emailAddress)
-//                            .keyboardType(.emailAddress)
-//                            .textInputAutocapitalization(.never)
-//                            .focused($focusedField, equals: .email)
-//                        //                            .onChange(of: viewModel.registerRequest.email) { _ in
-//                        //                                viewModel.validateEmail()
-//                        //                            }
-//
-//                        //                        if let error = viewModel.emailError {
-//                        //                            Text(error)
-//                        //                                .font(.caption)
-//                        //                                .foregroundColor(.red)
-//                        //                        }
-//                    }
-//
-//                    VStack(alignment: .leading, spacing: 4) {
-//                        Text("Mot de passe")
-//                            .font(.subheadline)
-//                            .foregroundStyle(.secondary)
-//
-//                        SecureField("Entrez votre mot de passe", text: $viewModel.registerRequest.password)
-//                            .font(.subheadline)
-//                            .padding(12)
-//                            .background(Color(.systemGray6))
-//                            .clipShape(RoundedRectangle(cornerRadius: 10))
-//                            .textContentType(.password)
-//                            .focused($focusedField, equals: .password)
-//                            .textInputAutocapitalization(.never)
-//                    }
-//
-//                    VStack(alignment: .leading, spacing: 4) {
-//                        Text("Confirmation mot de passe")
-//                            .font(.subheadline)
-//                            .foregroundStyle(.secondary)
-//
-//                        SecureField("Confirmez votre mot de passe", text: $viewModel.registerRequest.confirmPassword)
-//                            .font(.subheadline)
-//                            .padding(12)
-//                            .background(Color(.systemGray6))
-//                            .clipShape(RoundedRectangle(cornerRadius: 10))
-//                            .textContentType(.password)
-//                            .focused($focusedField, equals: .comfirmPassword)
-//                            .textInputAutocapitalization(.never)
-//                    }
-//                }
-//            }
-//            .padding(.horizontal, 25)
+//            form
+
+            VStack(spacing: 16) {
+
+                VStack(spacing: 10) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Nom")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+
+                        TextField("Entrez votre Nom", text: $viewModel.registerRequest.firstName)
+                            .font(.subheadline)
+                            .padding(12)
+                            .background(Color(.systemGray6))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .textContentType(.familyName)
+                            .focused($focusedField, equals: .firstname)
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Prémom")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+
+                        TextField("Entrez votre Prénom", text: $viewModel.registerRequest.lastName)
+                            .font(.subheadline)
+                            .padding(12)
+                            .background(Color(.systemGray6))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .textContentType(.name)
+                            .focused($focusedField, equals: .lastname)
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Email")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+
+                        TextField("Entrer votre Email", text: $viewModel.registerRequest.email)
+                            .font(.subheadline)
+                            .padding(12)
+                            .background(Color(.systemGray6))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .textContentType(.emailAddress)
+                            .keyboardType(.emailAddress)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
+                            .focused($focusedField, equals: .email)
+                            .onChange(of: viewModel.registerRequest.email) {
+                                viewModel.validateEmail()
+                            }
+
+                        if let error = viewModel.emailError {
+                            Text(error)
+                                .font(.caption)
+                                .foregroundColor(.red)
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Mot de passe")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+
+                        SecureField("Entrez votre mot de passe", text: $viewModel.registerRequest.password)
+                            .font(.subheadline)
+                            .padding(12)
+                            .background(Color(.systemGray6))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .textContentType(.password)
+                            .focused($focusedField, equals: .password)
+                            .textInputAutocapitalization(.never)
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Confirmation mot de passe")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+
+                        SecureField("Confirmez votre mot de passe", text: $viewModel.registerRequest.confirmPassword)
+                            .font(.subheadline)
+                            .padding(12)
+                            .background(Color(.systemGray6))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .textContentType(.password)
+                            .focused($focusedField, equals: .comfirmPassword)
+                            .textInputAutocapitalization(.never)
+                    }
+                }
+            }
+            .padding(.horizontal, 25)
             registerButton
             Spacer()
             footer
@@ -269,6 +271,7 @@ struct LabeledTextField: View {
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .textContentType(textContentType)
             .keyboardType(keyboardType)
+            .autocorrectionDisabled()
             .textInputAutocapitalization(capitalization)
             .focused($focusedField, equals: field)
         }

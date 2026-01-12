@@ -15,6 +15,7 @@ class RegisterViewModel: ObservableObject {
     @Published var registerRequest = User()
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var emailError: String?
 
     private let registerService: RegisterServiceProtocol
     private let validationService: ValidationService
@@ -40,5 +41,13 @@ class RegisterViewModel: ObservableObject {
         }
     }
 
-    
+    func validateEmail() {
+        if registerRequest.email.isEmpty {
+            emailError = nil
+        } else if !validationService.validateEmail(registerRequest.email) {
+            emailError = "Please enter a valid email address"
+        } else {
+            emailError = nil
+        }
+    }
 }
