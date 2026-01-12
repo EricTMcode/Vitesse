@@ -155,9 +155,9 @@ struct RegisterView: View {
         } message: {
             Text("Account created successfully!")
         }
-//        .alert(item: $viewModel.errorMessage) { message in
-//            Alert(title: Text("Error"), message: Text(message.text), dismissButton: .default(Text("OK")))
-//        }
+        .alert(item: $viewModel.errorMessage) { message in
+            Alert(title: Text("Error"), message: Text(message.text), dismissButton: .default(Text("OK")))
+        }
     }
 }
 

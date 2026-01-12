@@ -14,7 +14,7 @@ class RegisterViewModel: ObservableObject {
     @Published var password = ""
     @Published var registerRequest = User()
     @Published var isLoading = false
-    @Published var errorMessage: String?
+    @Published var errorMessage: ErrorMessage?
     @Published var emailError: String?
     @Published var passwordError: String?
     @Published var confirmPasswordError: String?
@@ -49,7 +49,7 @@ class RegisterViewModel: ObservableObject {
             print("DEBUG: REGISTRATION Successfull!")
         } catch {
             print("DEBUG: ERROR: \(error.localizedDescription)")
-            self.errorMessage = error.localizedDescription
+            self.errorMessage = ErrorMessage(text: error.localizedDescription)
         }
     }
 
