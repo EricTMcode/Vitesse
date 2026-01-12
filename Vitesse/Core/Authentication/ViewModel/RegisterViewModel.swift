@@ -18,6 +18,7 @@ class RegisterViewModel: ObservableObject {
     @Published var emailError: String?
     @Published var passwordError: String?
     @Published var confirmPasswordError: String?
+    @Published var isRegistrationSuccessful = false
 
     private let registerService: RegisterServiceProtocol
     private let validationService: ValidationService
@@ -44,10 +45,11 @@ class RegisterViewModel: ObservableObject {
 
         do {
             try await registerService.register(with: registerRequest)
+            self.isRegistrationSuccessful = true
             print("DEBUG: REGISTRATION Successfull!")
         } catch {
             print("DEBUG: ERROR: \(error.localizedDescription)")
-            errorMessage = error.localizedDescription
+            self.errorMessage = error.localizedDescription
         }
     }
 
@@ -58,6 +60,26 @@ class RegisterViewModel: ObservableObject {
             emailError = "Please enter a valid email address"
         } else {
             emailError = nil
+        }
+    }
+
+    func validatePassword() {
+        if registerRequest.password.isEmpty {
+            passwordError = nil
+        } else if !validationService.validatePassword(registerRequest.password) {
+            passwordError = "Password must contain uppercase, lowercase, number, and special character"
+        } else {
+            passwordError = nil
+        }
+    }
+
+    func validateConfirmPassword() {
+        if registerRequest.confirmPassword.isEmpty {
+            confirmPasswordError = nil
+        } else if !validationService.validatePasswordsMatch(registerRequest.password, registerRequest.confirmPassword) {
+            confirmPasswordError = "Passwords do not match"
+        } else {
+            confirmPasswordError = nil
         }
     }
 }

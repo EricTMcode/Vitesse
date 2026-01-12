@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RegisterView: View {
     @StateObject private var viewModel = RegisterViewModel()
+    @ObservedObject var loginService: LoginViewModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Field?
 
@@ -91,6 +92,22 @@ struct RegisterView: View {
                             .textContentType(.password)
                             .focused($focusedField, equals: .password)
                             .textInputAutocapitalization(.never)
+                            .onChange(of: viewModel.registerRequest.password) {
+                                viewModel.validatePassword()
+                                if !viewModel.registerRequest.confirmPassword.isEmpty {
+                                    viewModel.validateConfirmPassword()
+                                }
+                            }
+
+                            if let error = viewModel.passwordError {
+                                Text(error)
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                            } else {
+                                Text("Must include uppercase, lowercase, number, and special character")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
                     }
 
                     VStack(alignment: .leading, spacing: 4) {
@@ -106,6 +123,23 @@ struct RegisterView: View {
                             .textContentType(.password)
                             .focused($focusedField, equals: .comfirmPassword)
                             .textInputAutocapitalization(.never)
+                            .onChange(of: viewModel.registerRequest.confirmPassword) {
+                                viewModel.validateConfirmPassword()
+                            }
+
+                        Text(viewModel.confirmPasswordError ?? " ")
+                            .foregroundStyle(.red)
+                            .font(.caption)
+                            .padding(.top, -1)
+                            .opacity(viewModel.confirmPasswordError == nil ? 0 : 1)
+                            .animation(.easeInOut(duration: 0.2), value: viewModel.confirmPasswordError)
+                            .frame(minHeight: 20)
+
+//                            if let error = viewModel.confirmPasswordError {
+//                                Text(error)
+//                                    .font(.caption)
+//                                    .foregroundColor(.red)
+//                            }
                     }
                 }
             }
@@ -114,7 +148,16 @@ struct RegisterView: View {
             Spacer()
             footer
         }
-
+        .alert("Success", isPresented: $viewModel.isRegistrationSuccessful) {
+            Button("OK", role: .cancel) { Task {
+                await loginService.login(email: viewModel.registerRequest.email, password: viewModel.registerRequest.password)
+            } }
+        } message: {
+            Text("Account created successfully!")
+        }
+//        .alert(item: $viewModel.errorMessage) { message in
+//            Alert(title: Text("Error"), message: Text(message.text), dismissButton: .default(Text("OK")))
+//        }
     }
 }
 
@@ -217,7 +260,6 @@ private extension RegisterView {
         .disabled(!viewModel.isFormValid)
         .opacity(!viewModel.isFormValid ? 0.7 : 1.0)
         .padding(.vertical)
-        .padding(.top, 10)
     }
 }
 
@@ -239,7 +281,7 @@ private extension RegisterView {
 
 
 #Preview {
-    RegisterView()
+    RegisterView(loginService: LoginViewModel())
 }
 
 struct LabeledTextField: View {

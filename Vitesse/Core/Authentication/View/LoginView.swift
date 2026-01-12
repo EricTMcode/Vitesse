@@ -55,7 +55,7 @@ struct LoginView: View {
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 
                 Button() {
-                    Task { await viewModel.login() }
+                    Task { await viewModel.login(email: viewModel.email, password: viewModel.password) }
                 } label: {
                     Text("Connexion")
                         .primaryButtonStyle()
@@ -73,7 +73,7 @@ struct LoginView: View {
                 CustomSeparatorView()
                 
                 NavigationLink {
-                    RegisterView()
+                    RegisterView(loginService: viewModel)
                         .navigationBarBackButtonHidden()
                 } label: {
                     Text("Creer un compte")
@@ -86,7 +86,7 @@ struct LoginView: View {
                 Divider()
                 
                 NavigationLink {
-                    RegisterView()
+                    RegisterView(loginService: viewModel)
                         .navigationBarBackButtonHidden()
                 } label: {
                     Text("Pas de compte ? **Inscrivez-vous**")

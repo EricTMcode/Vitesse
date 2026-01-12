@@ -32,10 +32,10 @@ final class LoginViewModelTests: XCTestCase {
     func test_login_success_setsAuthenticatedTrue() async {
         mockService.resultToReturn = .success(())
 
-        viewModel.email = "test@vitesse.com"
-        viewModel.password = "123456"
+        let email = "test@vitesse.com"
+        let password = "123456"
 
-        await viewModel.login()
+        await viewModel.login(email: email, password: password)
 
         XCTAssertTrue(viewModel.isAuthenticated)
         XCTAssertEqual(mockService.lastReceivedRequest?.email, "test@vitesse.com")
@@ -45,7 +45,10 @@ final class LoginViewModelTests: XCTestCase {
         let expectedErrorMessage = APIError.invalidCredentials
         mockService.resultToReturn = .failure(expectedErrorMessage)
 
-        await viewModel.login()
+        let email = "test-vitesse-com"
+        let password = "123456"
+
+        await viewModel.login(email: email, password: password)
 
         XCTAssertFalse(viewModel.isAuthenticated)
         XCTAssertNotNil(viewModel.errorMessage)
@@ -83,11 +86,11 @@ final class LoginViewModelTests: XCTestCase {
         // GIVEN
         mockService.resultToReturn = .failure(APIError.invalidCredentials)
 
-        viewModel.email = "test@vitesse.com"
-        viewModel.password = "wrongpass"
+        let email = "test@vitesse.com"
+        let password = "wrongpass"
 
         // WHEN
-        await viewModel.login()
+        await viewModel.login(email: email, password: password)
 
         // THEN
         XCTAssertFalse(viewModel.isAuthenticated)
@@ -97,16 +100,19 @@ final class LoginViewModelTests: XCTestCase {
         // Error login attempt
         mockService.resultToReturn = .failure(APIError.invalidCredentials)
 
-        viewModel.email = "test@vitesse.com"
-        viewModel.password = "wrongpass"
+        let email = "test@vitesse.com"
+        let password = "wrongpass"
 
-        await viewModel.login()
+        await viewModel.login(email: email, password: password)
         XCTAssertNotNil(viewModel.errorMessage)
 
         // Login success attempt
         mockService.resultToReturn = .success(())
 
-        await viewModel.login()
+        let goodEmail = "test@vitesse.com"
+        let goodPassword = "123456"
+
+        await viewModel.login(email: goodEmail, password: goodPassword)
 
         XCTAssertNil(viewModel.errorMessage)
     }

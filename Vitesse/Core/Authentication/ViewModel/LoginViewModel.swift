@@ -30,7 +30,7 @@ class LoginViewModel: ObservableObject {
         password.count >= 6
     }
 
-    func login() async {
+    func login(email: String, password: String) async {
         self.errorMessage = nil
         self.isLoading = true
 
