@@ -9,20 +9,21 @@ import Foundation
 
 enum APIEndpoint {
     case login(credentials: LoginRequest)
-    //    case register(user: RegisterRequest)
+    case register(user: Register)
     
     var baseURL: String { "http://localhost:8080" }
     
     var path: String {
         switch self {
         case .login: return "/user/auth"
-            //        case .register: return "/user/register"
+        case .register: return "/user/register"
         }
     }
     
     var method: String {
         switch self {
         case .login: return "POST"
+        case .register: return "POST"
         }
     }
     
@@ -36,8 +37,8 @@ enum APIEndpoint {
         switch self {
         case .login(let credentials):
             request.httpBody = try? JSONEncoder().encode(credentials)
-            //        case .register(let user):
-            //            request.httpBody = try? JSONEncoder().encode(user)
+        case .register(let user):
+            request.httpBody = try? JSONEncoder().encode(user)
         }
         
         return request
