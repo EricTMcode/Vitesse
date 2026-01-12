@@ -30,9 +30,6 @@ class RegisterViewModel: ObservableObject {
     var isFormValid: Bool {
         !registerRequest.firstName.isEmpty &&
         !registerRequest.lastName.isEmpty &&
-        emailError == nil &&
-        passwordError == nil &&
-        confirmPasswordError == nil &&
         validationService.validateEmail(registerRequest.email) &&
         validationService.validatePassword(registerRequest.password) &&
         validationService.validatePasswordsMatch(registerRequest.password, registerRequest.confirmPassword)
