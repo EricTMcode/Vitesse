@@ -56,7 +56,7 @@ private extension RegisterView {
 
 private extension RegisterView {
     var form: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 10) {
             // FirstName Field
             VStack(alignment: .leading, spacing: 4) {
                 Text("Nom")
@@ -78,6 +78,7 @@ private extension RegisterView {
                 TextField("Entrez votre prénom", text: $viewModel.registerRequest.lastName)
                     .formTextFieldStyle()
                     .textContentType(.name)
+                    .padding(.top, 5)
                     .focused($focusedField, equals: .lastname)
             }
 
@@ -94,15 +95,24 @@ private extension RegisterView {
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
+                    .padding(.top, 5)
                     .onChange(of: viewModel.registerRequest.email) {
                         viewModel.validateEmail()
                     }
 
-                if let error = viewModel.emailError {
-                    Text(error)
-                        .font(.caption)
-                        .foregroundStyle(.red)
-                }
+                Text(viewModel.emailError ?? " ")
+                    .foregroundStyle(.red)
+                    .font(.caption)
+                    .padding(.top, 5)
+                    .opacity(viewModel.emailError == nil ? 0 : 1)
+                    .animation(.easeInOut(duration: 0.2), value: viewModel.emailError)
+                    .frame(height: 3)
+
+//                if let error = viewModel.emailError {
+//                    Text(error)
+//                        .font(.caption)
+//                        .foregroundStyle(.red)
+//                }
             }
 
             // Password Field
@@ -113,7 +123,7 @@ private extension RegisterView {
 
                 SecureField("Entrez votre mot de passe", text: $viewModel.registerRequest.password)
                     .formTextFieldStyle()
-                    .textContentType(.newPassword)
+                    .textContentType(.password)
                     .focused($focusedField, equals: .password)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
@@ -143,7 +153,7 @@ private extension RegisterView {
 
                 SecureField("Confirmez votre mot de passe", text: $viewModel.registerRequest.confirmPassword)
                     .formTextFieldStyle()
-                    .textContentType(.newPassword)
+                    .textContentType(.password)
                     .focused($focusedField, equals: .comfirmPassword)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
@@ -160,7 +170,7 @@ private extension RegisterView {
                     .frame(minHeight: 20)
             }
         }
-        .padding(.horizontal, 25)
+        .padding(.horizontal)
     }
 }
 
@@ -179,7 +189,6 @@ private extension RegisterView {
         }
         .disabled(!viewModel.isFormValid)
         .opacity(!viewModel.isFormValid ? 0.7 : 1.0)
-//        .padding(.vertical)
     }
 }
 
