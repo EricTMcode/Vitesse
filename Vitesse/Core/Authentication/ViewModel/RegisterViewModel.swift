@@ -8,10 +8,6 @@
 import Foundation
 
 class RegisterViewModel: ObservableObject {
-    @Published var firstname = ""
-    @Published var lastname = ""
-    @Published var email = ""
-    @Published var password = ""
     @Published var registerRequest = User()
     @Published var isLoading = false
     @Published var errorMessage: ErrorMessage?
@@ -35,7 +31,6 @@ class RegisterViewModel: ObservableObject {
         validationService.validatePassword(registerRequest.password) &&
         validationService.validatePasswordsMatch(registerRequest.password, registerRequest.confirmPassword)
     }
-
 
     func register() async {
         self.errorMessage = nil
