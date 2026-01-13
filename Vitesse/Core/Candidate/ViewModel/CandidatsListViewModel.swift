@@ -29,7 +29,6 @@ class CandidatsListViewModel: ObservableObject {
             print("DEBUG: Candidats \(candidats.count)")
         } catch {
             self.errorMessage = error.localizedDescription
-            print("DEBUG: ERROR PARSING")
         }
     }
 }

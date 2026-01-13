@@ -19,7 +19,10 @@ struct CandidatsListView: View {
                 .buttonStyle(.bordered)
 
                 List(viewModel.candidats) { candidat in
-                    Text(candidat.lastName)
+                    VStack(alignment: .leading) {
+                        Text("\(candidat.firstName) \(candidat.lastName)")
+                        Text(candidat.email)
+                    }
                 }
             }
             .task {
