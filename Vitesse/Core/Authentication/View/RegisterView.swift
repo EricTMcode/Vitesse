@@ -154,7 +154,7 @@ private extension RegisterView {
                     .frame(minHeight: 20)
             }
         }
-        .padding(.horizontal)
+        .padding(.horizontal, 25)
     }
 }
 
