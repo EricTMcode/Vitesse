@@ -13,11 +13,21 @@ protocol HTTPClientProtocol {
 }
 
 class HTTPClient: HTTPClientProtocol {
+    private let keychain: KeychainHelper
+
+    init(keychain: KeychainHelper = .shared) {
+        self.keychain = keychain
+    }
+
     func fetchData<T: Codable>(_ endpoint: APIEndpoint) async throws -> T {
-        guard let url = endpoint.request else {
+        guard var url = endpoint.request else {
             throw APIError.invalidURL
         }
-        
+
+        if endpoint.requiresAuth {
+            attachAuthHeader(to: &url)
+        }
+
         let (data, response) = try await URLSession.shared.data(for: url)
         
         guard let httpResponse = response as? HTTPURLResponse else {
@@ -45,6 +55,17 @@ class HTTPClient: HTTPClientProtocol {
         }
         
         try httpResponse.validate(data: data)
+    }
+}
+
+private extension HTTPClient {
+    func attachAuthHeader(to request: inout URLRequest) {
+        guard let tokenData = keychain.read(account: "authToken"),
+              let token = String(data: tokenData, encoding: .utf8) else {
+            return
+        }
+
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     }
 }
 

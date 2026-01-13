@@ -8,22 +8,39 @@
 import SwiftUI
 
 struct CandidatsListView: View {
-    @ObservedObject var viewModel: LoginViewModel
+    @ObservedObject var loginViewModel: LoginViewModel
+    @StateObject var viewModel = CandidatsListViewModel()
     var body: some View {
-        VStack(spacing: 30) {
-            Text("Welcome! 🎉")
-//
-//            Text("Is Admin ? \(authManager.isAdmin ? "Yes" : "No")")
+        NavigationStack {
+            VStack {
+                Button("Logout") {
+                    loginViewModel.logout()
+                }
+                .buttonStyle(.bordered)
 
-            Button("Logout") {
-                viewModel.logout()
+                List(viewModel.candidats) { candidat in
+                    Text(candidat.lastName)
+                }
             }
-            .buttonStyle(.bordered)
+            .task {
+                await viewModel.getCandidats()
+            }
         }
-        .padding()
+
+//        VStack(spacing: 30) {
+//            Text("Welcome! 🎉")
+////
+////            Text("Is Admin ? \(authManager.isAdmin ? "Yes" : "No")")
+//
+//            Button("Logout") {
+//                viewModel.logout()
+//            }
+//            .buttonStyle(.bordered)
+//        }
+//        .padding()
     }
 }
 
 #Preview {
-    CandidatsListView(viewModel: LoginViewModel())
+    CandidatsListView(loginViewModel: LoginViewModel(), viewModel: CandidatsListViewModel())
 }

@@ -1,5 +1,5 @@
 //
-//  Candidates.swift
+//  Candidate.swift
 //  Vitesse
 //
 //  Created by Eric on 13/01/2026.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct Candidates: Identifiable, Codable {
+struct Candidate: Identifiable, Codable {
     let id: String
     let firstName: String
-    let lastNAme: String
+    let lastName: String
     let email: String
     let phone: String?
     let linkedinURL: String?

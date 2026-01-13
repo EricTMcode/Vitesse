@@ -10,13 +10,15 @@ import Foundation
 enum APIEndpoint {
     case login(credentials: LoginRequest)
     case register(user: User)
-    
+    case candidates
+
     var baseURL: String { "http://localhost:8080" }
     
     var path: String {
         switch self {
         case .login: return "/user/auth"
         case .register: return "/user/register"
+        case .candidates: return "/candidate"
         }
     }
     
@@ -24,9 +26,17 @@ enum APIEndpoint {
         switch self {
         case .login: return "POST"
         case .register: return "POST"
+        case .candidates: return "GET"
         }
     }
-    
+
+    var requiresAuth: Bool {
+        switch self {
+        case .login, .register: return false
+        case .candidates: return true
+        }
+    }
+
     var request: URLRequest? {
         guard let url = URL(string: baseURL + path) else { return nil }
         
@@ -39,6 +49,8 @@ enum APIEndpoint {
             request.httpBody = try? JSONEncoder().encode(credentials)
         case .register(let user):
             request.httpBody = try? JSONEncoder().encode(user)
+        case .candidates:
+            break
         }
         
         return request
