@@ -135,11 +135,11 @@ struct RegisterView: View {
                             .animation(.easeInOut(duration: 0.2), value: viewModel.confirmPasswordError)
                             .frame(minHeight: 20)
 
-//                            if let error = viewModel.confirmPasswordError {
-//                                Text(error)
-//                                    .font(.caption)
-//                                    .foregroundColor(.red)
-//                            }
+                            if let error = viewModel.confirmPasswordError {
+                                Text(error)
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                            }
                     }
                 }
             }
@@ -180,65 +180,8 @@ private extension RegisterView {
 private extension RegisterView {
     var form: some View {
         VStack(spacing: 16) {
-            LabeledTextField(
-                title: "Nom",
-                placeholder: "Entrez votre nom",
-                textContentType: .familyName,
-                keyboardType: .default,
-                isSecure: false,
-                capitalization: .words,
-                text: $viewModel.registerRequest.firstName,
-                focusedField: $focusedField,
-                field: .firstname
-            )
+            
 
-            LabeledTextField(
-                title: "Prénom",
-                placeholder: "Entrez votre Prénom",
-                textContentType: .name,
-                keyboardType: .default,
-                isSecure: false,
-                capitalization: .words,
-                text: $viewModel.registerRequest.lastName,
-                focusedField: $focusedField,
-                field: .lastname
-            )
-
-            LabeledTextField(
-                title: "Email",
-                placeholder: "Entrez votre Email",
-                textContentType: .emailAddress,
-                keyboardType: .emailAddress,
-                isSecure: false,
-                capitalization: .never,
-                text: $viewModel.registerRequest.email,
-                focusedField: $focusedField,
-                field: .email
-            )
-
-            LabeledTextField(
-                title: "Mot de passe",
-                placeholder: "Entrez votre mot de passe",
-                textContentType: .password,
-                keyboardType: .default,
-                isSecure: true,
-                capitalization: .never,
-                text: $viewModel.registerRequest.password,
-                focusedField: $focusedField,
-                field: .password
-            )
-
-            LabeledTextField(
-                title: "Confirmez votre mot de passe",
-                placeholder: "Confirmez votre mot de passe",
-                textContentType: .password,
-                keyboardType: .default,
-                isSecure: true,
-                capitalization: .never,
-                text: $viewModel.registerRequest.confirmPassword,
-                focusedField: $focusedField,
-                field: .comfirmPassword
-            )
         }
         .padding(.horizontal, 25)
     }
@@ -287,10 +230,17 @@ private extension RegisterView {
 struct LabeledTextField: View {
     let title: String
     let placeholder: String
+    let isSecure: Bool
+
     let textContentType: UITextContentType?
     let keyboardType: UIKeyboardType
-    let isSecure: Bool
     let capitalization: TextInputAutocapitalization?
+    let autocorrectionDisabled: Bool
+
+    let helperText: String?
+    let errorText: String?
+
+    let onChange: ((String) -> Void)?
 
     @Binding var text: String
     @FocusState.Binding var focusedField: RegisterView.Field?
@@ -315,9 +265,22 @@ struct LabeledTextField: View {
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .textContentType(textContentType)
             .keyboardType(keyboardType)
-            .autocorrectionDisabled()
+            .autocorrectionDisabled(autocorrectionDisabled)
             .textInputAutocapitalization(capitalization)
             .focused($focusedField, equals: field)
+            .onChange(of: text) { value in
+                onChange?(value)
+            }
+
+            if let errorText {
+                Text(errorText)
+                    .font(.caption)
+                    .foregroundColor(.red)
+            } else if let helperText {
+                Text(helperText)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 }
