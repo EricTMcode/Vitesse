@@ -59,9 +59,7 @@ private extension RegisterView {
         VStack(spacing: 10) {
             // FirstName Field
             VStack(alignment: .leading, spacing: 4) {
-                Text("Nom")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                FormLabel(title: "Nom")
 
                 TextField("Entrez votre nom", text: $viewModel.registerRequest.firstName)
                     .formTextFieldStyle()
@@ -71,9 +69,7 @@ private extension RegisterView {
 
             // LastName Field
             VStack(alignment: .leading, spacing: 4) {
-                Text("Prénom")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                FormLabel(title: "Prénom")
 
                 TextField("Entrez votre prénom", text: $viewModel.registerRequest.lastName)
                     .formTextFieldStyle()
@@ -84,9 +80,7 @@ private extension RegisterView {
 
             // Email Field
             VStack(alignment: .leading, spacing: 4) {
-                Text("Email")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                FormLabel(title: "Email")
 
                 TextField("Entrez votre email", text: $viewModel.registerRequest.email)
                     .formTextFieldStyle()
@@ -107,19 +101,11 @@ private extension RegisterView {
                     .opacity(viewModel.emailError == nil ? 0 : 1)
                     .animation(.easeInOut(duration: 0.2), value: viewModel.emailError)
                     .frame(height: 3)
-
-//                if let error = viewModel.emailError {
-//                    Text(error)
-//                        .font(.caption)
-//                        .foregroundStyle(.red)
-//                }
             }
 
             // Password Field
             VStack(alignment: .leading, spacing: 4) {
-                Text("Mot de passe")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                FormLabel(title: "Mot de passe")
 
                 SecureField("Entrez votre mot de passe", text: $viewModel.registerRequest.password)
                     .formTextFieldStyle()
@@ -147,9 +133,7 @@ private extension RegisterView {
 
             // Confirm Password Field
             VStack(alignment: .leading, spacing: 4) {
-                Text("Confirmation mot de passe")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                FormLabel(title: "Confirmation mot de passe")
 
                 SecureField("Confirmez votre mot de passe", text: $viewModel.registerRequest.confirmPassword)
                     .formTextFieldStyle()
@@ -211,4 +195,14 @@ private extension RegisterView {
 
 #Preview {
     RegisterView(loginService: LoginViewModel())
+}
+
+struct FormLabel: View {
+    let title: String
+
+    var body: some View {
+        Text(title)
+            .font(.subheadline)
+            .foregroundStyle(.secondary)
+    }
 }
