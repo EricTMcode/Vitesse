@@ -13,6 +13,7 @@ class CandidatsListViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var searchText = ""
     @Published var showIsFavorite = false
+    @Published var showIsEditing = false
 
     private let candidatsService: CanditatesServiceProtocol
 

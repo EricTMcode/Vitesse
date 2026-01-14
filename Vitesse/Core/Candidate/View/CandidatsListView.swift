@@ -16,7 +16,15 @@ struct CandidatsListView: View {
                 List {
                     ForEach(viewModel.filteredCandidats) { candidat in
                         VStack(alignment: .leading) {
-                            Text("\(candidat.firstName) \(candidat.lastName)")
+                            HStack {
+                                Text("\(candidat.firstName) \(candidat.lastName)")
+
+                                Spacer()
+
+                                Image(systemName: candidat.isFavorite ? "star.fill" : "star")
+                                    .imageScale(.large)
+                                    .foregroundColor(.yellow)
+                            }
                         }
                     }
                 }
@@ -33,18 +41,24 @@ struct CandidatsListView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button ("Edit") {
-
+                        viewModel.showIsEditing.toggle()
                     }
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.25)) {
-                            viewModel.showIsFavorite.toggle()
-                           }
-                    } label: {
-                        Image(systemName: viewModel.showIsFavorite ? "star.fill" : "star")
-                            .foregroundColor(.yellow)
+                    if viewModel.showIsEditing {
+                        Button("Effacer") {
+
+                        }
+                    } else {
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                viewModel.showIsFavorite.toggle()
+                               }
+                        } label: {
+                            Image(systemName: viewModel.showIsFavorite ? "star.fill" : "star")
+                                .foregroundColor(.yellow)
+                        }
                     }
                 }
             }
