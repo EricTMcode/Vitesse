@@ -61,7 +61,7 @@ struct CandidatsListView: View {
                     if viewModel.showIsEditing {
                         Button("Effacer") {
                             Task {
-                                await viewModel.deleteCandidats()
+                                await viewModel.deleteCandidates()
                             }
                         }
                     } else {
@@ -77,7 +77,7 @@ struct CandidatsListView: View {
                 }
             }
             .task {
-                await viewModel.getCandidats()
+                await viewModel.getCandidates()
             }
         }
     }

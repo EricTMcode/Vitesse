@@ -8,7 +8,7 @@
 import Foundation
 
 class CandidatsListViewModel: ObservableObject {
-    @Published var candidats = [Candidate]()
+    @Published var candidates = [Candidate]()
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var searchText = ""
@@ -22,58 +22,68 @@ class CandidatsListViewModel: ObservableObject {
         self.candidatsService = service
     }
 
-//    init(service: CanditatesServiceProtocol = MockCandidateService()) {
-//        self.candidatsService = service
-//    }
+    //    init(service: CanditatesServiceProtocol = MockCandidateService()) {
+    //        self.candidatsService = service
+    //    }
 
     var filteredCandidats: [Candidate] {
-        candidats
-                .filter { candidat in
-                    !showIsFavorite || candidat.isFavorite
-                }
-                .filter { candidat in
-                    searchText.isEmpty ||
-                    candidat.firstName.localizedCaseInsensitiveContains(searchText) ||
-                    candidat.lastName.localizedCaseInsensitiveContains(searchText)
-                }
+        candidates
+            .filter { candidat in
+                !showIsFavorite || candidat.isFavorite
+            }
+            .filter { candidat in
+                searchText.isEmpty ||
+                candidat.firstName.localizedCaseInsensitiveContains(searchText) ||
+                candidat.lastName.localizedCaseInsensitiveContains(searchText)
+            }
     }
 
-    func getCandidats() async {
+    func getCandidates() async {
         self.errorMessage = nil
         self.isLoading = true
 
         defer { self.isLoading = false }
 
         do {
-            self.candidats = try await candidatsService.getCandidates()
-            print("DEBUG: Candidats \(candidats.count)")
+            self.candidates = try await candidatsService.getCandidates()
+            print("DEBUG: Candidats \(candidates.count)")
         } catch {
             self.errorMessage = error.localizedDescription
         }
     }
 
-    func deleteCandidats() async {
+    func deleteCandidate() async {
         do {
             try await candidatsService.deleteCandidate(id: selectedCandidate.first!)
             selectedCandidate.removeAll()
             showIsEditing = false
-            self.candidats = try await candidatsService.getCandidates()
+            self.candidates = try await candidatsService.getCandidates()
         } catch {
             print("DEBUG: Deletion failed: \(error)")
         }
+    }
 
+    func deleteCandidates() async {
+        self.errorMessage = nil
+        self.isLoading = true
+
+        defer { self.isLoading = false }
+
+        do {
+            try await withThrowingTaskGroup(of: Void.self) { group in
+                for id in selectedCandidate {
+                    group.addTask {
+                        try await self.candidatsService.deleteCandidate(id: id)
+                    }
+                }
+                try await group.waitForAll()
+                selectedCandidate.removeAll()
+                showIsEditing = false
+                self.candidates = try await candidatsService.getCandidates()
+            }
+        } catch {
+            print("Deletion failed:", error)
+            self.errorMessage = error.localizedDescription
         }
-
-//    func deleteSelected() async {
-//            do {
-//                print(selectedCandidate)
-//                try await candidatsService.deleteCandidate(id: selectedCandidate)
-//
-//                // Optimistic UI update
-////                candidats.removeAll { ids.contains($0.id) }
-//
-//            } catch {
-//                print("Deletion failed:", error)
-//            }
-//        }
+    }
 }

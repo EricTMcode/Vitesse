@@ -68,7 +68,6 @@ private extension HTTPClient {
               let token = String(data: tokenData, encoding: .utf8) else {
             return
         }
-        print("Token: \(token)")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     }
 }
