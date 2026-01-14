@@ -77,8 +77,10 @@ class CandidatsListViewModel: ObservableObject {
                     }
                 }
                 try await group.waitForAll()
+
                 selectedCandidate.removeAll()
                 showIsEditing = false
+                
                 self.candidates = try await candidatsService.getCandidates()
             }
         } catch {

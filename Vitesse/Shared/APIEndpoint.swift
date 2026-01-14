@@ -12,7 +12,6 @@ enum APIEndpoint {
     case register(user: User)
     case candidates
     case deleteCandidate(id: String)
-    case deleteCandidates(ids: Set<String>)
 
     var baseURL: String { "http://localhost:8080" }
     
@@ -22,7 +21,6 @@ enum APIEndpoint {
         case .register: return "/user/register"
         case .candidates: return "/candidate"
         case .deleteCandidate(let id): return "/candidate/\(id)"
-        case .deleteCandidates(let ids): return "/candidate/\(ids.first!)"
         }
     }
     
@@ -31,14 +29,14 @@ enum APIEndpoint {
         case .login: return "POST"
         case .register: return "POST"
         case .candidates: return "GET"
-        case .deleteCandidate, .deleteCandidates: return "DELETE"
+        case .deleteCandidate: return "DELETE"
         }
     }
 
     var requiresAuth: Bool {
         switch self {
         case .login, .register: return false
-        case .candidates, .deleteCandidate, .deleteCandidates: return true
+        case .candidates, .deleteCandidate: return true
         }
     }
 
@@ -58,9 +56,6 @@ enum APIEndpoint {
             break
         case .deleteCandidate(let id):
             request.httpBody = try? JSONEncoder().encode(id)
-        case .deleteCandidates(let ids):
-                let body = DeleteCandidatesRequest(ids: ids)
-                request.httpBody = try? JSONEncoder().encode(body)
         }
         
         return request

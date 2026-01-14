@@ -43,7 +43,7 @@ struct CandidatsListView: View {
                     loginViewModel.logout()
                 }
                 .buttonStyle(.bordered)
-
+                
             }
             .refreshable {
                 await viewModel.getCandidates()
