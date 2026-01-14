@@ -30,6 +30,24 @@ struct CandidatsListView: View {
             }
             .navigationTitle("Candidtats")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button ("Edit") {
+
+                    }
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            viewModel.showIsFavorite.toggle()
+                           }
+                    } label: {
+                        Image(systemName: viewModel.showIsFavorite ? "star.fill" : "star")
+                            .foregroundColor(.yellow)
+                    }
+                }
+            }
 
             .task {
                 await viewModel.getCandidats()

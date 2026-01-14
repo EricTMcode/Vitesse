@@ -12,6 +12,7 @@ class CandidatsListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var searchText = ""
+    @Published var showIsFavorite = false
 
     private let candidatsService: CanditatesServiceProtocol
 
@@ -20,14 +21,19 @@ class CandidatsListViewModel: ObservableObject {
     }
 
     var filteredCandidats: [Candidate] {
-        if searchText.isEmpty {
-            return self.candidats
-        } else {
-            return candidats.filter { candidat in
-                candidat.firstName.localizedCaseInsensitiveContains(searchText) ||
-                candidat.lastName.localizedCaseInsensitiveContains(searchText)
-            }
-        }
+        candidats
+                .filter { candidat in
+                    !showIsFavorite || candidat.isFavorite
+                }
+                .filter { candidat in
+                    searchText.isEmpty ||
+                    candidat.firstName.localizedCaseInsensitiveContains(searchText) ||
+                    candidat.lastName.localizedCaseInsensitiveContains(searchText)
+                }
+    }
+
+    var filteredIsFavorite: [Candidate] {
+        return candidats.filter { $0.isFavorite }
     }
 
     func getCandidats() async {
