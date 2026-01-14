@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Candidate: Identifiable, Codable {
+struct Candidate: Identifiable, Codable, Hashable {
     let id: String
     let firstName: String
     let lastName: String

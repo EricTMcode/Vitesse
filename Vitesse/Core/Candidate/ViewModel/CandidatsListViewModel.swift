@@ -14,10 +14,15 @@ class CandidatsListViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var showIsFavorite = false
     @Published var showIsEditing = false
+    @Published var selectedCandidate = Set<Candidate.ID>()
 
     private let candidatsService: CanditatesServiceProtocol
 
-    init(service: CanditatesServiceProtocol = CanditatesService()) {
+//    init(service: CanditatesServiceProtocol = CanditatesService()) {
+//        self.candidatsService = service
+//    }
+
+    init(service: CanditatesServiceProtocol = MockCandidateService()) {
         self.candidatsService = service
     }
 
@@ -31,10 +36,6 @@ class CandidatsListViewModel: ObservableObject {
                     candidat.firstName.localizedCaseInsensitiveContains(searchText) ||
                     candidat.lastName.localizedCaseInsensitiveContains(searchText)
                 }
-    }
-
-    var filteredIsFavorite: [Candidate] {
-        return candidats.filter { $0.isFavorite }
     }
 
     func getCandidats() async {
