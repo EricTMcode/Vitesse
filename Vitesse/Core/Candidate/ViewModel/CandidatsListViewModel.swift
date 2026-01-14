@@ -11,11 +11,23 @@ class CandidatsListViewModel: ObservableObject {
     @Published var candidats = [Candidate]()
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var searchText = ""
 
     private let candidatsService: CanditatesServiceProtocol
 
     init(service: CanditatesServiceProtocol = CanditatesService()) {
         self.candidatsService = service
+    }
+
+    var filteredCandidats: [Candidate] {
+        if searchText.isEmpty {
+            return self.candidats
+        } else {
+            return candidats.filter { candidat in
+                candidat.firstName.localizedCaseInsensitiveContains(searchText) ||
+                candidat.lastName.localizedCaseInsensitiveContains(searchText)
+            }
+        }
     }
 
     func getCandidats() async {

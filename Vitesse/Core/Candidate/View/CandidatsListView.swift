@@ -14,13 +14,14 @@ struct CandidatsListView: View {
         NavigationStack {
             VStack {
                 List {
-                    ForEach(viewModel.candidats) { candidat in
+                    ForEach(viewModel.filteredCandidats) { candidat in
                         VStack(alignment: .leading) {
                             Text("\(candidat.firstName) \(candidat.lastName)")
                         }
                     }
                 }
                 .listStyle(.plain)
+                .searchable(text: $viewModel.searchText, prompt: "Rechercher un candidat")
 
                 Button("Logout") {
                     loginViewModel.logout()
