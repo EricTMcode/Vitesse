@@ -44,10 +44,14 @@ class HTTPClient: HTTPClientProtocol {
     }
     
     func perform(_ endpoint: APIEndpoint) async throws {
-        guard let url = endpoint.request else {
+        guard var url = endpoint.request else {
             throw APIError.invalidURL
         }
-        
+
+        if endpoint.requiresAuth {
+            attachAuthHeader(to: &url)
+        }
+
         let (data, response) = try await URLSession.shared.data(for: url)
         
         guard let httpResponse = response as? HTTPURLResponse else {
@@ -64,7 +68,7 @@ private extension HTTPClient {
               let token = String(data: tokenData, encoding: .utf8) else {
             return
         }
-
+        print("Token: \(token)")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     }
 }

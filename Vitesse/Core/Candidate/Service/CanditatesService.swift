@@ -9,6 +9,7 @@ import Foundation
 
 protocol CanditatesServiceProtocol {
     func getCandidates() async throws -> [Candidate]
+    func deleteCandidate(id: String) async throws
 }
 
 class CanditatesService: CanditatesServiceProtocol {
@@ -21,4 +22,8 @@ class CanditatesService: CanditatesServiceProtocol {
     func getCandidates() async throws -> [Candidate] {
        try await client.fetchData(.candidates)
     }
+
+    func deleteCandidate(id: String) async throws {
+            try await client.perform(.deleteCandidate(id: id))
+        }
 }

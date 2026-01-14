@@ -18,13 +18,13 @@ class CandidatsListViewModel: ObservableObject {
 
     private let candidatsService: CanditatesServiceProtocol
 
-//    init(service: CanditatesServiceProtocol = CanditatesService()) {
-//        self.candidatsService = service
-//    }
-
-    init(service: CanditatesServiceProtocol = MockCandidateService()) {
+    init(service: CanditatesServiceProtocol = CanditatesService()) {
         self.candidatsService = service
     }
+
+//    init(service: CanditatesServiceProtocol = MockCandidateService()) {
+//        self.candidatsService = service
+//    }
 
     var filteredCandidats: [Candidate] {
         candidats
@@ -51,4 +51,29 @@ class CandidatsListViewModel: ObservableObject {
             self.errorMessage = error.localizedDescription
         }
     }
+
+    func deleteCandidats() async {
+        do {
+            try await candidatsService.deleteCandidate(id: selectedCandidate.first!)
+            selectedCandidate.removeAll()
+            showIsEditing = false
+            self.candidats = try await candidatsService.getCandidates()
+        } catch {
+            print("DEBUG: Deletion failed: \(error)")
+        }
+
+        }
+
+//    func deleteSelected() async {
+//            do {
+//                print(selectedCandidate)
+//                try await candidatsService.deleteCandidate(id: selectedCandidate)
+//
+//                // Optimistic UI update
+////                candidats.removeAll { ids.contains($0.id) }
+//
+//            } catch {
+//                print("Deletion failed:", error)
+//            }
+//        }
 }

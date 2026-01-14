@@ -60,7 +60,9 @@ struct CandidatsListView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     if viewModel.showIsEditing {
                         Button("Effacer") {
-
+                            Task {
+                                await viewModel.deleteCandidats()
+                            }
                         }
                     } else {
                         Button {
