@@ -45,6 +45,9 @@ struct CandidatsListView: View {
                 .buttonStyle(.bordered)
 
             }
+            .refreshable {
+                await viewModel.getCandidates()
+            }
             .navigationTitle("Candidtats")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
