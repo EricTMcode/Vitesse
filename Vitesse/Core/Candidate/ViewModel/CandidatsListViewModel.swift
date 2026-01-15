@@ -14,7 +14,7 @@ class CandidatsListViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var showIsFavorite = false
     @Published var showIsEditing = false
-    @Published var selectedCandidate = Set<Candidate.ID>()
+    @Published var selectedCandidate = Set<String>()
 
     private let candidatsService: CanditatesServiceProtocol
 
@@ -49,17 +49,6 @@ class CandidatsListViewModel: ObservableObject {
             print("DEBUG: Candidats \(candidates.count)")
         } catch {
             self.errorMessage = error.localizedDescription
-        }
-    }
-
-    func deleteCandidate() async {
-        do {
-            try await candidatsService.deleteCandidate(id: selectedCandidate.first!)
-            selectedCandidate.removeAll()
-            showIsEditing = false
-            self.candidates = try await candidatsService.getCandidates()
-        } catch {
-            print("DEBUG: Deletion failed: \(error)")
         }
     }
 
