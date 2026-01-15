@@ -46,7 +46,6 @@ class CandidatesListViewModel: ObservableObject {
 
         do {
             self.candidates = try await candidatsService.getCandidates()
-            print("DEBUG: Candidats \(candidates.count)")
         } catch {
             self.errorMessage = error.localizedDescription
         }
@@ -73,7 +72,6 @@ class CandidatesListViewModel: ObservableObject {
                 self.candidates = try await candidatsService.getCandidates()
             }
         } catch {
-            print("Deletion failed:", error)
             self.errorMessage = error.localizedDescription
         }
     }
