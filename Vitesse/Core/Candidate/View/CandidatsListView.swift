@@ -23,44 +23,40 @@ struct CandidatsListView: View {
             .navigationDestination(for: Candidate.self) { candidat in
                 Text("\(candidat.firstName) \(candidat.lastName)")
             }
-
-            .refreshable {
-                await viewModel.getCandidates()
-            }
+            .refreshable { await viewModel.getCandidates() }
             .navigationTitle(Strings.Common.title)
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(viewModel.showIsEditing ? Strings.Common.cancel.capitalized : Strings.Common.edit.capitalized) {
-                        viewModel.showIsEditing.toggle()
-                        if !viewModel.showIsEditing {
-                            viewModel.selectedCandidate.removeAll()
-                        }
-                    }
-                }
-
-                ToolbarItem(placement: .topBarTrailing) {
-                    if viewModel.showIsEditing {
-                        Button {
-                            Task { await viewModel.deleteCandidates() }
-                        } label: {
-                            Text(Strings.Common.delete.capitalized)
-                        }
-                    } else {
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                viewModel.showIsFavorite.toggle()
-                            }
-                        } label: {
-                            Image(systemName: viewModel.showIsFavorite ? SFsymbols.starFill : SFsymbols.star)
-                                .foregroundColor(.yellow)
-                        }
-                    }
-                }
-            }
-            .task {
-                await viewModel.getCandidates()
-            }
+            .toolbar { CandidatesToolbar(viewModel: viewModel) }
+//            .toolbar {
+//                ToolbarItem(placement: .topBarLeading) {
+//                    Button(viewModel.showIsEditing ? Strings.Common.cancel.capitalized : Strings.Common.edit.capitalized) {
+//                        viewModel.showIsEditing.toggle()
+//                        if !viewModel.showIsEditing {
+//                            viewModel.selectedCandidate.removeAll()
+//                        }
+//                    }
+//                }
+//
+//                ToolbarItem(placement: .topBarTrailing) {
+//                    if viewModel.showIsEditing {
+//                        Button {
+//                            Task { await viewModel.deleteCandidates() }
+//                        } label: {
+//                            Text(Strings.Common.delete.capitalized)
+//                        }
+//                    } else {
+//                        Button {
+//                            withAnimation(.easeInOut(duration: 0.25)) {
+//                                viewModel.showIsFavorite.toggle()
+//                            }
+//                        } label: {
+//                            Image(systemName: viewModel.showIsFavorite ? SFsymbols.starFill : SFsymbols.star)
+//                                .foregroundColor(.yellow)
+//                        }
+//                    }
+//                }
+//            }
+            .task { await viewModel.getCandidates() }
         }
     }
 }
@@ -99,6 +95,55 @@ struct CandidatesRowView: View {
             Image(systemName: candidate.isFavorite ? SFsymbols.starFill : SFsymbols.star)
                 .imageScale(.large)
                 .foregroundColor(.yellow)
+        }
+    }
+}
+
+struct CandidatesToolbar: ToolbarContent {
+    @ObservedObject var viewModel: CandidatsListViewModel
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button(editButtonTitle) {
+                toggleEditMode()
+            }
+        }
+
+        ToolbarItem(placement: .topBarTrailing) {
+            trailingButton
+        }
+    }
+
+    private var editButtonTitle: String {
+        viewModel.showIsEditing
+        ? Strings.Common.cancel.capitalized
+        : Strings.Common.edit.capitalized
+    }
+
+    @ViewBuilder
+    private var trailingButton: some View {
+        if viewModel.showIsEditing {
+            Button(Strings.Common.delete.capitalized) {
+                Task { await viewModel.deleteCandidates() }
+            }
+        } else {
+            Button {
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    viewModel.showIsFavorite.toggle()
+                }
+            } label: {
+                Image(systemName: viewModel.showIsFavorite
+                      ? SFsymbols.starFill
+                      : SFsymbols.star)
+                .foregroundStyle(.yellow)
+            }
+        }
+    }
+
+    private func toggleEditMode() {
+        viewModel.showIsEditing.toggle()
+        if !viewModel.showIsEditing {
+            viewModel.selectedCandidate.removeAll()
         }
     }
 }
