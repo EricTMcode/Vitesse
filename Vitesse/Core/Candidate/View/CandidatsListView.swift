@@ -14,45 +14,24 @@ struct CandidatsListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                List(selection: $viewModel.selectedCandidate) {
-                    ForEach(viewModel.filteredCandidats) { candidat in
-                        NavigationLink(value: candidat) {
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text("\(candidat.firstName) \(candidat.lastName)")
+                candidatesList
 
-                                    Spacer()
-
-                                    Image(systemName: candidat.isFavorite ? "star.fill" : "star")
-                                        .imageScale(.large)
-                                        .foregroundColor(.yellow)
-                                }
-                            }
-                        }
-                    }
-                }
-                .listStyle(.plain)
-                .environment(\.editMode, .constant(viewModel.showIsEditing ? .active : .inactive))
-                .searchable(text: $viewModel.searchText, prompt: "Rechercher un candidat")
-
-                .navigationDestination(for: Candidate.self) { candidat in
-                    Text("\(candidat.firstName) \(candidat.lastName)")
-                }
-
-                Button("Logout") {
-                    loginViewModel.logout()
-                }
-                .buttonStyle(.bordered)
-                
+                logoutButton
             }
+            .environment(\.editMode, .constant(viewModel.showIsEditing ? .active : .inactive))
+            .searchable(text: $viewModel.searchText, prompt: Strings.Common.searchCandidate)
+            .navigationDestination(for: Candidate.self) { candidat in
+                Text("\(candidat.firstName) \(candidat.lastName)")
+            }
+
             .refreshable {
                 await viewModel.getCandidates()
             }
-            .navigationTitle("Candidtats")
+            .navigationTitle(Strings.Common.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(viewModel.showIsEditing ? "Cancel" : "Edit") {
+                    Button(viewModel.showIsEditing ? Strings.Common.cancel.capitalized : Strings.Common.edit.capitalized) {
                         viewModel.showIsEditing.toggle()
                         if !viewModel.showIsEditing {
                             viewModel.selectedCandidate.removeAll()
@@ -65,7 +44,7 @@ struct CandidatsListView: View {
                         Button {
                             Task { await viewModel.deleteCandidates() }
                         } label: {
-                            Text("Effacer")
+                            Text(Strings.Common.delete.capitalized)
                         }
                     } else {
                         Button {
@@ -73,7 +52,7 @@ struct CandidatsListView: View {
                                 viewModel.showIsFavorite.toggle()
                             }
                         } label: {
-                            Image(systemName: viewModel.showIsFavorite ? "star.fill" : "star")
+                            Image(systemName: viewModel.showIsFavorite ? SFsymbols.starFill : SFsymbols.star)
                                 .foregroundColor(.yellow)
                         }
                     }
@@ -82,6 +61,44 @@ struct CandidatsListView: View {
             .task {
                 await viewModel.getCandidates()
             }
+        }
+    }
+}
+
+private extension CandidatsListView {
+    var candidatesList: some View {
+        List(selection: $viewModel.selectedCandidate) {
+            ForEach(viewModel.filteredCandidats) { candidate in
+                NavigationLink(value: candidate) {
+                    CandidatesRowView(candidate: candidate)
+                }
+            }
+        }
+        .listStyle(.plain)
+    }
+}
+
+private extension CandidatsListView {
+    var logoutButton: some View {
+        Button("Logout") {
+            loginViewModel.logout()
+        }
+        .buttonStyle(.bordered)
+    }
+}
+
+struct CandidatesRowView: View {
+    let candidate: Candidate
+
+    var body: some View {
+        HStack {
+            Text("\(candidate.firstName) \(candidate.lastName)")
+
+            Spacer()
+
+            Image(systemName: candidate.isFavorite ? SFsymbols.starFill : SFsymbols.star)
+                .imageScale(.large)
+                .foregroundColor(.yellow)
         }
     }
 }
