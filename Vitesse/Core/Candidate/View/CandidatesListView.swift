@@ -16,12 +16,13 @@ struct CandidatesListView: View {
             VStack {
                 candidatesList
 
+                // DELETE BEFORE SHIP
                 logoutButton
             }
             .environment(\.editMode, .constant(viewModel.showIsEditing ? .active : .inactive))
             .searchable(text: $viewModel.searchText, prompt: CandidatesListStrings.Common.searchCandidate)
-            .navigationDestination(for: Candidate.self) { candidat in
-                Text(candidat.fullName)
+            .navigationDestination(for: Candidate.self) { candidate in
+                CandidateDetailView(candidate: candidate)
             }
             .refreshable { await viewModel.getCandidates() }
             .navigationTitle(CandidatesListStrings.Common.title)
