@@ -11,7 +11,6 @@ struct CandidateDetailView: View {
     let candidate: Candidate
 
     var body: some View {
-        NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     header
@@ -27,7 +26,6 @@ struct CandidateDetailView: View {
                     }
                 }
             }
-        }
     }
 }
 
@@ -54,8 +52,23 @@ private extension CandidateDetailView {
         VStack(alignment: .leading, spacing: 16) {
             LabeledValue(title: "Phone", value: candidate.phone)
             LabeledValue(title: "Email", value: candidate.email)
-            LabeledValue(title: "LinkedIn", value: candidate.linkedinURL)
+            
+            if let linkedinURL = candidate.linkedinLink {
+                Link(destination: linkedinURL) {
+                    Text("GoToLLinkedin")
+                }
+            }
         }
+    }
+}
+
+private extension CandidateDetailView {
+    func linkedinButton(_ url: URL) -> some View {
+            Link(destination: url) {
+                Text("goToLinkedIn")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.bordered)
     }
 }
 

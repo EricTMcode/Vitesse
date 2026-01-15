@@ -20,4 +20,11 @@ struct Candidate: Identifiable, Codable, Hashable {
     var fullName: String {
        return "\(firstName) \(lastName)"
     }
+
+    var linkedinLink: URL? {
+        guard let linkedinURL, let url = URL(string: linkedinURL) else {
+            return nil
+        }
+        return url
+    }
 }
