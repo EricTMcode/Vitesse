@@ -1,5 +1,5 @@
 //
-//  Strings.swift
+//  CandidatesListStrings.swift
 //  Vitesse
 //
 //  Created by Eric on 15/01/2026.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Strings {
+enum CandidatesListStrings {
     enum Common {
         static let title = NSLocalizedString("Candidates", comment: "")
         static let edit = NSLocalizedString("edit", comment: "")

@@ -1,5 +1,5 @@
 //
-//  CandidatsListView.swift
+//  CandidatesListView.swift
 //  Vitesse
 //
 //  Created by Eric on 11/01/2026.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct CandidatsListView: View {
+struct CandidatesListView: View {
     @ObservedObject var loginViewModel: LoginViewModel
-    @StateObject var viewModel = CandidatsListViewModel()
+    @StateObject var viewModel = CandidatesListViewModel()
 
     var body: some View {
         NavigationStack {
@@ -19,49 +19,20 @@ struct CandidatsListView: View {
                 logoutButton
             }
             .environment(\.editMode, .constant(viewModel.showIsEditing ? .active : .inactive))
-            .searchable(text: $viewModel.searchText, prompt: Strings.Common.searchCandidate)
+            .searchable(text: $viewModel.searchText, prompt: CandidatesListStrings.Common.searchCandidate)
             .navigationDestination(for: Candidate.self) { candidat in
-                Text("\(candidat.firstName) \(candidat.lastName)")
+                Text(candidat.fullName)
             }
             .refreshable { await viewModel.getCandidates() }
-            .navigationTitle(Strings.Common.title)
+            .navigationTitle(CandidatesListStrings.Common.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { CandidatesToolbar(viewModel: viewModel) }
-//            .toolbar {
-//                ToolbarItem(placement: .topBarLeading) {
-//                    Button(viewModel.showIsEditing ? Strings.Common.cancel.capitalized : Strings.Common.edit.capitalized) {
-//                        viewModel.showIsEditing.toggle()
-//                        if !viewModel.showIsEditing {
-//                            viewModel.selectedCandidate.removeAll()
-//                        }
-//                    }
-//                }
-//
-//                ToolbarItem(placement: .topBarTrailing) {
-//                    if viewModel.showIsEditing {
-//                        Button {
-//                            Task { await viewModel.deleteCandidates() }
-//                        } label: {
-//                            Text(Strings.Common.delete.capitalized)
-//                        }
-//                    } else {
-//                        Button {
-//                            withAnimation(.easeInOut(duration: 0.25)) {
-//                                viewModel.showIsFavorite.toggle()
-//                            }
-//                        } label: {
-//                            Image(systemName: viewModel.showIsFavorite ? SFsymbols.starFill : SFsymbols.star)
-//                                .foregroundColor(.yellow)
-//                        }
-//                    }
-//                }
-//            }
             .task { await viewModel.getCandidates() }
         }
     }
 }
 
-private extension CandidatsListView {
+private extension CandidatesListView {
     var candidatesList: some View {
         List(selection: $viewModel.selectedCandidate) {
             ForEach(viewModel.filteredCandidats) { candidate in
@@ -74,7 +45,7 @@ private extension CandidatsListView {
     }
 }
 
-private extension CandidatsListView {
+private extension CandidatesListView {
     var logoutButton: some View {
         Button("Logout") {
             loginViewModel.logout()
@@ -88,7 +59,7 @@ struct CandidatesRowView: View {
 
     var body: some View {
         HStack {
-            Text("\(candidate.firstName) \(candidate.lastName)")
+            Text(candidate.fullName)
 
             Spacer()
 
@@ -100,7 +71,7 @@ struct CandidatesRowView: View {
 }
 
 struct CandidatesToolbar: ToolbarContent {
-    @ObservedObject var viewModel: CandidatsListViewModel
+    @ObservedObject var viewModel: CandidatesListViewModel
 
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
@@ -116,14 +87,14 @@ struct CandidatesToolbar: ToolbarContent {
 
     private var editButtonTitle: String {
         viewModel.showIsEditing
-        ? Strings.Common.cancel.capitalized
-        : Strings.Common.edit.capitalized
+        ? CandidatesListStrings.Common.cancel.capitalized
+        : CandidatesListStrings.Common.edit.capitalized
     }
 
     @ViewBuilder
     private var trailingButton: some View {
         if viewModel.showIsEditing {
-            Button(Strings.Common.delete.capitalized) {
+            Button(CandidatesListStrings.Common.delete.capitalized) {
                 Task { await viewModel.deleteCandidates() }
             }
         } else {
@@ -149,5 +120,5 @@ struct CandidatesToolbar: ToolbarContent {
 }
 
 #Preview {
-    CandidatsListView(loginViewModel: LoginViewModel(), viewModel: CandidatsListViewModel(service: MockCandidateService()))
+    CandidatesListView(loginViewModel: LoginViewModel(), viewModel: CandidatesListViewModel(service: MockCandidateService()))
 }

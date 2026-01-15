@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CandidatsListViewModel: ObservableObject {
+class CandidatesListViewModel: ObservableObject {
     @Published var candidates = [Candidate]()
     @Published var isLoading = false
     @Published var errorMessage: String?
