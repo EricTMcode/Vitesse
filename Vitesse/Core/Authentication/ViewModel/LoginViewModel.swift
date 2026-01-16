@@ -46,6 +46,14 @@ class LoginViewModel: ObservableObject {
         }
     }
 
+    func loginIfPossible() {
+        guard formIsValid, !isLoading else { return }
+
+        Task {
+            await login(email: email, password: password)
+        }
+    }
+
     func logout() {
         loginService.logout()
         self.isAuthenticated = false
