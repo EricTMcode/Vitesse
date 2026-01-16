@@ -16,9 +16,19 @@ struct CandidatesListView: View {
             VStack {
                 switch viewModel.loadingState {
                 case .loading:
-                    Text("")
+                    ProgressView("Loading Candidates...")
                 case .empty:
-                    ContentUnavailableView("No candidates available", systemImage: "person.slash", description: Text("Please add a candidate"))
+                    ContentUnavailableView {
+                        Label("No Candidates Available", systemImage: "person.slash")
+                    } description: {
+                        Text("Please add a candidate")
+                    } actions: {
+                        Button("Actualiser la page") {
+                            Task { await viewModel.refresh() }
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+
                 case .error(let error):
                     Text(error.localizedDescription)
                 case .completed:
