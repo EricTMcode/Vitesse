@@ -14,7 +14,17 @@ struct CandidatesListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                candidatesList
+                switch viewModel.loadingState {
+                case .loading:
+                    Text("")
+                case .empty:
+                    ContentUnavailableView("No candidates available", systemImage: "person.slash", description: Text("Please add a candidate"))
+                case .error(let error):
+                    Text(error.localizedDescription)
+                case .completed:
+                    candidatesList
+                }
+
 
                 // DELETE BEFORE SHIP
 //                logoutButton

@@ -10,6 +10,7 @@ import Foundation
 class CandidatesListViewModel: ObservableObject {
     @Published var candidates = [Candidate]()
     @Published var isLoading = false
+    @Published var loadingState: ContentLoadingState = .loading
     @Published var errorMessage: String?
     @Published var searchText = ""
     @Published var showIsFavorite = false
@@ -40,12 +41,14 @@ class CandidatesListViewModel: ObservableObject {
 
     func getCandidates() async {
         self.errorMessage = nil
-        self.isLoading = true
+//        self.isLoading = true
 
-        defer { self.isLoading = false }
+//        defer { self.isLoading = false }
 
         do {
             self.candidates = try await candidatsService.getCandidates()
+            self.loadingState = candidates.isEmpty ? .empty : .completed
+            print(candidates.count)
         } catch {
             self.errorMessage = error.localizedDescription
         }
@@ -55,6 +58,7 @@ class CandidatesListViewModel: ObservableObject {
             await getCandidates()
         }
 
+    @MainActor
     func deleteCandidates() async {
         self.errorMessage = nil
         self.isLoading = true
@@ -73,7 +77,7 @@ class CandidatesListViewModel: ObservableObject {
                 selectedCandidate.removeAll()
                 showIsEditing = false
                 
-                self.candidates = try await candidatsService.getCandidates()
+                await getCandidates()
             }
         } catch {
             self.errorMessage = error.localizedDescription
