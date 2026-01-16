@@ -19,46 +19,9 @@ struct LoginView: View {
         NavigationStack {
             VStack {
                 Spacer()
-                
-                Image(.vitesseLogo)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 220, height: 220)
-                    .accessibilityLabel("Logo Vitesse")
-                
-                TextField("Entrez votre e-mail", text: $viewModel.email)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .textFieldModifier()
-                    .textContentType(.emailAddress)
-                    .keyboardType(.emailAddress)
-                    .padding(.bottom, 10)
-                
-                SecureField("Mot de passe", text: $viewModel.password)
-                    .textFieldModifier()
-                    .textContentType(.password)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
+                logo
+                form
 
-                Text(viewModel.errorMessage ?? " ")
-                    .foregroundStyle(.red)
-                    .font(.callout)
-                    .padding(.top, -1)
-                    .opacity(viewModel.errorMessage == nil ? 0 : 1)
-                    .animation(.easeInOut(duration: 0.2), value: viewModel.errorMessage)
-                    .frame(minHeight: 20)
-                
-                Button {
-                    print("DEBUG: Show forgot password")
-                } label: {
-                    Text("Mot de passe oublié ?")
-                        .font(.footnote)
-                        .fontWeight(.semibold)
-                        .padding(.top, -3)
-                        .padding(.trailing, 28)
-                }
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                
                 Button() {
                     Task { await viewModel.login(email: viewModel.email, password: viewModel.password) }
                 } label: {
@@ -100,6 +63,75 @@ struct LoginView: View {
                 .padding(.vertical, 16)
             }
         }
+    }
+}
+
+private extension LoginView {
+    var logo: some View {
+        Image(.vitesseLogo)
+            .resizable()
+            .scaledToFill()
+            .frame(width: 220, height: 220)
+            .accessibilityLabel("Logo Vitesse")
+    }
+}
+
+private extension LoginView {
+    var form: some View {
+        VStack(spacing: 10) {
+            emailField
+            passwordField
+            errorMessage
+            forgotPasswordButton
+        }
+    }
+}
+
+private extension LoginView {
+    var emailField: some View {
+        TextField("Entrez votre e-mail", text: $viewModel.email)
+            .textInputAutocapitalization(.never)
+            .autocorrectionDisabled()
+            .textFieldModifier()
+            .textContentType(.emailAddress)
+            .keyboardType(.emailAddress)
+    }
+}
+
+private extension LoginView {
+    var passwordField: some View {
+        SecureField("Mot de passe", text: $viewModel.password)
+            .textFieldModifier()
+            .textContentType(.password)
+            .textInputAutocapitalization(.never)
+            .autocorrectionDisabled()
+    }
+}
+
+private extension LoginView {
+    var errorMessage: some View {
+        Text(viewModel.errorMessage ?? " ")
+            .foregroundStyle(.red)
+            .font(.callout)
+            .padding(.top, -1)
+            .opacity(viewModel.errorMessage == nil ? 0 : 1)
+            .animation(.easeInOut(duration: 0.2), value: viewModel.errorMessage)
+            .frame(minHeight: 20)
+    }
+}
+
+private extension LoginView {
+    var forgotPasswordButton: some View {
+        Button {
+            print("DEBUG: Show forgot password")
+        } label: {
+            Text("Mot de passe oublié ?")
+                .font(.footnote)
+                .fontWeight(.semibold)
+                .padding(.top, -3)
+                .padding(.trailing, 28)
+        }
+        .frame(maxWidth: .infinity, alignment: .trailing)
     }
 }
 
