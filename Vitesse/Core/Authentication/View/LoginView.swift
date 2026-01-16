@@ -78,10 +78,7 @@ private extension LoginView {
             .autocorrectionDisabled()
             .focused($focusedField, equals: .password)
             .submitLabel(.go)
-            .onSubmit {
-                viewModel.loginIfPossible()
-//                Task { await viewModel.login(email: viewModel.email, password: viewModel.password) }
-            }
+            .onSubmit { viewModel.loginIfPossible() }
     }
 }
 
@@ -125,7 +122,6 @@ private extension LoginView {
 private extension LoginView {
     var loginButton: some View {
         Button {
-//            Task { await viewModel.login(email: viewModel.email, password: viewModel.password) }
             viewModel.loginIfPossible()
         } label: {
             Text("Connexion")

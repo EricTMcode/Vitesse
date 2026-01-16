@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CandidatesListStrings {
+enum CandidatesStrings {
     enum Common {
         static let title = NSLocalizedString("Candidats", comment: "")
         static let edit = NSLocalizedString("editer", comment: "")

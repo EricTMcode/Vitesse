@@ -16,7 +16,7 @@ struct CandidatesListView: View {
             VStack {
                 switch viewModel.loadingState {
                 case .loading:
-                    ProgressView(CandidatesListStrings.Common.loadingCandidates)
+                    ProgressView(CandidatesStrings.Common.loadingCandidates)
                 case .empty:
                     contentUnavailable
                 case .error(let error):
@@ -30,12 +30,12 @@ struct CandidatesListView: View {
                 logoutButton
             }
             .environment(\.editMode, .constant(viewModel.showIsEditing ? .active : .inactive))
-            .searchable(text: $viewModel.searchText, prompt: CandidatesListStrings.Common.searchCandidate)
+            .searchable(text: $viewModel.searchText, prompt: CandidatesStrings.Common.searchCandidate)
             .navigationDestination(for: Candidate.self) { candidate in
                 CandidateDetailView(candidate: candidate)
             }
             .refreshable { await viewModel.refresh() }
-            .navigationTitle(CandidatesListStrings.Common.title)
+            .navigationTitle(CandidatesStrings.Common.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { CandidatesToolbar(viewModel: viewModel) }
             .task { await viewModel.getCandidates() }
@@ -68,14 +68,14 @@ private extension CandidatesListView {
 private extension CandidatesListView {
     var contentUnavailable: some View {
         ContentUnavailableView {
-            Label(CandidatesListStrings.Common.noCandidatesAvailable, systemImage: SFsymbols.personSlash)
+            Label(CandidatesStrings.Common.noCandidatesAvailable, systemImage: SFsymbols.personSlash)
         } description: {
-            Text(CandidatesListStrings.Common.addACandidate)
+            Text(CandidatesStrings.Common.addACandidate)
         } actions: {
             Button() {
                 Task { await viewModel.refresh() }
             } label: {
-                Text(CandidatesListStrings.Common.reloadView)
+                Text(CandidatesStrings.Common.reloadView)
                     .primaryButtonStyle()
                     .overlay {
                         if viewModel.loadingState == .loading {
@@ -120,14 +120,14 @@ struct CandidatesToolbar: ToolbarContent {
 
     private var editButtonTitle: String {
         viewModel.showIsEditing
-        ? CandidatesListStrings.Common.cancel.capitalized
-        : CandidatesListStrings.Common.edit.capitalized
+        ? CandidatesStrings.Common.cancel.capitalized
+        : CandidatesStrings.Common.edit.capitalized
     }
 
     @ViewBuilder
     private var trailingButton: some View {
         if viewModel.showIsEditing {
-            Button(CandidatesListStrings.Common.delete.capitalized) {
+            Button(CandidatesStrings.Common.delete.capitalized) {
                 Task { await viewModel.deleteCandidates() }
             }
         } else {
