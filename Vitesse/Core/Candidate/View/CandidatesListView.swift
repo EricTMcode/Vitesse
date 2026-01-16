@@ -16,19 +16,9 @@ struct CandidatesListView: View {
             VStack {
                 switch viewModel.loadingState {
                 case .loading:
-                    ProgressView("Loading Candidates...")
+                    ProgressView(CandidatesListStrings.Common.loadingCandidates)
                 case .empty:
-                    ContentUnavailableView {
-                        Label("No Candidates Available", systemImage: "person.slash")
-                    } description: {
-                        Text("Please add a candidate")
-                    } actions: {
-                        Button("Actualiser la page") {
-                            Task { await viewModel.refresh() }
-                        }
-                        .buttonStyle(.borderedProminent)
-                    }
-
+                    contentUnavailable
                 case .error(let error):
                     Text(error.localizedDescription)
                 case .completed:
@@ -37,7 +27,7 @@ struct CandidatesListView: View {
 
 
                 // DELETE BEFORE SHIP
-//                logoutButton
+                logoutButton
             }
             .environment(\.editMode, .constant(viewModel.showIsEditing ? .active : .inactive))
             .searchable(text: $viewModel.searchText, prompt: CandidatesListStrings.Common.searchCandidate)
@@ -78,6 +68,28 @@ private extension CandidatesListView {
             loginViewModel.logout()
         }
         .buttonStyle(.bordered)
+    }
+}
+
+private extension CandidatesListView {
+    var contentUnavailable: some View {
+        ContentUnavailableView {
+            Label(CandidatesListStrings.Common.noCandidatesAvailable, systemImage: SFsymbols.personSlash)
+        } description: {
+            Text(CandidatesListStrings.Common.addACandidate)
+        } actions: {
+            Button() {
+                Task { await viewModel.refresh() }
+            } label: {
+                Text(CandidatesListStrings.Common.reloadView)
+                    .primaryButtonStyle()
+                    .overlay {
+                        if viewModel.loadingState == .loading {
+                            ProgressView()
+                        }
+                    }
+            }
+        }
     }
 }
 
