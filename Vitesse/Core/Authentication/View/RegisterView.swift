@@ -65,6 +65,8 @@ private extension RegisterView {
                     .formTextFieldStyle()
                     .textContentType(.familyName)
                     .focused($focusedField, equals: .firstname)
+                    .submitLabel(.next)
+                    .onSubmit { focusedField = .lastname }
             }
 
             // LastName Field
@@ -76,6 +78,8 @@ private extension RegisterView {
                     .textContentType(.name)
                     .padding(.top, 5)
                     .focused($focusedField, equals: .lastname)
+                    .submitLabel(.next)
+                    .onSubmit { focusedField = .email }
             }
 
             // Email Field
@@ -85,10 +89,12 @@ private extension RegisterView {
                 TextField("Entrez votre email", text: $viewModel.registerRequest.email)
                     .formTextFieldStyle()
                     .textContentType(.emailAddress)
-                    .focused($focusedField, equals: .email)
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
+                    .focused($focusedField, equals: .email)
+                    .submitLabel(.next)
+                    .onSubmit { focusedField = .password }
                     .padding(.top, 5)
                     .onChange(of: viewModel.registerRequest.email) {
                         viewModel.validateEmail()
@@ -110,9 +116,11 @@ private extension RegisterView {
                 SecureField("Entrez votre mot de passe", text: $viewModel.registerRequest.password)
                     .formTextFieldStyle()
                     .textContentType(.password)
-                    .focused($focusedField, equals: .password)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
+                    .focused($focusedField, equals: .password)
+                    .submitLabel(.next)
+                    .onSubmit { focusedField = .comfirmPassword }
                     .onChange(of: viewModel.registerRequest.password) {
                         viewModel.validatePassword()
                         if !viewModel.registerRequest.confirmPassword.isEmpty {
