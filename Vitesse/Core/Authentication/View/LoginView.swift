@@ -21,33 +21,34 @@ struct LoginView: View {
                 Spacer()
                 logo
                 form
+                actions
 
-                Button() {
-                    Task { await viewModel.login(email: viewModel.email, password: viewModel.password) }
-                } label: {
-                    Text("Connexion")
-                        .primaryButtonStyle()
-                        .overlay {
-                            if viewModel.isLoading {
-                                ProgressView()
-                            }
-                        }
-                }
-                .disabled(!viewModel.formIsValid)
-                .opacity(!viewModel.formIsValid ? 0.7 : 1.0)
-                .padding(.vertical)
-                .padding(.top, 10)
-                
-                CustomSeparatorView()
-                
-                NavigationLink {
-                    RegisterView(loginService: viewModel)
-                        .navigationBarBackButtonHidden()
-                } label: {
-                    Text("Creer un compte")
-                        .primaryButtonStyle()
-                }
-                .padding(.vertical, 16)
+//                Button() {
+//                    Task { await viewModel.login(email: viewModel.email, password: viewModel.password) }
+//                } label: {
+//                    Text("Connexion")
+//                        .primaryButtonStyle()
+//                        .overlay {
+//                            if viewModel.isLoading {
+//                                ProgressView()
+//                            }
+//                        }
+//                }
+//                .disabled(!viewModel.formIsValid)
+//                .opacity(!viewModel.formIsValid ? 0.7 : 1.0)
+//                .padding(.vertical)
+//                .padding(.top, 10)
+//                
+//                CustomSeparatorView()
+//                
+//                NavigationLink {
+//                    RegisterView(loginService: viewModel)
+//                        .navigationBarBackButtonHidden()
+//                } label: {
+//                    Text("Creer un compte")
+//                        .primaryButtonStyle()
+//                }
+//                .padding(.vertical, 16)
                 
                 Spacer()
                 
@@ -132,6 +133,47 @@ private extension LoginView {
                 .padding(.trailing, 28)
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
+    }
+}
+
+private extension LoginView {
+    var actions: some View {
+        VStack(spacing: 16) {
+            loginButton
+            CustomSeparatorView()
+            createAccountButton
+        }
+    }
+}
+
+private extension LoginView {
+    var loginButton: some View {
+        Button {
+            Task { await viewModel.login(email: viewModel.email, password: viewModel.password) }
+        } label: {
+            Text("Connexion")
+                .primaryButtonStyle()
+                .overlay {
+                    if viewModel.isLoading {
+                        ProgressView()
+                    }
+                }
+        }
+        .disabled(!viewModel.formIsValid)
+        .opacity(viewModel.formIsValid ? 1 : 0.7)
+        .padding(.top, 10)
+    }
+}
+
+private extension LoginView {
+    var createAccountButton: some View {
+        NavigationLink {
+            RegisterView(loginService: viewModel)
+                .navigationBarBackButtonHidden()
+        } label: {
+            Text("Creer un compte")
+                .primaryButtonStyle()
+        }
     }
 }
 
