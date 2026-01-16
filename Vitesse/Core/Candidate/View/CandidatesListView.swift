@@ -17,17 +17,23 @@ struct CandidatesListView: View {
                 candidatesList
 
                 // DELETE BEFORE SHIP
-                logoutButton
+//                logoutButton
             }
             .environment(\.editMode, .constant(viewModel.showIsEditing ? .active : .inactive))
             .searchable(text: $viewModel.searchText, prompt: CandidatesListStrings.Common.searchCandidate)
             .navigationDestination(for: Candidate.self) { candidate in
                 CandidateDetailView(candidate: candidate)
             }
-            .refreshable { await viewModel.getCandidates() }
+            .refreshable { await viewModel.refresh() }
             .navigationTitle(CandidatesListStrings.Common.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { CandidatesToolbar(viewModel: viewModel) }
+            .overlay {
+                if let error = viewModel.errorMessage {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
+            }
             .task { await viewModel.getCandidates() }
         }
     }

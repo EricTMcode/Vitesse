@@ -51,6 +51,10 @@ class CandidatesListViewModel: ObservableObject {
         }
     }
 
+    func refresh() async {
+            await getCandidates()
+        }
+
     func deleteCandidates() async {
         self.errorMessage = nil
         self.isLoading = true
