@@ -38,12 +38,6 @@ struct CandidatesListView: View {
             .navigationTitle(CandidatesListStrings.Common.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { CandidatesToolbar(viewModel: viewModel) }
-            .overlay {
-                if let error = viewModel.errorMessage {
-                    Text(error)
-                        .foregroundColor(.red)
-                }
-            }
             .task { await viewModel.getCandidates() }
         }
     }

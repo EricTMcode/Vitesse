@@ -41,16 +41,13 @@ class CandidatesListViewModel: ObservableObject {
 
     func getCandidates() async {
         self.errorMessage = nil
-//        self.isLoading = true
-
-//        defer { self.isLoading = false }
 
         do {
             self.candidates = try await candidatsService.getCandidates()
             self.loadingState = candidates.isEmpty ? .empty : .completed
             print(candidates.count)
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.loadingState = .error(error: error)
         }
     }
 
@@ -61,7 +58,6 @@ class CandidatesListViewModel: ObservableObject {
     @MainActor
     func deleteCandidates() async {
         self.errorMessage = nil
-        self.isLoading = true
 
         defer { self.isLoading = false }
 
@@ -74,13 +70,15 @@ class CandidatesListViewModel: ObservableObject {
                 }
                 try await group.waitForAll()
 
+                self.loadingState = .completed
+
                 selectedCandidate.removeAll()
                 showIsEditing = false
                 
                 await getCandidates()
             }
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.loadingState = .error(error: error)
         }
     }
 }

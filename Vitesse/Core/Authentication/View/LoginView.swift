@@ -9,7 +9,12 @@ import SwiftUI
 
 struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
-    
+    @FocusState private var focusedField: Field?
+
+    enum Field {
+        case email, password
+    }
+
     var body: some View {
         NavigationStack {
             VStack {
