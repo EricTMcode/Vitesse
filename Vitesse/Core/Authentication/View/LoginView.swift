@@ -22,46 +22,13 @@ struct LoginView: View {
                 logo
                 form
                 actions
-
-//                Button() {
-//                    Task { await viewModel.login(email: viewModel.email, password: viewModel.password) }
-//                } label: {
-//                    Text("Connexion")
-//                        .primaryButtonStyle()
-//                        .overlay {
-//                            if viewModel.isLoading {
-//                                ProgressView()
-//                            }
-//                        }
-//                }
-//                .disabled(!viewModel.formIsValid)
-//                .opacity(!viewModel.formIsValid ? 0.7 : 1.0)
-//                .padding(.vertical)
-//                .padding(.top, 10)
-//                
-//                CustomSeparatorView()
-//                
-//                NavigationLink {
-//                    RegisterView(loginService: viewModel)
-//                        .navigationBarBackButtonHidden()
-//                } label: {
-//                    Text("Creer un compte")
-//                        .primaryButtonStyle()
-//                }
-//                .padding(.vertical, 16)
-                
                 Spacer()
-                
-                Divider()
-                
-                NavigationLink {
-                    RegisterView(loginService: viewModel)
-                        .navigationBarBackButtonHidden()
-                } label: {
-                    Text("Pas de compte ? **Inscrivez-vous**")
-                        .font(.footnote)
-                }
-                .padding(.vertical, 16)
+                footer
+            }
+        }
+        .onChange(of: viewModel.isAuthenticated) { oldValue, newValue in
+            if newValue {
+                focusedField = nil
             }
         }
     }
@@ -96,6 +63,9 @@ private extension LoginView {
             .textFieldModifier()
             .textContentType(.emailAddress)
             .keyboardType(.emailAddress)
+            .focused($focusedField, equals: .email)
+            .submitLabel(.next)
+            .onSubmit { focusedField = .password }
     }
 }
 
@@ -106,6 +76,11 @@ private extension LoginView {
             .textContentType(.password)
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
+            .focused($focusedField, equals: .password)
+            .submitLabel(.go)
+            .onSubmit {
+                Task { await viewModel.login(email: viewModel.email, password: viewModel.password) }
+            }
     }
 }
 
@@ -177,6 +152,23 @@ private extension LoginView {
     }
 }
 
+private extension LoginView {
+    var footer: some View {
+        VStack {
+            Divider()
+
+            NavigationLink {
+                RegisterView(loginService: viewModel)
+                    .navigationBarBackButtonHidden()
+            } label: {
+                Text("Pas de compte ? **Inscrivez-vous**")
+                    .font(.footnote)
+            }
+            .padding(.vertical, 16)
+        }
+    }
+}
+
 #Preview {
     LoginView(viewModel: LoginViewModel())
 }
@@ -202,3 +194,4 @@ struct CustomSeparatorView: View {
         .frame(height: 20)
     }
 }
+

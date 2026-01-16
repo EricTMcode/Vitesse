@@ -13,7 +13,6 @@ class LoginViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var isAuthenticated = false
-//    @Published var userToken: String?
 
     private let loginService: LoginServiceProtocol
     private let validationService: ValidationService
