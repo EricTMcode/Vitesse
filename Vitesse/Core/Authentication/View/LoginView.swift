@@ -40,7 +40,7 @@ private extension LoginView {
             .resizable()
             .scaledToFill()
             .frame(width: 220, height: 220)
-            .accessibilityLabel(AuthenticationStrings.Common.accessibilityLabelLogo)
+            .accessibilityLabel(AuthenticationStrings.LoginView.accessibilityLabelLogo)
     }
 }
 
@@ -57,7 +57,7 @@ private extension LoginView {
 
 private extension LoginView {
     var emailField: some View {
-        TextField(AuthenticationStrings.Common.emailField.capitalized, text: $viewModel.email)
+        TextField(AuthenticationStrings.LoginView.emailField.capitalized, text: $viewModel.email)
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
             .textFieldModifier()
@@ -71,7 +71,7 @@ private extension LoginView {
 
 private extension LoginView {
     var passwordField: some View {
-        SecureField("Mot de passe", text: $viewModel.password)
+        SecureField(AuthenticationStrings.LoginView.passwordField, text: $viewModel.password)
             .textFieldModifier()
             .textContentType(.password)
             .textInputAutocapitalization(.never)
@@ -99,7 +99,7 @@ private extension LoginView {
         Button {
             print("DEBUG: Show forgot password")
         } label: {
-            Text("Mot de passe oublié ?")
+            Text(AuthenticationStrings.LoginView.forgotPassword.capitalized)
                 .font(.footnote)
                 .fontWeight(.semibold)
                 .padding(.top, -3)
@@ -124,7 +124,7 @@ private extension LoginView {
         Button {
             viewModel.loginIfPossible()
         } label: {
-            Text("Connexion")
+            Text(AuthenticationStrings.LoginView.connexionButton.capitalized)
                 .primaryButtonStyle()
                 .overlay {
                     if viewModel.isLoading {
