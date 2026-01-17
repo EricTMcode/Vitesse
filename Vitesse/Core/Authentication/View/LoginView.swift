@@ -40,7 +40,7 @@ private extension LoginView {
             .resizable()
             .scaledToFill()
             .frame(width: 220, height: 220)
-            .accessibilityLabel("Logo Vitesse")
+            .accessibilityLabel(AuthenticationStrings.Common.accessibilityLabelLogo)
     }
 }
 
@@ -57,7 +57,7 @@ private extension LoginView {
 
 private extension LoginView {
     var emailField: some View {
-        TextField("Entrez votre e-mail", text: $viewModel.email)
+        TextField(AuthenticationStrings.Common.emailField.capitalized, text: $viewModel.email)
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
             .textFieldModifier()

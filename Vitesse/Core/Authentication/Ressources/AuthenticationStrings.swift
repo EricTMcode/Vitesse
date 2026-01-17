@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+enum AuthenticationStrings {
+    enum Common {
+        static let accessibilityLabelLogo = NSLocalizedString("Vitesse Logo", comment: "")
+        static let emailField = NSLocalizedString("entrez votre e-mail", comment: "")
+
+    }
+}
