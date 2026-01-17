@@ -10,11 +10,11 @@ import SwiftUI
 struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     @FocusState private var focusedField: Field?
-
+    
     enum Field {
         case email, password
     }
-
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -57,7 +57,7 @@ private extension LoginView {
 
 private extension LoginView {
     var emailField: some View {
-        TextField(AuthenticationStrings.LoginView.emailField.capitalized, text: $viewModel.email)
+        TextField(AuthenticationStrings.LoginView.emailField, text: $viewModel.email)
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
             .textFieldModifier()
@@ -99,7 +99,7 @@ private extension LoginView {
         Button {
             print("DEBUG: Show forgot password")
         } label: {
-            Text(AuthenticationStrings.LoginView.forgotPassword.capitalized)
+            Text(AuthenticationStrings.LoginView.forgotPassword)
                 .font(.footnote)
                 .fontWeight(.semibold)
                 .padding(.top, -3)
@@ -124,7 +124,7 @@ private extension LoginView {
         Button {
             viewModel.loginIfPossible()
         } label: {
-            Text(AuthenticationStrings.LoginView.connexionButton.capitalized)
+            Text(AuthenticationStrings.LoginView.connexionButton)
                 .primaryButtonStyle()
                 .overlay {
                     if viewModel.isLoading {
@@ -144,7 +144,7 @@ private extension LoginView {
             RegisterView(loginService: viewModel)
                 .navigationBarBackButtonHidden()
         } label: {
-            Text("Creer un compte")
+            Text(AuthenticationStrings.LoginView.createAccount)
                 .primaryButtonStyle()
         }
     }
@@ -154,13 +154,17 @@ private extension LoginView {
     var footer: some View {
         VStack {
             Divider()
-
+            
             NavigationLink {
                 RegisterView(loginService: viewModel)
                     .navigationBarBackButtonHidden()
             } label: {
-                Text("Pas de compte ? **Inscrivez-vous**")
-                    .font(.footnote)
+                HStack {
+                    Text(AuthenticationStrings.LoginView.noAccount)
+                    Text(AuthenticationStrings.LoginView.signUp)
+                        .bold()
+                }
+                .font(.footnote)
             }
             .padding(.vertical, 16)
         }

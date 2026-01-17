@@ -10,10 +10,13 @@ import Foundation
 enum AuthenticationStrings {
     enum LoginView {
         static let accessibilityLabelLogo = NSLocalizedString("Vitesse Logo", comment: "")
-        static let emailField = NSLocalizedString("entrez votre e-mail", comment: "")
-        static let passwordField = NSLocalizedString("mot de passe", comment: "")
-        static let forgotPassword = NSLocalizedString("mot de passe oublié ?", comment: "")
-        static let connexionButton = NSLocalizedString("connexion", comment: "")
+        static let emailField = NSLocalizedString("Entrez votre e-mail", comment: "")
+        static let passwordField = NSLocalizedString("Mot de passe", comment: "")
+        static let forgotPassword = NSLocalizedString("Mot de passe oublié ?", comment: "")
+        static let connexionButton = NSLocalizedString("Connexion", comment: "")
+        static let createAccount = NSLocalizedString("Créer un compte", comment: "")
+        static let noAccount = NSLocalizedString("Pas de compte ?", comment: "")
+        static let signUp = NSLocalizedString("Inscrivez-vous", comment: "")
 
     }
 }
