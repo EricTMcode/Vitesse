@@ -58,23 +58,4 @@ class LoginViewModel: ObservableObject {
         loginService.logout()
         self.isAuthenticated = false
     }
-
-//    func login() async {
-//        self.errorMessage = nil
-//        self.isLoading = true
-//        
-//        let request = LoginRequest(email: email, password: password)
-//        
-//        defer { isLoading = false }
-//        
-//        do {
-//            let response = try await loginService.login(with: request)
-//            self.userToken = response.token
-//            self.isAuthenticated = true
-//            print("Login Successfull! Is Admin: \(response.isAdmin)")
-//            print("Token: \(response.token)")
-//        } catch {
-//            self.errorMessage = error.localizedDescription
-//        }
-//    }
 }
