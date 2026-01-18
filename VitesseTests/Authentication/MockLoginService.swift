@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MockLoginService: LoginServiceProtocol {
+final class MockLoginService: LoginServiceProtocol {
     var lastReceivedRequest: LoginRequest?
     var didLogout = false
 
