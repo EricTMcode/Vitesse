@@ -11,8 +11,6 @@ class MockCandidateService: CanditatesServiceProtocol {
     func deleteCandidate(id: String) async throws {
         
     }
-    
-
 
     func getCandidates() async throws -> [Candidate] {
         let mockCandidates: [Candidate] = [

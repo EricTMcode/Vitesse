@@ -21,7 +21,6 @@ class LoginViewModel: ObservableObject {
         self.loginService = service
         self.isAuthenticated = service.isAuthenticated
         self.validationService = validationService
-        print("DEBUG: INIT LoginViewModel")
     }
     
     var formIsValid: Bool {

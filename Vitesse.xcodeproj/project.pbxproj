@@ -26,6 +26,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Authentication/MockLoginService.swift,
+				Authentication/MockRegisterService.swift,
 				Candidate/MockCandidateService.swift,
 			);
 			target = 07D3B50B2F114C5700EDB6E5 /* Vitesse */;
@@ -34,6 +35,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Authentication/MockLoginService.swift,
+				Candidate/MockCandidateService.swift,
 			);
 			target = 07D3B5AF2F13A5B100EDB6E5 /* VitesseTests */;
 		};
