@@ -24,9 +24,9 @@ class LoginViewModel: ObservableObject {
     }
     
     var formIsValid: Bool {
-        validationService.validateEmail(email) &&
-        !password.isEmpty &&
-        password.count >= 6
+        validationService.validateEmail(email)
+        && !password.isEmpty
+        && password.count >= 6
     }
 
     func login(email: String, password: String) async {

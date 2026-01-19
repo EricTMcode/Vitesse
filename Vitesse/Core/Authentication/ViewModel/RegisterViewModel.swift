@@ -70,6 +70,15 @@ class RegisterViewModel: ObservableObject {
         }
     }
 
+    func reset() {
+        registerRequest = User()
+        emailError = nil
+        passwordError = nil
+        confirmPasswordError = nil
+        errorMessage = nil
+        isRegistrationSuccessful = false
+    }
+
     func validateEmail() {
         guard !registerRequest.email.isEmpty else {
             emailError = nil

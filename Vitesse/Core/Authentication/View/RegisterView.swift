@@ -28,6 +28,8 @@ struct RegisterView: View {
         .alert("Success", isPresented: $viewModel.isRegistrationSuccessful) {
             Button("OK", role: .cancel) { Task {
                 await loginService.login(email: viewModel.registerRequest.email, password: viewModel.registerRequest.password)
+                dismiss()
+                viewModel.reset()
             } }
         } message: {
             Text("Account created successfully!")
