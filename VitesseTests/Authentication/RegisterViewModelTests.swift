@@ -92,4 +92,39 @@ final class RegisterViewModelTests: XCTestCase {
         // Then
         XCTAssertFalse(viewModel.isFormValid)
     }
+
+    func test_isFormValid_whenPasswordIsWeak_isFalse() {
+        // When
+        viewModel.registerRequest = User(
+            firstName: "Eric",
+            lastName: "Dupont",
+            email: "eric@test.com",
+            password: "password1",
+            confirmPassword: "password1"
+        )
+
+        // Then
+        XCTAssertFalse(viewModel.isFormValid)
+    }
+
+    func test_register_withInvalidForm_doesNotSucceed() async {
+        // Given
+        mockService.resultToReturn = .failure(APIError.invalidResponse)
+
+        // When
+        viewModel.registerRequest = User(
+            firstName: "",
+            lastName: "",
+            email: "null",
+            password: "789",
+            confirmPassword: "123!"
+        )
+
+        await viewModel.register()
+
+        // Then
+        XCTAssertFalse(viewModel.isRegistrationSuccessful)
+    }
+
+    
 }

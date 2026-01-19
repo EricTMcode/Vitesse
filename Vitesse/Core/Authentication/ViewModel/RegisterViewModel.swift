@@ -78,3 +78,9 @@ class RegisterViewModel: ObservableObject {
         }
     }
 }
+
+enum ValidationError: String {
+    case invalidEmail = "Please enter a valid email address"
+    case weakPassword = "Password must contain uppercase, lowercase, number, and special character"
+    case passwordMisMatch = "Passwords do not match"
+}
