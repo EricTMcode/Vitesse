@@ -15,7 +15,7 @@ struct Candidate: Identifiable, Codable, Hashable {
     let phone: String?
     let linkedinURL: String?
     let isFavorite: Bool
-    let note: String?
+    var note: String?
 
     var fullName: String {
        return "\(firstName) \(lastName)"
