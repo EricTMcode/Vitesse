@@ -12,7 +12,7 @@ class CandidatesListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var loadingState: ContentLoadingState = .loading
     @Published var errorMessage: String?
-    @Published var searchText = ""
+    @Published var searchText: String = ""
     @Published var showIsFavorite = false
     @Published var showIsEditing = false
     @Published var selectedCandidate = Set<String>()

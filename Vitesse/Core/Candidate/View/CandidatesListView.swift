@@ -22,6 +22,7 @@ struct CandidatesListView: View {
                 case .error(let error):
                     Text(error.localizedDescription)
                 case .completed:
+                    SearchBarView(searchText: $viewModel.searchText)
                     candidatesList
                 }
 
@@ -30,7 +31,7 @@ struct CandidatesListView: View {
                 logoutButton
             }
             .environment(\.editMode, .constant(viewModel.showIsEditing ? .active : .inactive))
-            .searchable(text: $viewModel.searchText, prompt: CandidatesStrings.Common.searchCandidate)
+//            .searchable(text: $viewModel.searchText, prompt: CandidatesStrings.Common.searchCandidate)
             .navigationDestination(for: Candidate.self) { candidate in
                 CandidateDetailView(candidate: candidate)
             }

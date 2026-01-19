@@ -17,6 +17,7 @@ struct SearchBarView: View {
 
             TextField("Search by name or symbol...", text: $searchText)
                 .foregroundStyle(.secondary)
+                .autocorrectionDisabled()
                 .overlay(
                     Image(systemName: "xmark.circle.fill")
                         .padding()
@@ -24,6 +25,7 @@ struct SearchBarView: View {
                         .foregroundStyle(.secondary)
                         .opacity(searchText.isEmpty ? 0 : 1)
                         .onTapGesture {
+                            UIApplication.shared.endEditing()
                             searchText = ""
                         }
                     , alignment: .trailing
