@@ -49,33 +49,36 @@ class RegisterViewModel: ObservableObject {
     }
 
     func validateEmail() {
-        if registerRequest.email.isEmpty {
+        guard !registerRequest.email.isEmpty else {
             emailError = nil
-        } else if !validationService.validateEmail(registerRequest.email) {
-            emailError = "Please enter a valid email address"
-        } else {
-            emailError = nil
+            return
         }
+
+        emailError = validationService.validateEmail(registerRequest.email)
+        ? nil
+        : ValidationError.invalidEmail.rawValue
     }
 
     func validatePassword() {
-        if registerRequest.password.isEmpty {
+        guard !registerRequest.password.isEmpty else {
             passwordError = nil
-        } else if !validationService.validatePassword(registerRequest.password) {
-            passwordError = "Password must contain uppercase, lowercase, number, and special character"
-        } else {
-            passwordError = nil
+            return
         }
+
+        passwordError = validationService.validatePassword(registerRequest.password)
+        ? nil
+        : ValidationError.weakPassword.rawValue
     }
 
     func validateConfirmPassword() {
-        if registerRequest.confirmPassword.isEmpty {
+        guard !registerRequest.confirmPassword.isEmpty else {
             confirmPasswordError = nil
-        } else if !validationService.validatePasswordsMatch(registerRequest.password, registerRequest.confirmPassword) {
-            confirmPasswordError = "Passwords do not match"
-        } else {
-            confirmPasswordError = nil
+            return
         }
+
+        confirmPasswordError = validationService.validatePasswordsMatch(registerRequest.password, registerRequest.confirmPassword)
+        ? nil
+        : ValidationError.passwordMisMatch.rawValue
     }
 }
 
