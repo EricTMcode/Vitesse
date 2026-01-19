@@ -32,7 +32,7 @@ struct CandidateDetailView: View {
 private extension CandidateDetailView {
     var header: some View {
         HStack(alignment: .center) {
-            Text(candidate.fullName)
+            Text(candidate.fullName.formattedShortName)
                 .font(.title)
                 .fontWeight(.bold)
 
@@ -89,5 +89,7 @@ struct LabeledValue: View {
 }
 
 #Preview {
-    CandidateDetailView(candidate: Candidate(id: "1", firstName: "John", lastName: "Doe", email: "johndoe@gmail.com", phone: "0629612404", linkedinURL: "", isFavorite: true, note: "Welcome Home Bro" ))
+    NavigationStack {
+        CandidateDetailView(candidate: Candidate(id: "1", firstName: "Jean Michel", lastName: "Doe", email: "johndoe@gmail.com", phone: "0629612404", linkedinURL: "", isFavorite: true, note: "Welcome Home Bro" ))
+    }
 }

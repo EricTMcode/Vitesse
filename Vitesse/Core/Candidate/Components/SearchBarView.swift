@@ -15,7 +15,7 @@ struct SearchBarView: View {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(.secondary)
 
-            TextField("Search by name or symbol...", text: $searchText)
+            TextField(CandidatesStrings.Common.searchCandidate, text: $searchText)
                 .foregroundStyle(.secondary)
                 .autocorrectionDisabled()
                 .overlay(
@@ -31,12 +31,12 @@ struct SearchBarView: View {
                     , alignment: .trailing
                 )
         }
-        .font(.headline)
+        .font(.subheadline)
         .padding()
         .background(
-            RoundedRectangle(cornerRadius: 25)
+            RoundedRectangle(cornerRadius: 10)
                 .fill(Color(.systemGray6))
-                .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: 0)
+                .shadow(color: .black.opacity(0.15), radius: 3, x: 3, y: 3)
         )
         .padding()
     }

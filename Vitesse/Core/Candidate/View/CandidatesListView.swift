@@ -28,10 +28,9 @@ struct CandidatesListView: View {
 
 
                 // DELETE BEFORE SHIP
-                logoutButton
+//                logoutButton
             }
             .environment(\.editMode, .constant(viewModel.showIsEditing ? .active : .inactive))
-//            .searchable(text: $viewModel.searchText, prompt: CandidatesStrings.Common.searchCandidate)
             .navigationDestination(for: Candidate.self) { candidate in
                 CandidateDetailView(candidate: candidate)
             }
@@ -54,6 +53,7 @@ private extension CandidatesListView {
             }
         }
         .listStyle(.plain)
+        .padding(.horizontal, 5)
     }
 }
 
