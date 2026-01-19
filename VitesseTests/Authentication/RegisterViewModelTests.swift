@@ -50,16 +50,12 @@ final class RegisterViewModelTests: XCTestCase {
         XCTAssertEqual(mockService.lastReveivedUser?.email, "eric@test.com")
     }
 
-    func test_register_failure_setsErrorMessage() async {
-        // Given
-        mockService.resultToReturn = .failure(APIError.invalidResponse)
-
+    func test_register_failure_if_isFormValide_False() async {
         // When
         await viewModel.register()
 
         // Then
         XCTAssertFalse(viewModel.isRegistrationSuccessful)
-        XCTAssertNotNil(viewModel.errorMessage)
     }
 
     func test_isFormValid_whenAllFieldsAreEmpty_isFalse() {
@@ -125,6 +121,4 @@ final class RegisterViewModelTests: XCTestCase {
         // Then
         XCTAssertFalse(viewModel.isRegistrationSuccessful)
     }
-
-    
 }

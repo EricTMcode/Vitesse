@@ -10,11 +10,12 @@ import Foundation
 class RegisterViewModel: ObservableObject {
     @Published var registerRequest = User()
     @Published var isLoading = false
+    @Published var isRegistrationSuccessful = false
+
     @Published var errorMessage: ErrorMessage?
     @Published var emailError: String?
     @Published var passwordError: String?
     @Published var confirmPasswordError: String?
-    @Published var isRegistrationSuccessful = false
 
     private let registerService: RegisterServiceProtocol
     private let validationService: ValidationService
@@ -53,7 +54,7 @@ class RegisterViewModel: ObservableObject {
 
     func register() async {
         guard isFormValid else { return }
-        
+
         self.isLoading = true
         self.errorMessage = nil
 
