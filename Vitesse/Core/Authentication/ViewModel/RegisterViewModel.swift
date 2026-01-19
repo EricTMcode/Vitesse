@@ -24,12 +24,39 @@ class RegisterViewModel: ObservableObject {
         self.validationService = validationService
     }
 
+//    var isFormValid: Bool {
+//        !registerRequest.firstName.isEmpty &&
+//        !registerRequest.lastName.isEmpty &&
+//        validationService.validateEmail(registerRequest.email) &&
+//        validationService.validatePassword(registerRequest.password) &&
+//        validationService.validatePasswordsMatch(registerRequest.password, registerRequest.confirmPassword)
+//    }
+
     var isFormValid: Bool {
+        isNameValid &&
+        isEmailValid &&
+        isPasswordValid &&
+        isConfirmPasswordValid
+    }
+
+    private var isNameValid: Bool {
         !registerRequest.firstName.isEmpty &&
-        !registerRequest.lastName.isEmpty &&
-        validationService.validateEmail(registerRequest.email) &&
-        validationService.validatePassword(registerRequest.password) &&
-        validationService.validatePasswordsMatch(registerRequest.password, registerRequest.confirmPassword)
+        !registerRequest.lastName.isEmpty
+    }
+
+    private var isEmailValid: Bool {
+        validationService.validateEmail(registerRequest.email)
+    }
+
+    private var isPasswordValid: Bool {
+        validationService.validatePassword(registerRequest.password)
+    }
+
+    private var isConfirmPasswordValid: Bool {
+        validationService.validatePasswordsMatch(
+            registerRequest.password,
+            registerRequest.confirmPassword
+        )
     }
 
     func register() async {
