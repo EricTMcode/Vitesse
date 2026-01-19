@@ -49,4 +49,16 @@ final class RegisterViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertEqual(mockService.lastReveivedUser?.email, "eric@test.com")
     }
+
+    func test_register_failure_setsErrorMessage() async {
+        // Given
+        mockService.resultToReturn = .failure(APIError.invalidResponse)
+
+        // When
+        await viewModel.register()
+
+        // Then
+        XCTAssertFalse(viewModel.isRegistrationSuccessful)
+        XCTAssertNotNil(viewModel.errorMessage)
+    }
 }
