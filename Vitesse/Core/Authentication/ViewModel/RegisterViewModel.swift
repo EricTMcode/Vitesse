@@ -24,14 +24,6 @@ class RegisterViewModel: ObservableObject {
         self.validationService = validationService
     }
 
-//    var isFormValid: Bool {
-//        !registerRequest.firstName.isEmpty &&
-//        !registerRequest.lastName.isEmpty &&
-//        validationService.validateEmail(registerRequest.email) &&
-//        validationService.validatePassword(registerRequest.password) &&
-//        validationService.validatePasswordsMatch(registerRequest.password, registerRequest.confirmPassword)
-//    }
-
     var isFormValid: Bool {
         isNameValid &&
         isEmailValid &&
@@ -60,8 +52,10 @@ class RegisterViewModel: ObservableObject {
     }
 
     func register() async {
-        self.errorMessage = nil
+        guard isFormValid else { return }
+        
         self.isLoading = true
+        self.errorMessage = nil
 
         defer { isLoading = false }
 
