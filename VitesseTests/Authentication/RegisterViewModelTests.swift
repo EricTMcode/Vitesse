@@ -16,7 +16,7 @@ final class RegisterViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockService = MockRegisterService()
-        viewModel = RegisterViewModel(service: mockService)
+        viewModel = RegisterViewModel(service: mockService, validationService: ValidationService())
     }
 
     override func tearDown() {
@@ -60,5 +60,36 @@ final class RegisterViewModelTests: XCTestCase {
         // Then
         XCTAssertFalse(viewModel.isRegistrationSuccessful)
         XCTAssertNotNil(viewModel.errorMessage)
+    }
+
+    func test_isFormValid_whenAllFieldsAreEmpty_isFalse() {
+        XCTAssertFalse(viewModel.isFormValid)
+    }
+
+    func test_isFormValid_whenFirstNameIsEmpty_isFalse() {
+        // When
+        viewModel.registerRequest = User(
+            firstName: "",
+            lastName: "Dupont",
+            email: "eric@test.com",
+            password: "Password1!",
+            confirmPassword: "Password1!"
+        )
+        // Then
+        XCTAssertFalse(viewModel.isFormValid)
+    }
+
+    func test_isFormValid_whenEmailsIsInvalid_isFalse() {
+        // When
+        viewModel.registerRequest = User(
+            firstName: "Eric",
+            lastName: "Dupont",
+            email: "eric,test.com",
+            password: "Password1!",
+            confirmPassword: "Password1!"
+        )
+
+        // Then
+        XCTAssertFalse(viewModel.isFormValid)
     }
 }
