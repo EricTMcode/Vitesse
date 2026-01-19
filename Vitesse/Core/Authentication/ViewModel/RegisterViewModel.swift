@@ -56,7 +56,7 @@ class RegisterViewModel: ObservableObject {
 
         emailError = validationService.validateEmail(registerRequest.email)
         ? nil
-        : ValidationError.invalidEmail.rawValue
+        : RegistrationError.invalidEmail.rawValue
     }
 
     func validatePassword() {
@@ -67,7 +67,7 @@ class RegisterViewModel: ObservableObject {
 
         passwordError = validationService.validatePassword(registerRequest.password)
         ? nil
-        : ValidationError.weakPassword.rawValue
+        : RegistrationError.weakPassword.rawValue
     }
 
     func validateConfirmPassword() {
@@ -78,12 +78,7 @@ class RegisterViewModel: ObservableObject {
 
         confirmPasswordError = validationService.validatePasswordsMatch(registerRequest.password, registerRequest.confirmPassword)
         ? nil
-        : ValidationError.passwordMisMatch.rawValue
+        : RegistrationError.passwordMisMatch.rawValue
     }
 }
 
-enum ValidationError: String {
-    case invalidEmail = "Please enter a valid email address"
-    case weakPassword = "Password must contain uppercase, lowercase, number, and special character"
-    case passwordMisMatch = "Passwords do not match"
-}
