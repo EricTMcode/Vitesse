@@ -131,6 +131,7 @@ struct CandidatesToolbar: ToolbarContent {
             Button(CandidatesStrings.Common.delete.capitalized) {
                 Task { await viewModel.deleteCandidates() }
             }
+            .disabled(viewModel.selectedCandidate.isEmpty)
         } else {
             Button {
                 withAnimation(.easeInOut(duration: 0.25)) {
