@@ -20,10 +20,10 @@ class CanditatesService: CanditatesServiceProtocol {
     }
 
     func getCandidates() async throws -> [Candidate] {
-       try await client.fetchData(.candidates)
+        try await client.fetchData(.candidates)
     }
 
     func deleteCandidate(id: String) async throws {
-            try await client.perform(.deleteCandidate(id: id))
-        }
+        try await client.perform(.deleteCandidate(id: id))
+    }
 }

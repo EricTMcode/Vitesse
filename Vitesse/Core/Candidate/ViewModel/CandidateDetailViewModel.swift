@@ -15,7 +15,10 @@ class CandidateDetailViewModel: ObservableObject {
     @Published var isEditing = false
     @Published var errorMessage : String?
 
-    init(candidate: Candidate) {
+    private let candidatesUpdateService: CandidateUpdateServiceProtocol
+
+    init(service: CandidateUpdateServiceProtocol = CandidateUpdateService() ,candidate: Candidate) {
+        self.candidatesUpdateService = service
         self.candidate = candidate
     }
 
@@ -28,5 +31,27 @@ class CandidateDetailViewModel: ObservableObject {
         draftCandidate = nil
         isEditing = false
         errorMessage = nil
+    }
+
+    func saveChanges() async {
+        guard let draft = draftCandidate else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        defer { isLoading = false }
+
+        let body = Candidate(id: candidate.id, firstName: candidate.firstName, lastName: candidate.lastName, email: draft.email, phone: draft.phone, linkedinURL: draft.linkedinURL, isFavorite: candidate.isFavorite, note: draft.note)
+
+        do {
+            try await candidatesUpdateService.updateCandidate(data: body)
+            self.candidate = body
+            print("DEBUG: update saved!")
+            self.draftCandidate = nil
+            self.isEditing = false
+
+        } catch {
+            self.errorMessage = "Impossible de sauvegarder les modifications"
+        }
     }
 }

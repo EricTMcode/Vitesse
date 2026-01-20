@@ -40,7 +40,7 @@ struct CandidateDetailView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     if viewModel.isEditing {
                         Button("Done") {
-                            viewModel.isEditing.toggle()
+                            Task { await viewModel.saveChanges() }
                         }
                     } else {
                         Button("Edit") {
