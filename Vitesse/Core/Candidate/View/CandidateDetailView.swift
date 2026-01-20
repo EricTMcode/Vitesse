@@ -74,8 +74,21 @@ private extension CandidateDetailView {
                         get: { viewModel.candidate.phone ?? "" },
                         set: { viewModel.candidate.phone = $0 }
                     ))
+                    .formTextFieldStyle()
                 } else {
                     Text(viewModel.candidate.phone ?? "")
+                }
+            }
+
+            HStack {
+                Text("Email")
+                    .foregroundStyle(.secondary)
+
+                if viewModel.isEditing {
+                    TextField("Email", text: $viewModel.candidate.email)
+                        .formTextFieldStyle()
+                } else {
+                    Text(viewModel.candidate.email)
                 }
             }
 
@@ -90,9 +103,17 @@ private extension CandidateDetailView {
 //            LabeledValue(title: "Phone", value: viewModel.candidate.phone, isEditing: viewModel.isEditing)
 //            LabeledValue(title: "Email", value: viewModel.candidate.email, isEditing: viewModel.isEditing)
 
-            if let linkedinURL = viewModel.candidate.linkedinLink {
-                Link(destination: linkedinURL) {
-                    Text("GoToLLinkedin")
+            if viewModel.isEditing {
+                TextField("Linkedin", text: Binding(
+                    get: { viewModel.candidate.linkedinURL ?? "" },
+                    set: { viewModel.candidate.linkedinURL = $0 }
+                ))
+                .formTextFieldStyle()
+            } else {
+                if let linkedinURL = viewModel.candidate.linkedinLink {
+                    Link(destination: linkedinURL) {
+                        Text("GoToLLinkedin")
+                    }
                 }
             }
 
