@@ -9,16 +9,16 @@ import Foundation
 
 struct Candidate: Identifiable, Codable, Hashable {
     let id: String
-    let firstName: String
-    let lastName: String
-    let email: String
-    let phone: String?
-    let linkedinURL: String?
-    let isFavorite: Bool
+    var firstName: String
+    var lastName: String
+    var email: String
+    var phone: String?
+    var linkedinURL: String?
+    var isFavorite: Bool
     var note: String?
 
     var fullName: String {
-       return "\(firstName) \(lastName)"
+        return "\(firstName) \(lastName)"
     }
 
     var linkedinLink: URL? {

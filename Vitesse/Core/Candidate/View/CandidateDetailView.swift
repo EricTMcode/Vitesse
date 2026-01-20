@@ -30,8 +30,14 @@ struct CandidateDetailView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Edit") {
-                        viewModel.isEditing.toggle()
+                    if viewModel.isEditing {
+                        Button("Done") {
+                            viewModel.isEditing.toggle()
+                        }
+                    } else {
+                        Button("Edit") {
+                            viewModel.isEditing.toggle()
+                        }
                     }
                 }
             }
@@ -59,8 +65,30 @@ private extension CandidateDetailView {
 private extension CandidateDetailView {
     var infoSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            LabeledValue(title: "Phone", value: viewModel.candidate.phone)
-            LabeledValue(title: "Email", value: viewModel.candidate.email)
+            HStack {
+                Text("Phone")
+                    .foregroundStyle(.secondary)
+
+                if viewModel.isEditing {
+                    TextField("Phone", text: Binding(
+                        get: { viewModel.candidate.phone ?? "" },
+                        set: { viewModel.candidate.phone = $0 }
+                    ))
+                } else {
+                    Text(viewModel.candidate.phone ?? "")
+                }
+            }
+
+
+
+
+
+
+
+
+
+//            LabeledValue(title: "Phone", value: viewModel.candidate.phone, isEditing: viewModel.isEditing)
+//            LabeledValue(title: "Email", value: viewModel.candidate.email, isEditing: viewModel.isEditing)
 
             if let linkedinURL = viewModel.candidate.linkedinLink {
                 Link(destination: linkedinURL) {
@@ -68,31 +96,39 @@ private extension CandidateDetailView {
                 }
             }
 
-            VStack(alignment: .leading, spacing: 12) {
-                Label("Note", systemImage: "note.text")
-
-                if viewModel.isEditing {
-                    TextEditor(text: $viewModel.notes)
-                        .frame(minHeight: 150)
-                        .padding(8)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.blue.opacity(0.3), lineWidth: 1)
-                        )
-                } else {
-                    Text(viewModel.candidate.note ?? "")
-                        .font(.body)
-                        .foregroundColor(.secondary)
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(12)
-                }
-            }
+            noteSection
         }
         .padding(.horizontal)
+    }
+}
+
+private extension CandidateDetailView {
+    var noteSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Label("Note", systemImage: "note.text")
+
+            if viewModel.isEditing {
+                TextEditor(
+                    text: Binding(
+                        get: { viewModel.candidate.note ?? "" },
+                        set: { viewModel.candidate.note = $0 }
+                    )
+                )
+                .frame(minHeight: 120)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.secondary.opacity(0.2))
+                )
+            } else {
+                Text(viewModel.candidate.note ?? "")
+                                        .font(.body)
+                                        .foregroundColor(.secondary)
+                                        .padding()
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .background(Color(.systemGray6))
+                                        .cornerRadius(12)
+            }
+        }
     }
 }
 
@@ -109,6 +145,7 @@ private extension CandidateDetailView {
 struct LabeledValue: View {
     let title: String
     let value: String?
+    let isEditing: Bool
 
     var body: some View {
         HStack {
@@ -116,8 +153,12 @@ struct LabeledValue: View {
                 .font(.body)
                 .foregroundStyle(.secondary)
 
-            Text(value ?? "Not availaible")
-                .font(.body)
+            if isEditing {
+                TextField(title, text: .constant(value ?? ""))
+            } else {
+                Text(value ?? "Not availaible")
+                    .font(.body)
+            }
         }
     }
 }
