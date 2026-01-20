@@ -28,7 +28,15 @@ struct CandidateDetailView: View {
                     infoSection
                 }
             }
+            .navigationBarBackButtonHidden(viewModel.isEditing)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    if viewModel.isEditing {
+                        Button("Cancel") {
+                            viewModel.isEditing.toggle()
+                        }
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     if viewModel.isEditing {
                         Button("Done") {
