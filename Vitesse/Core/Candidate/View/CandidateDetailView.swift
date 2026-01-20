@@ -93,10 +93,10 @@ private extension CandidateDetailView {
                     .foregroundStyle(.secondary)
 
                 if viewModel.isEditing {
-                    TextField("Email", text: $viewModel.candidate.email)
+                    TextField("Email", text: displayedCandidate.email)
                         .formTextFieldStyle()
                 } else {
-                    Text(viewModel.candidate.email)
+                    Text(displayedCandidate.wrappedValue.email)
                 }
             }
 
