@@ -33,7 +33,7 @@ struct CandidateDetailView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     if viewModel.isEditing {
                         Button("Cancel") {
-                            viewModel.isEditing.toggle()
+                            viewModel.cancelEditing()
                         }
                     }
                 }
@@ -44,7 +44,7 @@ struct CandidateDetailView: View {
                         }
                     } else {
                         Button("Edit") {
-                            viewModel.isEditing.toggle()
+                            viewModel.startEditing()
                         }
                     }
                 }
@@ -79,12 +79,12 @@ private extension CandidateDetailView {
 
                 if viewModel.isEditing {
                     TextField("Phone", text: Binding(
-                        get: { viewModel.candidate.phone ?? "" },
-                        set: { viewModel.candidate.phone = $0 }
+                        get: { displayedCandidate.wrappedValue.phone ?? "" },
+                        set: { displayedCandidate.wrappedValue.phone = $0 }
                     ))
                     .formTextFieldStyle()
                 } else {
-                    Text(viewModel.candidate.phone ?? "")
+                    Text(displayedCandidate.wrappedValue.phone ?? "")
                 }
             }
 
@@ -169,6 +169,19 @@ private extension CandidateDetailView {
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
+    }
+}
+
+private extension CandidateDetailView {
+    var displayedCandidate: Binding<Candidate> {
+        Binding(
+            get: {
+                viewModel.draftCandidate ?? viewModel.candidate
+            },
+            set: { newValue in
+                viewModel.draftCandidate = newValue
+            }
+        )
     }
 }
 
