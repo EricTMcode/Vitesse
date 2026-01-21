@@ -10,42 +10,43 @@ import Foundation
 class CandidateDetailViewModel: ObservableObject {
     @Published var candidate: Candidate
     @Published var draftCandidate: Candidate?
-
+    
     @Published var isLoading = false
     @Published var isEditing = false
     @Published var errorMessage : String?
-
+    
     @Published var isAdmin = false
-
+    
     private let candidatesUpdateService: CandidateUpdateServiceProtocol
-
+    
     init(service: CandidateUpdateServiceProtocol = CandidateUpdateService() ,candidate: Candidate, isAdmin: Bool) {
         self.candidatesUpdateService = service
         self.candidate = candidate
         self.isAdmin = isAdmin
     }
-
+    
     func startEditing() {
         draftCandidate = candidate
         isEditing = true
     }
-
+    
     func cancelEditing() {
         draftCandidate = nil
         isEditing = false
         errorMessage = nil
     }
-
+    
+    @MainActor
     func saveChanges() async {
         guard let draft = draftCandidate else { return }
-
+        
         isLoading = true
         errorMessage = nil
-
+        
         defer { isLoading = false }
-
+        
         let body = Candidate(id: candidate.id, firstName: candidate.firstName, lastName: candidate.lastName, email: draft.email, phone: draft.phone, linkedinURL: draft.linkedinURL, isFavorite: candidate.isFavorite, note: draft.note)
-
+        
         do {
             try await candidatesUpdateService.updateCandidate(data: body)
             self.candidate = body
@@ -56,21 +57,18 @@ class CandidateDetailViewModel: ObservableObject {
             self.errorMessage = "Impossible de sauvegarder les modifications"
         }
     }
-
+    
     @MainActor
     func toogleFavorite() async {
-        guard let draft = draftCandidate else { return }
-
         isLoading = true
         errorMessage = nil
-
-        let body = Candidate(id: candidate.id, firstName: candidate.firstName, lastName: candidate.lastName, email: draft.email, phone: draft.phone, linkedinURL: draft.linkedinURL, isFavorite: candidate.isFavorite, note: draft.note)
-
+        
+        defer { isLoading = false }
+        
         do {
             try await candidatesUpdateService.toggleFavorite(id: candidate.id)
-            self.candidate = body
-            } catch {
-                errorMessage = "Vous n’avez pas les droits administrateur"
-            }
+        } catch {
+            errorMessage = "Vous n’avez pas les droits administrateur"
+        }
     }
 }
