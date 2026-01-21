@@ -61,8 +61,10 @@ enum APIEndpoint {
         var request = URLRequest(url: url)
         request.httpMethod = method
 
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+        if hasBody {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+
         switch self {
         case .login(let credentials):
             request.httpBody = try? JSONEncoder().encode(credentials)
