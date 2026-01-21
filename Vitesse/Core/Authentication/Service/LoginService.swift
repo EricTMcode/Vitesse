@@ -47,13 +47,11 @@ class LoginService: LoginServiceProtocol {
 
         keychain.save(tokenData, account: "authToken")
         userDefaults.set(response.isAdmin, forKey: isAdminKey)
-        print("DEBUG: USER IS ADMIN ? : \(isAdmin) ")
         print("DEBUG: Token saved securely.")
     }
 
     func logout() {
         keychain.delete(account: "authToken")
         userDefaults.removeObject(forKey: isAdminKey)
-        print("DEBUG: USER IS ADMIN ? \(isAdmin)")
     }
 }

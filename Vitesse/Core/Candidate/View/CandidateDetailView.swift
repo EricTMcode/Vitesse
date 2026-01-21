@@ -62,25 +62,6 @@ private extension CandidateDetailView {
             Spacer()
 
             favoriteView
-//            if viewModel.isEditing && viewModel.isAdmin {
-//                Button {
-//                    viewModel.candidate.isFavorite.toggle()
-//                    Task { await viewModel.toogleFavorite() }
-//
-//                } label: {
-//                    Image(systemName: viewModel.candidate.isFavorite
-//                          ? SFsymbols.starFill
-//                          : SFsymbols.star)
-//                    .foregroundStyle(.yellow)
-//                    .font(.title2)
-//                }
-//            } else {
-//                Image(systemName: viewModel.candidate.isFavorite
-//                      ? SFsymbols.starFill
-//                      : SFsymbols.star)
-//                .foregroundStyle(.yellow)
-//                .font(.title2)
-//            }
         }
     }
 }
