@@ -15,11 +15,14 @@ class CandidateDetailViewModel: ObservableObject {
     @Published var isEditing = false
     @Published var errorMessage : String?
 
+    @Published var isAdmin = false
+
     private let candidatesUpdateService: CandidateUpdateServiceProtocol
 
-    init(service: CandidateUpdateServiceProtocol = CandidateUpdateService() ,candidate: Candidate) {
+    init(service: CandidateUpdateServiceProtocol = CandidateUpdateService() ,candidate: Candidate, isAdmin: Bool) {
         self.candidatesUpdateService = service
         self.candidate = candidate
+        self.isAdmin = isAdmin
     }
 
     func startEditing() {
@@ -66,11 +69,6 @@ class CandidateDetailViewModel: ObservableObject {
         do {
             try await candidatesUpdateService.toggleFavorite(id: candidate.id)
             self.candidate = body
-
-//                if isEditing {
-//                    draftCandidate = updatedCandidate
-//                }
-
             } catch {
                 errorMessage = "Vous n’avez pas les droits administrateur"
             }

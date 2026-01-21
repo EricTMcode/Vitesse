@@ -11,10 +11,10 @@ struct CandidateDetailView: View {
 //    let candidate: Candidate
     @StateObject var viewModel: CandidateDetailViewModel
 
-    init(candidate: Candidate) {
+    init(candidate: Candidate, isAdmin: Bool) {
             _viewModel = StateObject(
                 wrappedValue: CandidateDetailViewModel(
-                    candidate: candidate
+                    candidate: candidate, isAdmin: isAdmin
                 )
             )
         }
@@ -41,7 +41,6 @@ struct CandidateDetailView: View {
                     if viewModel.isEditing {
                         Button("Done") {
                             Task { await viewModel.saveChanges() }
-//                            Task { await viewModel.updateFavorite() }
                         }
                     } else {
                         Button("Edit") {
@@ -61,7 +60,7 @@ private extension CandidateDetailView {
                 .fontWeight(.bold)
 
             Spacer()
-            if viewModel.isEditing {
+            if viewModel.isEditing && viewModel.isAdmin {
                 Button {
                     viewModel.candidate.isFavorite.toggle()
                     Task { await viewModel.toogleFavorite() }

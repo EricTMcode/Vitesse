@@ -8,6 +8,8 @@
 import Foundation
 
 final class MockLoginService: LoginServiceProtocol {
+    var isAdmin: Bool = false
+    
     var lastReceivedRequest: LoginRequest?
     var didLogout = false
 
