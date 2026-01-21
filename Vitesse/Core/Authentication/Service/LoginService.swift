@@ -18,17 +18,18 @@ protocol LoginServiceProtocol {
 class LoginService: LoginServiceProtocol {
     private let client: HTTPClientProtocol
     private let keychain: KeychainHelper
-    private let userDefaults = UserDefaults.standard
+    private let userDefaults: UserDefaults
     private let isAdminKey = "isAdmin"
 
 
-    init(client: HTTPClientProtocol = HTTPClient(), keychain: KeychainHelper = .shared) {
+    init(client: HTTPClientProtocol = HTTPClient(), keychain: KeychainHelper = .shared, userDefaults: UserDefaults = .standard) {
         self.client = client
         self.keychain = keychain
+        self.userDefaults = userDefaults
     }
 
     var isAuthenticated: Bool {
-        return keychain.read(account: "authToken") != nil
+        keychain.read(account: "authToken") != nil
     }
 
     var isAdmin: Bool {
@@ -46,11 +47,13 @@ class LoginService: LoginServiceProtocol {
 
         keychain.save(tokenData, account: "authToken")
         userDefaults.set(response.isAdmin, forKey: isAdminKey)
+        print("DEBUG: USER IS ADMIN ? : \(isAdmin) ")
         print("DEBUG: Token saved securely.")
     }
 
     func logout() {
         keychain.delete(account: "authToken")
         userDefaults.removeObject(forKey: isAdminKey)
+        print("DEBUG: USER IS ADMIN ? \(isAdmin)")
     }
 }

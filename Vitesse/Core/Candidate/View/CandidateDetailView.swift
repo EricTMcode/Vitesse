@@ -8,47 +8,47 @@
 import SwiftUI
 
 struct CandidateDetailView: View {
-//    let candidate: Candidate
     @StateObject var viewModel: CandidateDetailViewModel
+    @AppStorage("isAdmin") private var isAdmin = false
 
-    init(candidate: Candidate, isAdmin: Bool) {
-            _viewModel = StateObject(
-                wrappedValue: CandidateDetailViewModel(
-                    candidate: candidate, isAdmin: isAdmin
-                )
+    init(candidate: Candidate) {
+        _viewModel = StateObject(
+            wrappedValue: CandidateDetailViewModel(
+                candidate: candidate
             )
-        }
+        )
+    }
 
     var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    header
-                        .padding()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                header
+                    .padding()
 
-                    infoSection
-                }
+                infoSection
             }
-            .navigationBarBackButtonHidden(viewModel.isEditing)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    if viewModel.isEditing {
-                        Button("Cancel") {
-                            viewModel.cancelEditing()
-                        }
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    if viewModel.isEditing {
-                        Button("Done") {
-                            Task { await viewModel.saveChanges() }
-                        }
-                    } else {
-                        Button("Edit") {
-                            viewModel.startEditing()
-                        }
+        }
+        .navigationBarBackButtonHidden(viewModel.isEditing)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                if viewModel.isEditing {
+                    Button("Cancel") {
+                        viewModel.cancelEditing()
                     }
                 }
             }
+            ToolbarItem(placement: .topBarTrailing) {
+                if viewModel.isEditing {
+                    Button("Done") {
+                        Task { await viewModel.saveChanges() }
+                    }
+                } else {
+                    Button("Edit") {
+                        viewModel.startEditing()
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -60,25 +60,27 @@ private extension CandidateDetailView {
                 .fontWeight(.bold)
 
             Spacer()
-            if viewModel.isEditing && viewModel.isAdmin {
-                Button {
-                    viewModel.candidate.isFavorite.toggle()
-                    Task { await viewModel.toogleFavorite() }
 
-                } label: {
-                    Image(systemName: viewModel.candidate.isFavorite
-                          ? SFsymbols.starFill
-                          : SFsymbols.star)
-                    .foregroundStyle(.yellow)
-                    .font(.title2)
-                }
-            } else {
-                Image(systemName: viewModel.candidate.isFavorite
-                      ? SFsymbols.starFill
-                      : SFsymbols.star)
-                .foregroundStyle(.yellow)
-                .font(.title2)
-            }
+            favoriteView
+//            if viewModel.isEditing && viewModel.isAdmin {
+//                Button {
+//                    viewModel.candidate.isFavorite.toggle()
+//                    Task { await viewModel.toogleFavorite() }
+//
+//                } label: {
+//                    Image(systemName: viewModel.candidate.isFavorite
+//                          ? SFsymbols.starFill
+//                          : SFsymbols.star)
+//                    .foregroundStyle(.yellow)
+//                    .font(.title2)
+//                }
+//            } else {
+//                Image(systemName: viewModel.candidate.isFavorite
+//                      ? SFsymbols.starFill
+//                      : SFsymbols.star)
+//                .foregroundStyle(.yellow)
+//                .font(.title2)
+//            }
         }
     }
 }
@@ -86,7 +88,6 @@ private extension CandidateDetailView {
 private extension CandidateDetailView {
     var infoSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("IS FAVORITE \(viewModel.candidate.isFavorite)")
             HStack {
                 Text("Phone")
                     .foregroundStyle(.secondary)
@@ -128,8 +129,8 @@ private extension CandidateDetailView {
 
 
 
-//            LabeledValue(title: "Phone", value: viewModel.candidate.phone, isEditing: viewModel.isEditing)
-//            LabeledValue(title: "Email", value: viewModel.candidate.email, isEditing: viewModel.isEditing)
+            //            LabeledValue(title: "Phone", value: viewModel.candidate.phone, isEditing: viewModel.isEditing)
+            //            LabeledValue(title: "Email", value: viewModel.candidate.email, isEditing: viewModel.isEditing)
 
             if viewModel.isEditing {
                 TextField("Linkedin", text: Binding(
@@ -174,12 +175,12 @@ private extension CandidateDetailView {
                 )
             } else {
                 Text(displayedCandidate.wrappedValue.note ?? "")
-                                        .font(.body)
-                                        .foregroundColor(.secondary)
-                                        .padding()
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .background(Color(.systemGray6))
-                                        .cornerRadius(12)
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(12)
             }
         }
     }
@@ -187,11 +188,11 @@ private extension CandidateDetailView {
 
 private extension CandidateDetailView {
     func linkedinButton(_ url: URL) -> some View {
-            Link(destination: url) {
-                Text("goToLinkedIn")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered)
+        Link(destination: url) {
+            Text("goToLinkedIn")
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.bordered)
     }
 }
 
@@ -205,6 +206,32 @@ private extension CandidateDetailView {
                 viewModel.draftCandidate = newValue
             }
         )
+    }
+}
+
+private extension CandidateDetailView {
+    var favoriteIcon: some View {
+        Image(systemName: viewModel.candidate.isFavorite
+              ? SFsymbols.starFill
+              : SFsymbols.star
+        )
+        .foregroundStyle(.yellow)
+        .font(.title2)
+    }
+}
+
+private extension CandidateDetailView {
+    @ViewBuilder
+    private var favoriteView: some View {
+        if viewModel.isEditing && isAdmin {
+            Button {
+                Task { await viewModel.toogleFavorite() }
+            } label: {
+                favoriteIcon
+            }
+        } else {
+            favoriteIcon
+        }
     }
 }
 

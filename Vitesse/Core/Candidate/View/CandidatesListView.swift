@@ -26,13 +26,12 @@ struct CandidatesListView: View {
                     candidatesList
                 }
 
-                Text("USER IS \(loginViewModel.isAdmin)")
                 // DELETE BEFORE SHIP
                 logoutButton
             }
             .environment(\.editMode, .constant(viewModel.showIsEditing ? .active : .inactive))
             .navigationDestination(for: Candidate.self) { candidate in
-                CandidateDetailView(candidate: candidate, isAdmin: loginViewModel.isAdmin)
+                CandidateDetailView(candidate: candidate)
             }
             .refreshable { await viewModel.refresh() }
             .navigationTitle(CandidatesStrings.Common.title)

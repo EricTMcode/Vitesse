@@ -13,7 +13,6 @@ class LoginViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var isAuthenticated = false
-    @Published var isAdmin = false
 
     private let loginService: LoginServiceProtocol
     private let validationService: ValidationService
@@ -40,7 +39,6 @@ class LoginViewModel: ObservableObject {
         
         do {
             try await loginService.login(with: request)
-            self.isAdmin = loginService.isAdmin
             self.isAuthenticated = loginService.isAuthenticated
         } catch {
             self.errorMessage = error.localizedDescription
