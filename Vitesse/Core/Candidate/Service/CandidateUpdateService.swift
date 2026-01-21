@@ -9,6 +9,7 @@ import Foundation
 
 protocol CandidateUpdateServiceProtocol {
     func updateCandidate(data: Candidate) async throws
+    func updateFavorite(data: Candidate) async throws
 }
 
 class CandidateUpdateService: CandidateUpdateServiceProtocol {
@@ -20,6 +21,10 @@ class CandidateUpdateService: CandidateUpdateServiceProtocol {
 
     func updateCandidate(data: Candidate) async throws {
         try await client.perform(.updateCandidate(data: data))
+    }
+
+    func updateFavorite(data: Candidate) async throws {
+        try await client.perform(.favoriteCandidate(data: data))
     }
 }
 

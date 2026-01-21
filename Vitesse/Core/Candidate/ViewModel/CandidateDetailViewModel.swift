@@ -49,7 +49,27 @@ class CandidateDetailViewModel: ObservableObject {
             print("DEBUG: update saved!")
             self.draftCandidate = nil
             self.isEditing = false
+        } catch {
+            self.errorMessage = "Impossible de sauvegarder les modifications"
+        }
+    }
 
+    func updateFavorite() async {
+        guard let draft = draftCandidate else { return }
+
+        isLoading = true
+        errorMessage = nil
+
+        defer { isLoading = false }
+
+        let body = Candidate(id: candidate.id, firstName: candidate.firstName, lastName: candidate.lastName, email: draft.email, phone: draft.phone, linkedinURL: draft.linkedinURL, isFavorite: draft.isFavorite, note: draft.note)
+
+        do {
+            try await candidatesUpdateService.updateFavorite(data: body)
+            self.candidate = body
+            print("DEBUG: update saved!")
+            self.draftCandidate = nil
+            self.isEditing = false
         } catch {
             self.errorMessage = "Impossible de sauvegarder les modifications"
         }

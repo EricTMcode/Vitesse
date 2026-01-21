@@ -13,6 +13,7 @@ enum APIEndpoint {
     case candidates
     case deleteCandidate(id: String)
     case updateCandidate(data: Candidate)
+    case favoriteCandidate(id: String)
 
     var baseURL: String { "http://localhost:8080" }
     
@@ -23,6 +24,7 @@ enum APIEndpoint {
         case .candidates: return "/candidate"
         case .deleteCandidate(let id): return "/candidate/\(id)"
         case .updateCandidate(let candidate): return "/candidate/\(candidate.id)"
+        case .favoriteCandidate(let id): return "/candidate/\(id)/favorite"
         }
     }
     
@@ -33,13 +35,23 @@ enum APIEndpoint {
         case .candidates: return "GET"
         case .deleteCandidate: return "DELETE"
         case .updateCandidate: return "PUT"
+        case .favoriteCandidate: return "PUT"
         }
     }
 
     var requiresAuth: Bool {
         switch self {
         case .login, .register: return false
-        case .candidates, .deleteCandidate, .updateCandidate: return true
+        case .candidates, .deleteCandidate, .updateCandidate, .favoriteCandidate: return true
+        }
+    }
+
+    var hasBody: Bool {
+        switch self {
+        case .login, .register, .updateCandidate:
+            return true
+        default:
+            return false
         }
     }
 
@@ -48,6 +60,7 @@ enum APIEndpoint {
         
         var request = URLRequest(url: url)
         request.httpMethod = method
+
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         switch self {
@@ -61,6 +74,8 @@ enum APIEndpoint {
             request.httpBody = try? JSONEncoder().encode(id)
         case .updateCandidate(let data):
             request.httpBody = try? JSONEncoder().encode(data)
+        case .favoriteCandidate(let id):
+            request.httpBody = try? JSONEncoder().encode(id)
         }
         
         return request

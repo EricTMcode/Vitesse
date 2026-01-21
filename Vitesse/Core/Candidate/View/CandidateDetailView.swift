@@ -41,6 +41,7 @@ struct CandidateDetailView: View {
                     if viewModel.isEditing {
                         Button("Done") {
                             Task { await viewModel.saveChanges() }
+//                            Task { await viewModel.updateFavorite() }
                         }
                     } else {
                         Button("Edit") {
@@ -60,12 +61,24 @@ private extension CandidateDetailView {
                 .fontWeight(.bold)
 
             Spacer()
+            if viewModel.isEditing {
+                Button {
+                    viewModel.candidate.isFavorite.toggle()
 
-            Image(systemName: viewModel.candidate.isFavorite
-                  ? SFsymbols.starFill
-                  : SFsymbols.star)
-            .foregroundStyle(.yellow)
-            .font(.title2)
+                } label: {
+                    Image(systemName: displayedCandidate.wrappedValue.isFavorite
+                          ? SFsymbols.starFill
+                          : SFsymbols.star)
+                    .foregroundStyle(.yellow)
+                    .font(.title2)
+                }
+            } else {
+                Image(systemName: viewModel.candidate.isFavorite
+                      ? SFsymbols.starFill
+                      : SFsymbols.star)
+                .foregroundStyle(.yellow)
+                .font(.title2)
+            }
         }
     }
 }
@@ -73,6 +86,7 @@ private extension CandidateDetailView {
 private extension CandidateDetailView {
     var infoSection: some View {
         VStack(alignment: .leading, spacing: 16) {
+            Text("IS FAVORITE \(viewModel.candidate.isFavorite)")
             HStack {
                 Text("Phone")
                     .foregroundStyle(.secondary)
@@ -83,6 +97,8 @@ private extension CandidateDetailView {
                         set: { displayedCandidate.wrappedValue.phone = $0 }
                     ))
                     .formTextFieldStyle()
+                    .textContentType(.telephoneNumber)
+                    .keyboardType(.phonePad)
                 } else {
                     Text(displayedCandidate.wrappedValue.phone ?? "")
                 }
@@ -95,6 +111,10 @@ private extension CandidateDetailView {
                 if viewModel.isEditing {
                     TextField("Email", text: displayedCandidate.email)
                         .formTextFieldStyle()
+                        .textContentType(.emailAddress)
+                        .keyboardType(.emailAddress)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
                 } else {
                     Text(displayedCandidate.wrappedValue.email)
                 }
@@ -113,10 +133,13 @@ private extension CandidateDetailView {
 
             if viewModel.isEditing {
                 TextField("Linkedin", text: Binding(
-                    get: { viewModel.candidate.linkedinURL ?? "" },
-                    set: { viewModel.candidate.linkedinURL = $0 }
+                    get: { displayedCandidate.wrappedValue.linkedinURL ?? "" },
+                    set: { displayedCandidate.wrappedValue.linkedinURL = $0 }
                 ))
                 .formTextFieldStyle()
+                .keyboardType(.URL)
+                .textContentType(.URL)
+                .textInputAutocapitalization(.never)
             } else {
                 if let linkedinURL = viewModel.candidate.linkedinLink {
                     Link(destination: linkedinURL) {
@@ -139,8 +162,8 @@ private extension CandidateDetailView {
             if viewModel.isEditing {
                 TextEditor(
                     text: Binding(
-                        get: { viewModel.candidate.note ?? "" },
-                        set: { viewModel.candidate.note = $0 }
+                        get: { displayedCandidate.wrappedValue.note ?? "" },
+                        set: { displayedCandidate.wrappedValue.note = $0 }
                     )
                 )
                 .formTextFieldStyle()
@@ -150,7 +173,7 @@ private extension CandidateDetailView {
                         .stroke(Color.secondary.opacity(0.2))
                 )
             } else {
-                Text(viewModel.candidate.note ?? "")
+                Text(displayedCandidate.wrappedValue.note ?? "")
                                         .font(.body)
                                         .foregroundColor(.secondary)
                                         .padding()

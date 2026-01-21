@@ -28,7 +28,7 @@ struct CandidatesListView: View {
 
 
                 // DELETE BEFORE SHIP
-//                logoutButton
+                logoutButton
             }
             .environment(\.editMode, .constant(viewModel.showIsEditing ? .active : .inactive))
             .navigationDestination(for: Candidate.self) { candidate in
