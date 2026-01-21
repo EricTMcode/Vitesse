@@ -13,7 +13,7 @@ enum APIEndpoint {
     case candidates
     case deleteCandidate(id: String)
     case updateCandidate(data: Candidate)
-    case favoriteCandidate(id: String)
+    case toogleFavorite(id: String)
 
     var baseURL: String { "http://localhost:8080" }
     
@@ -24,7 +24,7 @@ enum APIEndpoint {
         case .candidates: return "/candidate"
         case .deleteCandidate(let id): return "/candidate/\(id)"
         case .updateCandidate(let candidate): return "/candidate/\(candidate.id)"
-        case .favoriteCandidate(let id): return "/candidate/\(id)/favorite"
+        case .toogleFavorite(let id): return "/candidate/\(id)/favorite"
         }
     }
     
@@ -35,14 +35,14 @@ enum APIEndpoint {
         case .candidates: return "GET"
         case .deleteCandidate: return "DELETE"
         case .updateCandidate: return "PUT"
-        case .favoriteCandidate: return "PUT"
+        case .toogleFavorite: return "POST"
         }
     }
 
     var requiresAuth: Bool {
         switch self {
         case .login, .register: return false
-        case .candidates, .deleteCandidate, .updateCandidate, .favoriteCandidate: return true
+        case .candidates, .deleteCandidate, .updateCandidate, .toogleFavorite: return true
         }
     }
 
@@ -76,7 +76,7 @@ enum APIEndpoint {
             request.httpBody = try? JSONEncoder().encode(id)
         case .updateCandidate(let data):
             request.httpBody = try? JSONEncoder().encode(data)
-        case .favoriteCandidate(let id):
+        case .toogleFavorite(let id):
             request.httpBody = try? JSONEncoder().encode(id)
         }
         

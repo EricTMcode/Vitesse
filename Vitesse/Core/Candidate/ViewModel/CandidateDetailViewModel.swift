@@ -54,24 +54,25 @@ class CandidateDetailViewModel: ObservableObject {
         }
     }
 
-    func updateFavorite() async {
+    @MainActor
+    func toogleFavorite() async {
         guard let draft = draftCandidate else { return }
 
         isLoading = true
         errorMessage = nil
 
-        defer { isLoading = false }
-
-        let body = Candidate(id: candidate.id, firstName: candidate.firstName, lastName: candidate.lastName, email: draft.email, phone: draft.phone, linkedinURL: draft.linkedinURL, isFavorite: draft.isFavorite, note: draft.note)
+        let body = Candidate(id: candidate.id, firstName: candidate.firstName, lastName: candidate.lastName, email: draft.email, phone: draft.phone, linkedinURL: draft.linkedinURL, isFavorite: candidate.isFavorite, note: draft.note)
 
         do {
-            try await candidatesUpdateService.updateFavorite(data: body)
+            try await candidatesUpdateService.toggleFavorite(id: candidate.id)
             self.candidate = body
-            print("DEBUG: update saved!")
-            self.draftCandidate = nil
-            self.isEditing = false
-        } catch {
-            self.errorMessage = "Impossible de sauvegarder les modifications"
-        }
+
+//                if isEditing {
+//                    draftCandidate = updatedCandidate
+//                }
+
+            } catch {
+                errorMessage = "Vous n’avez pas les droits administrateur"
+            }
     }
 }

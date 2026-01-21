@@ -63,7 +63,7 @@ private extension CandidateDetailView {
             Spacer()
             if viewModel.isEditing {
                 Button {
-                    viewModel.candidate.isFavorite.toggle()
+                    Task { await viewModel.toogleFavorite() }
 
                 } label: {
                     Image(systemName: displayedCandidate.wrappedValue.isFavorite
