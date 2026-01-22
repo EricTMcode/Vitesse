@@ -16,11 +16,13 @@ class CandidatesListViewModel: ObservableObject {
     @Published var showIsFavorite = false
     @Published var showIsEditing = false
     @Published var selectedCandidate = Set<String>()
+    @Published var hasAppeared = false
 
     private let candidatsService: CanditatesServiceProtocol
 
     init(service: CanditatesServiceProtocol = CanditatesService()) {
         self.candidatsService = service
+        fetchCandidates(state: .loading)
     }
 
     //    init(service: CanditatesServiceProtocol = MockCandidateService()) {
@@ -48,6 +50,17 @@ class CandidatesListViewModel: ObservableObject {
             print(candidates.count)
         } catch {
             self.loadingState = .error(error: error)
+        }
+    }
+
+    func fetchCandidates(state: ContentLoadingState) {
+        Task {
+            if state == .loading && !hasAppeared {
+                await getCandidates()
+                hasAppeared = true
+            } else if state == .refresh {
+                await getCandidates()
+            }
         }
     }
 
