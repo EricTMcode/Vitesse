@@ -5,7 +5,7 @@
 //  Created by Eric on 19/01/2026.
 //
 
-import Foundation
+import SwiftUI
 
 class CandidateDetailViewModel: ObservableObject {
     @Published var candidate: Candidate
@@ -22,6 +22,17 @@ class CandidateDetailViewModel: ObservableObject {
     init(service: CandidateUpdateServiceProtocol = CandidateUpdateService() ,candidate: Candidate) {
         self.candidatesUpdateService = service
         self.candidate = candidate
+    }
+
+    var displayedCandidate: Binding<Candidate> {
+        Binding(
+            get: {
+                self.draftCandidate ?? self.candidate
+            },
+            set: { newValue in
+                self.draftCandidate = newValue
+            }
+        )
     }
 
     func startEditing() {

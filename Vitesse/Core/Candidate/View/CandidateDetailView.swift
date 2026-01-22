@@ -23,9 +23,7 @@ struct CandidateDetailView: View {
         ScrollView {
             VStack(alignment: .center, spacing: 16) {
                 header
-
                 infoSection
-
             }
         }
         .navigationBarBackButtonHidden(viewModel.isEditing)
@@ -56,6 +54,7 @@ struct CandidateDetailView: View {
                     } label: {
                         Text("Edit")
                             .fontWeight(.semibold)
+                            .foregroundStyle(.blue)
                     }
                 }
             }
@@ -112,8 +111,8 @@ private extension CandidateDetailView {
                         .foregroundStyle(.secondary)
                     if viewModel.isEditing {
                         TextField("Phone", text: Binding(
-                            get: { displayedCandidate.wrappedValue.phone ?? "" },
-                            set: { displayedCandidate.wrappedValue.phone = $0 }
+                            get: { viewModel.displayedCandidate.wrappedValue.phone ?? "" },
+                            set: { viewModel.displayedCandidate.wrappedValue.phone = $0 }
                         ))
                         .font(.body)
                         .padding(4)
@@ -149,7 +148,7 @@ private extension CandidateDetailView {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                     if viewModel.isEditing {
-                        TextField("Email", text: displayedCandidate.email)
+                        TextField("Email", text: viewModel.displayedCandidate.email)
                             .padding(4)
                             .background(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -184,10 +183,11 @@ private extension CandidateDetailView {
                     Text("LinkedIn")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
+
                     if viewModel.isEditing {
                         TextField("LinkedIn", text: Binding(
-                            get: { displayedCandidate.wrappedValue.linkedinURL ?? "" },
-                            set: { displayedCandidate.wrappedValue.linkedinURL = $0 }
+                            get: { viewModel.displayedCandidate.wrappedValue.linkedinURL ?? "" },
+                            set: { viewModel.displayedCandidate.wrappedValue.linkedinURL = $0 }
                         ))
                         .padding(4)
                         .background(.white)
@@ -232,8 +232,8 @@ private extension CandidateDetailView {
             if viewModel.isEditing {
                 TextEditor(
                     text: Binding(
-                        get: { displayedCandidate.wrappedValue.note ?? "" },
-                        set: { displayedCandidate.wrappedValue.note = $0 }
+                        get: { viewModel.displayedCandidate.wrappedValue.note ?? "" },
+                        set: { viewModel.displayedCandidate.wrappedValue.note = $0 }
                     )
                 )
                 .formTextFieldStyle()
@@ -243,7 +243,7 @@ private extension CandidateDetailView {
                         .stroke(Color.secondary.opacity(0.2))
                 )
             } else {
-                Text(displayedCandidate.wrappedValue.note ?? "")
+                Text(viewModel.displayedCandidate.wrappedValue.note ?? "")
                     .font(.body)
                     .foregroundColor(.secondary)
                     .padding()
@@ -252,29 +252,6 @@ private extension CandidateDetailView {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
         }
-    }
-}
-
-private extension CandidateDetailView {
-    func linkedinButton(_ url: URL) -> some View {
-        Link(destination: url) {
-            Text("goToLinkedIn")
-                .frame(maxWidth: .infinity)
-        }
-        .buttonStyle(.bordered)
-    }
-}
-
-private extension CandidateDetailView {
-    var displayedCandidate: Binding<Candidate> {
-        Binding(
-            get: {
-                viewModel.draftCandidate ?? viewModel.candidate
-            },
-            set: { newValue in
-                viewModel.draftCandidate = newValue
-            }
-        )
     }
 }
 
@@ -300,27 +277,6 @@ private extension CandidateDetailView {
             }
         } else {
             favoriteIcon
-        }
-    }
-}
-
-struct LabeledValue: View {
-    let title: String
-    let value: String?
-    let isEditing: Bool
-
-    var body: some View {
-        HStack {
-            Text(title)
-                .font(.body)
-                .foregroundStyle(.secondary)
-
-            if isEditing {
-                TextField(title, text: .constant(value ?? ""))
-            } else {
-                Text(value ?? "Not availaible")
-                    .font(.body)
-            }
         }
     }
 }
