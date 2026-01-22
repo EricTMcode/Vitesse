@@ -29,8 +29,18 @@ struct Candidate: Identifiable, Codable, Hashable {
     }
 
     var initials: String {
-        let components = fullName.components(separatedBy: " ")
-        let initials = components.prefix(2).compactMap { $0.first }.map { String($0) }
-        return initials.joined().uppercased()
+        let particles: Set<String> = ["de", "la", "du", "des", "van", "von", "da", "di", "del"]
+
+        let components = fullName
+            .lowercased()
+            .split(separator: " ")
+            .filter { !particles.contains(String($0)) }
+
+        guard let first = components.first?.first,
+              let last = components.last?.first else {
+            return ""
+        }
+
+        return "\(first)\(last)".uppercased()
     }
 }

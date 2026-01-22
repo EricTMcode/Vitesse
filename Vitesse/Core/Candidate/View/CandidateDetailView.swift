@@ -90,7 +90,7 @@ private extension CandidateDetailView {
                         .textContentType(.telephoneNumber)
                         .keyboardType(.phonePad)
                     } else {
-                        Text(viewModel.candidate.phone ?? "")
+                        Text(viewModel.candidate.phone ?? "Ajoutez un numéro")
                             .font(.body)
                             .foregroundStyle(.primary)
                     }
@@ -155,7 +155,7 @@ private extension CandidateDetailView {
 
                     if viewModel.isEditing {
                         TextField("LinkedIn", text: Binding(
-                            get: { viewModel.displayedCandidate.wrappedValue.linkedinURL ?? "" },
+                            get: { viewModel.displayedCandidate.wrappedValue.linkedinURL ?? "Pas de compte LinkedIn" },
                             set: { viewModel.displayedCandidate.wrappedValue.linkedinURL = $0 }
                         ))
                         .padding(4)
