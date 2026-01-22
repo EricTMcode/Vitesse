@@ -24,9 +24,6 @@ struct CandidatesListView: View {
                 case .completed:
                     SearchBarView(searchText: $viewModel.searchText)
                     candidatesList
-                case .refresh:
-                    SearchBarView(searchText: $viewModel.searchText)
-                    candidatesList
                 }
 
                 // DELETE BEFORE SHIP
@@ -40,7 +37,7 @@ struct CandidatesListView: View {
             .navigationTitle(CandidatesStrings.Common.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { CandidatesToolbar(viewModel: viewModel) }
-//            .task { await viewModel.getCandidates() }
+            .task { await viewModel.getCandidates() }
         }
     }
 }

@@ -11,7 +11,6 @@ enum ContentLoadingState {
     case empty
     case error(error: Error)
     case completed
-    case refresh
 }
 
 extension ContentLoadingState: Equatable {
