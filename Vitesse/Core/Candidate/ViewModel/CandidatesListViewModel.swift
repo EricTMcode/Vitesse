@@ -23,10 +23,6 @@ class CandidatesListViewModel: ObservableObject {
         self.candidatsService = service
     }
 
-    //    init(service: CanditatesServiceProtocol = MockCandidateService()) {
-    //        self.candidatsService = service
-    //    }
-
     var filteredCandidats: [Candidate] {
         candidates
             .filter { candidat in
