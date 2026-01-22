@@ -22,48 +22,17 @@ struct CandidateDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .center, spacing: 16) {
-                header
+                candidateDetails
                 infoSection
             }
         }
         .navigationBarBackButtonHidden(viewModel.isEditing)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                if viewModel.isEditing {
-                    Button {
-                        viewModel.cancelEditing()
-                    } label: {
-                        Text("Cancel")
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.red)
-                    }
-                }
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                if viewModel.isEditing {
-                    Button {
-                        Task { await viewModel.saveChanges() }
-                    } label: {
-                        Text("Done")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.blue)
-                    }
-                } else {
-                    Button {
-                        viewModel.startEditing()
-                    } label: {
-                        Text("Edit")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.blue)
-                    }
-                }
-            }
-        }
+        .toolbar { CandidateDetailToolbar(viewModel: viewModel) }
     }
 }
 
 private extension CandidateDetailView {
-    var header: some View {
+    var candidateDetails: some View {
         VStack(spacing: 16) {
             ZStack(alignment: .topTrailing) {
                 Circle()
@@ -277,6 +246,43 @@ private extension CandidateDetailView {
             }
         } else {
             favoriteIcon
+        }
+    }
+}
+
+struct CandidateDetailToolbar: ToolbarContent {
+    @ObservedObject var viewModel: CandidateDetailViewModel
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            if viewModel.isEditing {
+                Button {
+                    viewModel.cancelEditing()
+                } label: {
+                    Text("Cancel")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.red)
+                }
+            }
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            if viewModel.isEditing {
+                Button {
+                    Task { await viewModel.saveChanges() }
+                } label: {
+                    Text("Done")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.blue)
+                }
+            } else {
+                Button {
+                    viewModel.startEditing()
+                } label: {
+                    Text("Edit")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.blue)
+                }
+            }
         }
     }
 }
