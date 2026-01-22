@@ -47,7 +47,7 @@ private extension CandidatesListView {
         List(selection: $viewModel.selectedCandidate) {
             ForEach(viewModel.filteredCandidats) { candidate in
                 NavigationLink(value: candidate) {
-                                        CandidatesRowView(candidate: candidate)
+                                        CandidatesCardView(candidate: candidate)
 //                    CandidatesCardView(candidate: candidate)
 //                        .padding()
                 }
@@ -97,74 +97,12 @@ extension Candidate {
         return initials.joined().uppercased()
     }
 }
-// MARK: - Card View
+
 struct CandidatesCardView: View {
-    let candidate: Candidate
-    var isSelected: Bool = false
-
-    var body: some View {
-        HStack(spacing: 16) {
-            // Avatar circle with initials
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color.blue.opacity(0.6), Color.purple.opacity(0.6)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 56, height: 56)
-
-                Text(candidate.initials)
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(.white)
-            }
-
-            // Name
-            VStack(alignment: .leading, spacing: 4) {
-                Text(candidate.fullName)
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundColor(.primary)
-
-                Text("Candidate")
-                    .font(.system(size: 14))
-                    .foregroundColor(.secondary)
-            }
-
-            Spacer()
-
-            // Favorite star
-            Image(systemName: candidate.isFavorite ? SFsymbols.starFill : SFsymbols.star)
-                .font(.system(size: 24))
-                .foregroundColor(candidate.isFavorite ? .yellow : .gray.opacity(0.4))
-
-            // Chevron
-            Image(systemName: "chevron.right")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.gray.opacity(0.5))
-        }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: 2)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(isSelected ? Color.blue : Color.clear, lineWidth: 2)
-        )
-        .scaleEffect(isSelected ? 0.98 : 1.0)
-        .animation(.spring(response: 0.3), value: isSelected)
-    }
-}
-
-struct CandidatesRowView: View {
     let candidate: Candidate
 
     var body: some View {
         HStack {
-            // Avatar circle with initials
             ZStack {
                 Circle()
                     .fill(
