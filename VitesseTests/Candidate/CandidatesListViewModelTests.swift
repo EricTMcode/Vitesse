@@ -36,6 +36,7 @@ final class CandidatesListViewModelTests: XCTestCase {
         // THEN
         XCTAssertEqual(viewModel.candidates.count, 10)
         XCTAssertEqual(viewModel.candidates.first?.firstName, "Alice")
+        XCTAssertEqual(viewModel.loadingState, .completed)
     }
 
     func test_getCandidates_success_setsCompletedState() async {
