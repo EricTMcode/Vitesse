@@ -41,13 +41,10 @@ final class CandidatesListViewModelTests: XCTestCase {
 
     func test_getCandidates_success_setsCompletedState() async {
         // GIVEN
-        let mockService = MockCandidateService()
         mockService.candidatesToReturn = [
             Candidate(id: "1", firstName: "Eric", lastName: "Dupont", email: "", isFavorite: false),
             Candidate(id: "2", firstName: "Anna", lastName: "Martin", email: "", isFavorite: true)
         ]
-
-        let viewModel = CandidatesListViewModel(service: mockService)
 
         // WHEN
         await viewModel.getCandidates()
@@ -60,10 +57,7 @@ final class CandidatesListViewModelTests: XCTestCase {
 
     func test_getCandidates_empty_setsEmptyState() async {
         // GIVEN
-        let mockService = MockCandidateService()
         mockService.candidatesToReturn = []
-
-        let viewModel = CandidatesListViewModel(service: mockService)
 
         // WHEN
         await viewModel.getCandidates()
@@ -91,13 +85,11 @@ final class CandidatesListViewModelTests: XCTestCase {
 
     func test_deleteCandidates_deletesSelectedCandidates() async {
         // GIVEN
-        let mockService = MockCandidateService()
         mockService.candidatesToReturn = [
             Candidate(id: "1", firstName: "Eric", lastName: "Dupont", email: "", isFavorite: false),
             Candidate(id: "2", firstName: "Anna", lastName: "Martin", email: "", isFavorite: false)
         ]
 
-        let viewModel = CandidatesListViewModel(service: mockService)
         await viewModel.getCandidates()
 
         viewModel.selectedCandidate = ["1", "2"]
@@ -111,6 +103,21 @@ final class CandidatesListViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.showIsEditing)
         XCTAssertTrue(viewModel.selectedCandidate.isEmpty)
         XCTAssertEqual(viewModel.loadingState, .completed)
+    }
+
+    func test_deleteCandidates_failure_setsErrorState() async {
+        mockService.deleteCandidateError = APIError.networkError
+
+        viewModel.selectedCandidate = ["1"]
+
+        await viewModel.deleteCandidates()
+
+        switch viewModel.loadingState {
+        case .error:
+            XCTAssertTrue(true)
+        default:
+            XCTFail("Expected error state")
+        }
     }
 
     func test_filteredCandidates() async {
