@@ -21,30 +21,41 @@ struct CandidateDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
+            VStack(alignment: .center, spacing: 16) {
                 header
-                    .padding()
 
                 infoSection
+
             }
         }
         .navigationBarBackButtonHidden(viewModel.isEditing)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 if viewModel.isEditing {
-                    Button("Cancel") {
+                    Button {
                         viewModel.cancelEditing()
+                    } label: {
+                        Text("Cancel")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.red)
                     }
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
                 if viewModel.isEditing {
-                    Button("Done") {
+                    Button {
                         Task { await viewModel.saveChanges() }
+                    } label: {
+                        Text("Done")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.blue)
                     }
                 } else {
-                    Button("Edit") {
+                    Button {
                         viewModel.startEditing()
+                    } label: {
+                        Text("Edit")
+                            .fontWeight(.semibold)
                     }
                 }
             }
@@ -54,15 +65,35 @@ struct CandidateDetailView: View {
 
 private extension CandidateDetailView {
     var header: some View {
-        HStack(alignment: .center) {
+        VStack(spacing: 16) {
+            ZStack(alignment: .topTrailing) {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.blue.opacity(0.6), Color.purple.opacity(0.6)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 100, height: 100)
+                    .overlay(
+                        Text(viewModel.candidate.initials)
+                            .font(.title)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.white)
+                    )
+                    .shadow(color: .blue.opacity(0.3), radius: 10, x: 0, y: 5)
+
+                favoriteView
+                    .offset(x: 8, y: -8)
+            }
+
             Text(viewModel.candidate.fullName.formattedShortName)
-                .font(.title)
-                .fontWeight(.bold)
-
-            Spacer()
-
-            favoriteView
+                .font(.system(size: 28, weight: .semibold))
+                .foregroundStyle(.primary)
         }
+        .padding(.top, 30)
+        .padding(.bottom, 24)
     }
 }
 
@@ -70,67 +101,124 @@ private extension CandidateDetailView {
     var infoSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text("Phone")
-                    .foregroundStyle(.secondary)
+                Image(systemName: "phone.fill")
+                    .font(.system(size: 20))
+                    .foregroundStyle(.green)
+                    .frame(width: 28)
 
-                if viewModel.isEditing {
-                    TextField("Phone", text: Binding(
-                        get: { displayedCandidate.wrappedValue.phone ?? "" },
-                        set: { displayedCandidate.wrappedValue.phone = $0 }
-                    ))
-                    .formTextFieldStyle()
-                    .textContentType(.telephoneNumber)
-                    .keyboardType(.phonePad)
-                } else {
-                    Text(displayedCandidate.wrappedValue.phone ?? "")
-                }
-            }
-
-            HStack {
-                Text("Email")
-                    .foregroundStyle(.secondary)
-
-                if viewModel.isEditing {
-                    TextField("Email", text: displayedCandidate.email)
-                        .formTextFieldStyle()
-                        .textContentType(.emailAddress)
-                        .keyboardType(.emailAddress)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                } else {
-                    Text(displayedCandidate.wrappedValue.email)
-                }
-            }
-
-
-
-
-
-
-
-
-
-            //            LabeledValue(title: "Phone", value: viewModel.candidate.phone, isEditing: viewModel.isEditing)
-            //            LabeledValue(title: "Email", value: viewModel.candidate.email, isEditing: viewModel.isEditing)
-
-            if viewModel.isEditing {
-                TextField("Linkedin", text: Binding(
-                    get: { displayedCandidate.wrappedValue.linkedinURL ?? "" },
-                    set: { displayedCandidate.wrappedValue.linkedinURL = $0 }
-                ))
-                .formTextFieldStyle()
-                .keyboardType(.URL)
-                .textContentType(.URL)
-                .textInputAutocapitalization(.never)
-            } else {
-                if let linkedinURL = viewModel.candidate.linkedinLink {
-                    Link(destination: linkedinURL) {
-                        Text("GoToLLinkedin")
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Phone")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    if viewModel.isEditing {
+                        TextField("Phone", text: Binding(
+                            get: { displayedCandidate.wrappedValue.phone ?? "" },
+                            set: { displayedCandidate.wrappedValue.phone = $0 }
+                        ))
+                        .font(.body)
+                        .padding(4)
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .textContentType(.telephoneNumber)
+                        .keyboardType(.phonePad)
+                    } else {
+                        Text(viewModel.candidate.phone ?? "")
+                            .font(.body)
+                            .foregroundStyle(.primary)
                     }
                 }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
             }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+
+            HStack {
+                Image(systemName: "envelope.fill")
+                    .font(.system(size: 20))
+                    .foregroundStyle(.blue)
+                    .frame(width: 28)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Email")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    if viewModel.isEditing {
+                        TextField("Email", text: displayedCandidate.email)
+                            .padding(4)
+                            .background(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .textContentType(.emailAddress)
+                            .keyboardType(.emailAddress)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
+                    } else {
+                        Text(viewModel.candidate.email)
+                            .font(.body)
+                            .foregroundStyle(.primary)
+                    }
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+
+            HStack {
+                Image(systemName: "link.circle.fill")
+                    .font(.system(size: 20))
+                    .foregroundStyle(.blue)
+                    .frame(width: 28)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("LinkedIn")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    if viewModel.isEditing {
+                        TextField("LinkedIn", text: Binding(
+                            get: { displayedCandidate.wrappedValue.linkedinURL ?? "" },
+                            set: { displayedCandidate.wrappedValue.linkedinURL = $0 }
+                        ))
+                        .padding(4)
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .keyboardType(.URL)
+                        .textContentType(.URL)
+                        .textInputAutocapitalization(.never)
+                    } else {
+                        if let linkedinURL = viewModel.candidate.linkedinLink {
+                            Link(destination: linkedinURL) {
+                                Text("Go on LinkedIn")
+                                    .font(.body)
+                                    .foregroundStyle(.primary)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+
+                Spacer()
+
+                Image(systemName: "arrow.up.right")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.blue)
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
 
             noteSection
+
         }
         .padding(.horizontal)
     }
@@ -151,7 +239,7 @@ private extension CandidateDetailView {
                 .formTextFieldStyle()
                 .frame(minHeight: 180)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: 12)
                         .stroke(Color.secondary.opacity(0.2))
                 )
             } else {
@@ -161,7 +249,7 @@ private extension CandidateDetailView {
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(Color(.systemGray6))
-                    .cornerRadius(12)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
             }
         }
     }
@@ -196,8 +284,8 @@ private extension CandidateDetailView {
               ? SFsymbols.starFill
               : SFsymbols.star
         )
-        .foregroundStyle(.yellow)
-        .font(.title2)
+        .foregroundStyle(viewModel.candidate.isFavorite ? .yellow : .gray)
+        .font(.system(size: 20))
     }
 }
 
