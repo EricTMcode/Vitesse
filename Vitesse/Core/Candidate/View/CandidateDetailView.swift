@@ -225,17 +225,6 @@ private extension CandidateDetailView {
 }
 
 private extension CandidateDetailView {
-    var favoriteIcon: some View {
-        Image(systemName: viewModel.candidate.isFavorite
-              ? SFsymbols.starFill
-              : SFsymbols.star
-        )
-        .foregroundStyle(viewModel.candidate.isFavorite ? .yellow : .gray)
-        .font(.system(size: 20))
-    }
-}
-
-private extension CandidateDetailView {
     @ViewBuilder
     private var favoriteView: some View {
         if viewModel.isEditing && isAdmin {
@@ -247,6 +236,17 @@ private extension CandidateDetailView {
         } else {
             favoriteIcon
         }
+    }
+}
+
+private extension CandidateDetailView {
+    var favoriteIcon: some View {
+        Image(systemName: viewModel.candidate.isFavorite
+              ? SFsymbols.starFill
+              : SFsymbols.star
+        )
+        .foregroundStyle(viewModel.candidate.isFavorite ? .yellow : .gray)
+        .font(.system(size: 20))
     }
 }
 
@@ -268,17 +268,18 @@ struct CandidateDetailToolbar: ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             if viewModel.isEditing {
                 Button {
-                    Task { await viewModel.saveChanges() }
+                        Task { await viewModel.saveChanges() }
                 } label: {
                     Text("Done")
                         .fontWeight(.semibold)
-                        .foregroundStyle(.blue)
+                        .foregroundStyle(viewModel.draftCandidate == viewModel.candidate ? .gray : .blue)
                 }
+                .disabled(viewModel.draftCandidate == viewModel.candidate)
             } else {
                 Button {
                     viewModel.startEditing()
                 } label: {
-                    Text("Edit")
+                    Text("Editer")
                         .fontWeight(.semibold)
                         .foregroundStyle(.blue)
                 }
