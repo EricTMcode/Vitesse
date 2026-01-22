@@ -27,4 +27,10 @@ struct Candidate: Identifiable, Codable, Hashable {
         }
         return url
     }
+
+    var initials: String {
+        let components = fullName.components(separatedBy: " ")
+        let initials = components.prefix(2).compactMap { $0.first }.map { String($0) }
+        return initials.joined().uppercased()
+    }
 }

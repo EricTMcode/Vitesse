@@ -10,7 +10,7 @@ import SwiftUI
 struct CandidatesListView: View {
     @ObservedObject var loginViewModel: LoginViewModel
     @StateObject var viewModel = CandidatesListViewModel()
-
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -25,7 +25,7 @@ struct CandidatesListView: View {
                     SearchBarView(searchText: $viewModel.searchText)
                     candidatesList
                 }
-
+                
                 // DELETE BEFORE SHIP
                 logoutButton
             }
@@ -47,13 +47,10 @@ private extension CandidatesListView {
         List(selection: $viewModel.selectedCandidate) {
             ForEach(viewModel.filteredCandidats) { candidate in
                 NavigationLink(value: candidate) {
-                                        CandidatesCardView(candidate: candidate)
-//                    CandidatesCardView(candidate: candidate)
-//                        .padding()
+                    CandidatesCardView(candidate: candidate)
                 }
             }
         }
-//        }
         .listStyle(.plain)
         .padding(.horizontal, 5)
     }
@@ -90,17 +87,9 @@ private extension CandidatesListView {
     }
 }
 
-extension Candidate {
-    var initials: String {
-        let components = fullName.components(separatedBy: " ")
-        let initials = components.prefix(2).compactMap { $0.first }.map { String($0) }
-        return initials.joined().uppercased()
-    }
-}
-
 struct CandidatesCardView: View {
     let candidate: Candidate
-
+    
     var body: some View {
         HStack {
             ZStack {
@@ -113,23 +102,23 @@ struct CandidatesCardView: View {
                         )
                     )
                     .frame(width: 56, height: 56)
-
+                
                 Text(candidate.initials)
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
             }
-
+            
             VStack(alignment: .leading, spacing: 4) {
                 Text(candidate.fullName)
                     .fontWeight(.semibold)
-
+                
                 Text("Candidate")
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
             }
-
+            
             Spacer()
-
+            
             Image(systemName: candidate.isFavorite ? SFsymbols.starFill : SFsymbols.star)
                 .imageScale(.large)
                 .foregroundColor(candidate.isFavorite ? .yellow : .gray.opacity(0.4))
@@ -139,7 +128,7 @@ struct CandidatesCardView: View {
 
 struct CandidatesToolbar: ToolbarContent {
     @ObservedObject var viewModel: CandidatesListViewModel
-
+    
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Button {
@@ -150,18 +139,18 @@ struct CandidatesToolbar: ToolbarContent {
                     .foregroundStyle(viewModel.showIsEditing ? .red : .blue)
             }
         }
-
+        
         ToolbarItem(placement: .topBarTrailing) {
             trailingButton
         }
     }
-
+    
     private var editButtonTitle: String {
         viewModel.showIsEditing
         ? CandidatesStrings.Common.cancel.capitalized
         : CandidatesStrings.Common.edit.capitalized
     }
-
+    
     @ViewBuilder
     private var trailingButton: some View {
         if viewModel.showIsEditing {
@@ -186,7 +175,7 @@ struct CandidatesToolbar: ToolbarContent {
             }
         }
     }
-
+    
     private func toggleEditMode() {
         viewModel.showIsEditing.toggle()
         if !viewModel.showIsEditing {
