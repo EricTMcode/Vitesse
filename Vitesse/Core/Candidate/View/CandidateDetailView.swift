@@ -58,7 +58,8 @@ private extension CandidateDetailView {
             }
 
             Text(viewModel.candidate.fullName.formattedShortName)
-                .font(.system(size: 28, weight: .semibold))
+                .font(.title)
+                .fontWeight(.semibold)
                 .foregroundStyle(.primary)
         }
         .padding(.top, 30)
@@ -180,15 +181,15 @@ struct CandidateDetailToolbar: ToolbarContent {
                     viewModel.cancelEditing()
                 } label: {
                     Text("Cancel")
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.red)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.red)
                 }
             }
         }
         ToolbarItem(placement: .topBarTrailing) {
             if viewModel.isEditing {
                 Button {
-                        Task { await viewModel.saveChanges() }
+                    Task { await viewModel.saveChanges() }
                 } label: {
                     Text("Done")
                         .fontWeight(.semibold)
@@ -235,10 +236,7 @@ struct InforRow: View {
 
                 if isEditing {
                     TextField(placeholder, text: editableValue)
-                        .font(.body)
-                        .padding(4)
-                        .background(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .editTextFieldStyle()
                         .keyboardType(keyboardType)
                         .textContentType(textContentType)
                         .textInputAutocapitalization(autocapitalization)
@@ -281,10 +279,7 @@ struct LinkedInRow: View {
 
                 if isEditing {
                     TextField("LinkedIn", text: editableValue)
-                        .font(.body)
-                        .padding(4)
-                        .background(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .editTextFieldStyle()
                         .keyboardType(.URL)
                         .textContentType(.URL)
                         .textInputAutocapitalization(.never)
