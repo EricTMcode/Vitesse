@@ -70,7 +70,7 @@ private extension CandidateDetailView {
 private extension CandidateDetailView {
     var infoSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            InforRow(
+            InfosRow(
                 icon: "phone.fill",
                 iconColor: .green,
                 label: "Phone",
@@ -86,7 +86,7 @@ private extension CandidateDetailView {
                 autocapitalization: .never,
                 autocorrection: false)
 
-            InforRow(
+            InfosRow(
                 icon: "envelope.fill",
                 iconColor: .blue,
                 label: "Email",
@@ -209,7 +209,7 @@ struct CandidateDetailToolbar: ToolbarContent {
     }
 }
 
-struct InforRow: View {
+struct InfosRow: View {
     let icon: String
     let iconColor: Color
     let label: String
@@ -223,7 +223,7 @@ struct InforRow: View {
     var autocorrection: Bool = true
 
     var body: some View {
-        HStack {
+        RowContainer {
             Image(systemName: icon)
                 .font(.system(size: 20))
                 .foregroundStyle(iconColor)
@@ -254,9 +254,6 @@ struct InforRow: View {
                 .foregroundStyle(.secondary)
                 .font(.caption)
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 
@@ -266,7 +263,7 @@ struct LinkedInRow: View {
     let linkedinURL: URL?
 
     var body: some View {
-        HStack {
+        RowContainer {
             Image(systemName: "link.circle.fill")
                 .font(.system(size: 20))
                 .foregroundStyle(.blue)
@@ -300,6 +297,20 @@ struct LinkedInRow: View {
             Image(systemName: "arrow.up.right")
                 .font(.system(size: 14))
                 .foregroundStyle(linkedinURL == nil ? Color(.secondaryLabel) : .blue)
+        }
+    }
+}
+
+struct RowContainer<Content: View>: View {
+    let content: Content
+
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+
+    var body: some View {
+        HStack {
+            content
         }
         .padding()
         .background(Color(.systemGray6))
