@@ -50,4 +50,17 @@ final class CandidateDetailViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.draftCandidate)
         XCTAssertNil(viewModel.errorMessage)
     }
+
+    func test_saveChanges_success_updatesCandidate() async {
+        viewModel.startEditing()
+        viewModel.draftCandidate?.email = "new@vitesse.com"
+
+        await viewModel.saveChanges()
+
+        XCTAssertTrue(mockService.updateCandidateCalled)
+        XCTAssertEqual(viewModel.candidate.email, "new@vitesse.com")
+        XCTAssertFalse(viewModel.isEditing)
+        XCTAssertNil(viewModel.errorMessage)
+        XCTAssertFalse(viewModel.isLoading)
+    }
 }
