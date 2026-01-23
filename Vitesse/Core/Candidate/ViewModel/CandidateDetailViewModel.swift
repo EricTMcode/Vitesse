@@ -69,7 +69,7 @@ class CandidateDetailViewModel: ObservableObject {
     }
 
     @MainActor
-    func toogleFavorite() async {
+    func toggleFavorite() async {
         guard isAdmin else {
             self.errorMessage = "Vous n’avez pas les droits administrateur"
             return

@@ -229,7 +229,7 @@ private extension CandidateDetailView {
     private var favoriteView: some View {
         if viewModel.isEditing && isAdmin {
             Button {
-                Task { await viewModel.toogleFavorite() }
+                Task { await viewModel.toggleFavorite() }
             } label: {
                 favoriteIcon
             }
