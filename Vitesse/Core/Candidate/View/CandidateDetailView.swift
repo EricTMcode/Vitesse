@@ -318,8 +318,8 @@ struct RowContainer<Content: View>: View {
     }
 }
 
-//#Preview {
-//    NavigationStack {
-//        CandidateDetailView(viewModel: Candidate(id: "1", firstName: "Jean Michel", lastName: "Doe", email: "johndoe@gmail.com", phone: "06 29 61 24 04", linkedinURL: "https", isFavorite: true, note: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived" ))
-//    }
-//}
+#Preview {
+    NavigationStack {
+        CandidateDetailView(candidate: mockCandidates[1])
+    }
+}
