@@ -15,7 +15,7 @@ final class MockCandidateUpdateService: CandidateUpdateServiceProtocol {
     private(set) var toggledFavoriteId: String?
 
     var updateCandidateError: Error?
-    var toggleFavotiteError: Error?
+    var toggleFavoriteError: Error?
 
     func updateCandidate(data: Candidate) async throws {
         updateCandidateCalled = true
@@ -30,7 +30,7 @@ final class MockCandidateUpdateService: CandidateUpdateServiceProtocol {
         toggleFavoriteCalled = true
         toggledFavoriteId = id
 
-        if let error = toggleFavotiteError {
+        if let error = toggleFavoriteError {
             throw error
         }
     }

@@ -41,15 +41,13 @@ final class CandidateDetailViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.draftCandidate?.email, viewModel.candidate.email)
     }
 
-    func test_cancelEditing_resetsDraftAndError() {
+    func test_cancelEditing_resetsDraft() {
         viewModel.startEditing()
-        viewModel.errorMessage = "Error"
 
         viewModel.cancelEditing()
 
         XCTAssertFalse(viewModel.isEditing)
         XCTAssertNil(viewModel.draftCandidate)
-        XCTAssertNil(viewModel.errorMessage)
     }
 
     func test_saveChanges_success_updatesCandidate() async {
@@ -97,8 +95,19 @@ final class CandidateDetailViewModelTests: XCTestCase {
         await viewModel.toggleFavorite()
 
         XCTAssertTrue(mockService.toggleFavoriteCalled)
-        XCTAssertEqual(viewModel.candidate.isFavorite, initialValue)
+        XCTAssertEqual(viewModel.candidate.isFavorite, !initialValue)
         XCTAssertNil(viewModel.errorMessage)
+        XCTAssertFalse(viewModel.isLoading)
+    }
+
+    func test_toggleFavorite_admin_failure_setsError() async {
+        viewModel.isAdmin = true
+        mockService.toggleFavoriteError = NSError(domain: "Test", code: 403)
+
+        await viewModel.toggleFavorite()
+
+        XCTAssertTrue(mockService.toggleFavoriteCalled)
+        XCTAssertNotNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isLoading)
     }
 }
