@@ -69,79 +69,74 @@ private extension CandidateDetailView {
 private extension CandidateDetailView {
     var infoSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: "phone.fill")
-                    .font(.system(size: 20))
-                    .foregroundStyle(.green)
-                    .frame(width: 28)
+            InforRow(
+                icon: "phone.fill",
+                iconColor: .green,
+                label: "Phone",
+                isEditing: viewModel.isEditing,
+                editableValue: Binding(
+                    get: { viewModel.displayedCandidate.wrappedValue.phone ?? "" },
+                    set: { viewModel.displayedCandidate.wrappedValue.phone = $0 }
+                ),
+                displayValue: viewModel.candidate.phone ?? "Ajoutez un numéro",
+                placeholder: "Phone",
+                keyboardType: .phonePad,
+                textContentType: .telephoneNumber,
+                autocapitalization: .never,
+                autocorrection: false,
+                chevronIcon: "chevron.right"
+            )
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Phone")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                    if viewModel.isEditing {
-                        TextField("Phone", text: Binding(
-                            get: { viewModel.displayedCandidate.wrappedValue.phone ?? "" },
-                            set: { viewModel.displayedCandidate.wrappedValue.phone = $0 }
-                        ))
-                        .font(.body)
-                        .padding(4)
-                        .background(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .textContentType(.telephoneNumber)
-                        .keyboardType(.phonePad)
-                    } else {
-                        Text(viewModel.candidate.phone ?? "Ajoutez un numéro")
-                            .font(.body)
-                            .foregroundStyle(.primary)
-                    }
-                }
+            InforRow(
+                icon: "envelope.fill",
+                iconColor: .blue,
+                label: "Email",
+                isEditing: viewModel.isEditing,
+                editableValue: viewModel.displayedCandidate.email,
+                displayValue: viewModel.candidate.email,
+                placeholder: "Email",
+                keyboardType: .emailAddress,
+                textContentType: .emailAddress,
+                autocapitalization: .never,
+                autocorrection: false,
+                chevronIcon: "chevron.right"
+            )
 
-                Spacer()
-
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(.secondary)
-                    .font(.caption)
-            }
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(12)
-
-            HStack {
-                Image(systemName: "envelope.fill")
-                    .font(.system(size: 20))
-                    .foregroundStyle(.blue)
-                    .frame(width: 28)
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Email")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                    if viewModel.isEditing {
-                        TextField("Email", text: viewModel.displayedCandidate.email)
-                            .padding(4)
-                            .background(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .textContentType(.emailAddress)
-                            .keyboardType(.emailAddress)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                    } else {
-                        Text(viewModel.candidate.email)
-                            .font(.body)
-                            .foregroundStyle(.primary)
-                    }
-                }
-
-                Spacer()
-
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(.secondary)
-                    .font(.caption)
-            }
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(12)
+//            HStack {
+//                Image(systemName: "envelope.fill")
+//                    .font(.system(size: 20))
+//                    .foregroundStyle(.blue)
+//                    .frame(width: 28)
+//
+//                VStack(alignment: .leading, spacing: 2) {
+//                    Text("Email")
+//                        .font(.subheadline)
+//                        .foregroundStyle(.secondary)
+//                    if viewModel.isEditing {
+//                        TextField("Email", text: viewModel.displayedCandidate.email)
+//                            .padding(4)
+//                            .background(.white)
+//                            .clipShape(RoundedRectangle(cornerRadius: 10))
+//                            .textContentType(.emailAddress)
+//                            .keyboardType(.emailAddress)
+//                            .textInputAutocapitalization(.never)
+//                            .autocorrectionDisabled()
+//                    } else {
+//                        Text(viewModel.candidate.email)
+//                            .font(.body)
+//                            .foregroundStyle(.primary)
+//                    }
+//                }
+//
+//                Spacer()
+//
+//                Image(systemName: "chevron.right")
+//                    .foregroundStyle(.secondary)
+//                    .font(.caption)
+//            }
+//            .padding()
+//            .background(Color(.systemGray6))
+//            .cornerRadius(12)
 
             HStack {
                 Image(systemName: "link.circle.fill")
@@ -286,6 +281,61 @@ struct CandidateDetailToolbar: ToolbarContent {
                 }
             }
         }
+    }
+}
+
+struct InforRow: View {
+    let icon: String
+    let iconColor: Color
+    let label: String
+    let isEditing: Bool
+    let editableValue: Binding<String>
+    let displayValue: String
+    let placeholder: String
+    let keyboardType: UIKeyboardType
+    var textContentType: UITextContentType? = nil
+    var autocapitalization: TextInputAutocapitalization = .sentences
+    var autocorrection: Bool = true
+    var chevronIcon: String = "chevron.right"
+
+    var body: some View {
+        HStack {
+            Image(systemName: icon)
+                .font(.system(size: 20))
+                .foregroundStyle(iconColor)
+                .frame(width: 28)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(label)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                if isEditing {
+                    TextField(placeholder, text: editableValue)
+                        .font(.body)
+                        .padding(4)
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .keyboardType(keyboardType)
+                        .textContentType(textContentType)
+                        .textInputAutocapitalization(autocapitalization)
+                        .autocorrectionDisabled(!autocorrection)
+                } else {
+                    Text(displayValue)
+                        .font(.body)
+                        .foregroundStyle(.primary)
+                }
+            }
+
+            Spacer()
+
+            Image(systemName: chevronIcon)
+                .foregroundStyle(.secondary)
+                .font(.caption)
+        }
+        .padding()
+        .background(Color(.systemGray6))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 

@@ -54,9 +54,7 @@ class CandidatesListViewModel: ObservableObject {
     @MainActor
     func deleteCandidates() async {
         self.errorMessage = nil
-
-        defer { self.isLoading = false }
-
+        
         do {
             try await withThrowingTaskGroup(of: Void.self) { group in
                 for id in selectedCandidate {
