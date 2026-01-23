@@ -28,6 +28,7 @@
 				Authentication/MockLoginService.swift,
 				Authentication/MockRegisterService.swift,
 				Candidate/MockCandidateService.swift,
+				Candidate/MockCandidateUpdateService.swift,
 			);
 			target = 07D3B50B2F114C5700EDB6E5 /* Vitesse */;
 		};
@@ -37,6 +38,7 @@
 				Authentication/MockLoginService.swift,
 				Authentication/MockRegisterService.swift,
 				Candidate/MockCandidateService.swift,
+				Candidate/MockCandidateUpdateService.swift,
 			);
 			target = 07D3B5AF2F13A5B100EDB6E5 /* VitesseTests */;
 		};
