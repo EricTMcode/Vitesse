@@ -70,6 +70,11 @@ class CandidateDetailViewModel: ObservableObject {
 
     @MainActor
     func toogleFavorite() async {
+        guard isAdmin else {
+            self.errorMessage = "Vous n’avez pas les droits administrateur"
+            return
+        }
+        
         self.isLoading = true
         self.errorMessage = nil
 
