@@ -15,13 +15,17 @@ class CandidateDetailViewModel: ObservableObject {
     @Published var isEditing = false
     @Published var errorMessage : String?
 
-    @Published var isAdmin = false
+//    @Published var isAdmin = false
+
+    var isAdmin: Bool
 
     private let candidatesUpdateService: CandidateUpdateServiceProtocol
 
-    init(service: CandidateUpdateServiceProtocol = CandidateUpdateService() ,candidate: Candidate) {
+    init(service: CandidateUpdateServiceProtocol = CandidateUpdateService() ,candidate: Candidate, isAdmin: Bool) {
         self.candidatesUpdateService = service
         self.candidate = candidate
+        self.isAdmin = isAdmin
+
     }
 
     var displayedCandidate: Binding<Candidate> {
@@ -74,7 +78,7 @@ class CandidateDetailViewModel: ObservableObject {
             self.errorMessage = "Vous n’avez pas les droits administrateur"
             return
         }
-        
+
         self.isLoading = true
         self.errorMessage = nil
 

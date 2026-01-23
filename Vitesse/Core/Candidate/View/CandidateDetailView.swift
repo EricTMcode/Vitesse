@@ -14,7 +14,8 @@ struct CandidateDetailView: View {
     init(candidate: Candidate) {
         _viewModel = StateObject(
             wrappedValue: CandidateDetailViewModel(
-                candidate: candidate
+                candidate: candidate,
+                isAdmin: UserDefaults.standard.bool(forKey: "isAdmin")
             )
         )
     }

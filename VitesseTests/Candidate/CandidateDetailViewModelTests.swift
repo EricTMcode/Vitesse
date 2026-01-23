@@ -18,8 +18,9 @@ final class CandidateDetailViewModelTests: XCTestCase {
         mockService = MockCandidateUpdateService()
 
         let candidate = mockCandidates.first!
+        let isAdmin = false
 
-        viewModel = CandidateDetailViewModel(service: mockService, candidate: candidate)
+        viewModel = CandidateDetailViewModel(service: mockService, candidate: candidate, isAdmin: isAdmin)
     }
 
     override func tearDown() {
@@ -75,6 +76,29 @@ final class CandidateDetailViewModelTests: XCTestCase {
         XCTAssertTrue(mockService.updateCandidateCalled)
         XCTAssertNotNil(viewModel.errorMessage)
         XCTAssertTrue(viewModel.isEditing)
+        XCTAssertFalse(viewModel.isLoading)
+    }
+
+    func test_toggleFavorite_notAdmin_doesNotCallService() async {
+        viewModel.isAdmin = false
+        let initialValue = viewModel.candidate.isFavorite
+
+        await viewModel.toggleFavorite()
+
+        XCTAssertFalse(mockService.toggleFavoriteCalled)
+        XCTAssertEqual(viewModel.candidate.isFavorite, initialValue)
+        XCTAssertEqual(viewModel.errorMessage, "Vous n’avez pas les droits administrateur")
+    }
+
+    func test_toggleFavorite_admin_success() async {
+        viewModel.isAdmin = true
+        let initialValue = viewModel.candidate.isFavorite
+
+        await viewModel.toggleFavorite()
+
+        XCTAssertTrue(mockService.toggleFavoriteCalled)
+        XCTAssertEqual(viewModel.candidate.isFavorite, initialValue)
+        XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isLoading)
     }
 }
