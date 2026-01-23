@@ -83,9 +83,7 @@ private extension CandidateDetailView {
                 keyboardType: .phonePad,
                 textContentType: .telephoneNumber,
                 autocapitalization: .never,
-                autocorrection: false,
-                chevronIcon: "chevron.right"
-            )
+                autocorrection: false)
 
             InforRow(
                 icon: "envelope.fill",
@@ -98,89 +96,15 @@ private extension CandidateDetailView {
                 keyboardType: .emailAddress,
                 textContentType: .emailAddress,
                 autocapitalization: .never,
-                autocorrection: false,
-                chevronIcon: "chevron.right"
-            )
+                autocorrection: false)
 
-//            HStack {
-//                Image(systemName: "envelope.fill")
-//                    .font(.system(size: 20))
-//                    .foregroundStyle(.blue)
-//                    .frame(width: 28)
-//
-//                VStack(alignment: .leading, spacing: 2) {
-//                    Text("Email")
-//                        .font(.subheadline)
-//                        .foregroundStyle(.secondary)
-//                    if viewModel.isEditing {
-//                        TextField("Email", text: viewModel.displayedCandidate.email)
-//                            .padding(4)
-//                            .background(.white)
-//                            .clipShape(RoundedRectangle(cornerRadius: 10))
-//                            .textContentType(.emailAddress)
-//                            .keyboardType(.emailAddress)
-//                            .textInputAutocapitalization(.never)
-//                            .autocorrectionDisabled()
-//                    } else {
-//                        Text(viewModel.candidate.email)
-//                            .font(.body)
-//                            .foregroundStyle(.primary)
-//                    }
-//                }
-//
-//                Spacer()
-//
-//                Image(systemName: "chevron.right")
-//                    .foregroundStyle(.secondary)
-//                    .font(.caption)
-//            }
-//            .padding()
-//            .background(Color(.systemGray6))
-//            .cornerRadius(12)
-
-            HStack {
-                Image(systemName: "link.circle.fill")
-                    .font(.system(size: 20))
-                    .foregroundStyle(.blue)
-                    .frame(width: 28)
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("LinkedIn")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-
-                    if viewModel.isEditing {
-                        TextField("LinkedIn", text: Binding(
-                            get: { viewModel.displayedCandidate.wrappedValue.linkedinURL ?? "Pas de compte LinkedIn" },
-                            set: { viewModel.displayedCandidate.wrappedValue.linkedinURL = $0 }
-                        ))
-                        .padding(4)
-                        .background(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .keyboardType(.URL)
-                        .textContentType(.URL)
-                        .textInputAutocapitalization(.never)
-                    } else {
-                        if let linkedinURL = viewModel.candidate.linkedinLink {
-                            Link(destination: linkedinURL) {
-                                Text("Go on LinkedIn")
-                                    .font(.body)
-                                    .foregroundStyle(.primary)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
-
-                Spacer()
-
-                Image(systemName: "arrow.up.right")
-                    .font(.system(size: 14))
-                    .foregroundStyle(.blue)
-            }
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(12)
+            LinkedInRow(
+                isEditing: viewModel.isEditing,
+                editableValue: Binding(
+                    get: { viewModel.displayedCandidate.wrappedValue.linkedinURL ?? "Pas de compte LinkedIn" },
+                    set: { viewModel.displayedCandidate.wrappedValue.linkedinURL = $0 }
+                ),
+                linkedinURL: viewModel.candidate.linkedinLink)
 
             noteSection
 
@@ -296,7 +220,6 @@ struct InforRow: View {
     var textContentType: UITextContentType? = nil
     var autocapitalization: TextInputAutocapitalization = .sentences
     var autocorrection: Bool = true
-    var chevronIcon: String = "chevron.right"
 
     var body: some View {
         HStack {
@@ -329,9 +252,59 @@ struct InforRow: View {
 
             Spacer()
 
-            Image(systemName: chevronIcon)
+            Image(systemName: "chevron.right")
                 .foregroundStyle(.secondary)
                 .font(.caption)
+        }
+        .padding()
+        .background(Color(.systemGray6))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+struct LinkedInRow: View {
+    let isEditing: Bool
+    let editableValue: Binding<String>
+    let linkedinURL: URL?
+
+    var body: some View {
+        HStack {
+            Image(systemName: "link.circle.fill")
+                .font(.system(size: 20))
+                .foregroundStyle(.blue)
+                .frame(width: 28)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("LinkedIn")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                if isEditing {
+                    TextField("LinkedIn", text: editableValue)
+                        .font(.body)
+                        .padding(4)
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .keyboardType(.URL)
+                        .textContentType(.URL)
+                        .textInputAutocapitalization(.never)
+                } else {
+                    if let linkedinURL {
+                        Link(destination: linkedinURL) {
+                            Text("Go on LinkedIn")
+                                .font(.body)
+                                .foregroundStyle(.primary)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
+
+            Spacer()
+
+            Image(systemName: "arrow.up.right")
+                .font(.system(size: 14))
+                .foregroundStyle(linkedinURL == nil ? Color(.secondaryLabel) : .blue)
         }
         .padding()
         .background(Color(.systemGray6))
