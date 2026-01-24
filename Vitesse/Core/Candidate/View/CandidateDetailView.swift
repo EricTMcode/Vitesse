@@ -320,6 +320,6 @@ struct RowContainer<Content: View>: View {
 
 #Preview {
     NavigationStack {
-        CandidateDetailView(candidate: mockCandidates[1])
+        CandidateDetailView(candidate: mockCandidates[0])
     }
 }
