@@ -15,7 +15,7 @@ struct SearchBarView: View {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(.secondary)
 
-            TextField(CandidatesStrings.Common.searchCandidate, text: $searchText)
+            TextField(CandidatesStrings.CandidatesList.searchCandidate, text: $searchText)
                 .foregroundStyle(.secondary)
                 .autocorrectionDisabled()
                 .overlay(

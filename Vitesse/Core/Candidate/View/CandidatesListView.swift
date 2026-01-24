@@ -16,7 +16,7 @@ struct CandidatesListView: View {
             VStack {
                 switch viewModel.loadingState {
                 case .loading:
-                    ProgressView(CandidatesStrings.Common.loadingCandidates)
+                    ProgressView(CandidatesStrings.CandidatesList.loadingCandidates)
                 case .empty:
                     contentUnavailable
                 case .error(let error):
@@ -34,7 +34,7 @@ struct CandidatesListView: View {
                 CandidateDetailView(candidate: candidate)
             }
             .refreshable { await viewModel.refresh() }
-            .navigationTitle(CandidatesStrings.Common.title)
+            .navigationTitle(CandidatesStrings.CandidatesList.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { CandidatesToolbar(viewModel: viewModel) }
             .task { await viewModel.getCandidates() }
@@ -68,14 +68,14 @@ private extension CandidatesListView {
 private extension CandidatesListView {
     var contentUnavailable: some View {
         ContentUnavailableView {
-            Label(CandidatesStrings.Common.noCandidatesAvailable, systemImage: SFsymbols.personSlash)
+            Label(CandidatesStrings.CandidatesList.noCandidatesAvailable, systemImage: SFsymbols.personSlash)
         } description: {
-            Text(CandidatesStrings.Common.addACandidate)
+            Text(CandidatesStrings.CandidatesList.addACandidate)
         } actions: {
             Button() {
                 Task { await viewModel.refresh() }
             } label: {
-                Text(CandidatesStrings.Common.reloadView)
+                Text(CandidatesStrings.CandidatesList.reloadView)
                     .primaryButtonStyle()
                     .overlay {
                         if viewModel.loadingState == .loading {
@@ -147,8 +147,8 @@ struct CandidatesToolbar: ToolbarContent {
 
     private var editButtonTitle: String {
         viewModel.showIsEditing
-        ? CandidatesStrings.Common.cancel.capitalized
-        : CandidatesStrings.Common.edit.capitalized
+        ? CandidatesStrings.CandidatesList.cancel.capitalized
+        : CandidatesStrings.CandidatesList.edit.capitalized
     }
 
     @ViewBuilder
@@ -157,7 +157,7 @@ struct CandidatesToolbar: ToolbarContent {
             Button {
                 Task { await viewModel.deleteCandidates() }
             } label: {
-                Text(CandidatesStrings.Common.delete.capitalized)
+                Text(CandidatesStrings.CandidatesList.delete.capitalized)
                     .fontWeight(.bold)
                     .foregroundStyle(viewModel.selectedCandidate.isEmpty ? .gray : .red)
             }
