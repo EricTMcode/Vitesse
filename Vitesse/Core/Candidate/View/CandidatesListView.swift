@@ -112,7 +112,7 @@ struct CandidatesCardView: View {
                 Text(candidate.fullName)
                     .fontWeight(.semibold)
 
-                Text("Candidate")
+                Text(CandidatesStrings.CandidatesList.candidate)
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
             }

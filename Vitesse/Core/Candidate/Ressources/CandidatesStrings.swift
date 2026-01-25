@@ -18,6 +18,7 @@ enum CandidatesStrings {
         static let noCandidatesAvailable = NSLocalizedString("Aucun Candidats", comment: "")
         static let addACandidate = NSLocalizedString("Merci d'ajouter un candidat", comment: "")
         static let reloadView = NSLocalizedString("Recharger", comment: "")
+        static let candidate = NSLocalizedString("Candidate", comment: "")
     }
 
     enum CandidateDetail {
