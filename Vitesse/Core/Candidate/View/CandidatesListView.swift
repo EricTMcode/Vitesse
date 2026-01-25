@@ -68,7 +68,7 @@ private extension CandidatesListView {
 private extension CandidatesListView {
     var contentUnavailable: some View {
         ContentUnavailableView {
-            Label(CandidatesStrings.CandidatesList.noCandidatesAvailable, systemImage: SFsymbols.personSlash)
+            Label(CandidatesStrings.CandidatesList.noCandidatesAvailable, systemImage: SFSymbols.personSlash)
         } description: {
             Text(CandidatesStrings.CandidatesList.addACandidate)
         } actions: {
@@ -119,7 +119,7 @@ struct CandidatesCardView: View {
 
             Spacer()
 
-            Image(systemName: candidate.isFavorite ? SFsymbols.starFill : SFsymbols.star)
+            Image(systemName: candidate.isFavorite ? SFSymbols.starFill : SFSymbols.star)
                 .imageScale(.large)
                 .foregroundColor(candidate.isFavorite ? .yellow : .gray.opacity(0.4))
         }
@@ -169,8 +169,8 @@ struct CandidatesToolbar: ToolbarContent {
                 }
             } label: {
                 Image(systemName: viewModel.showIsFavorite
-                      ? SFsymbols.starFill
-                      : SFsymbols.star)
+                      ? SFSymbols.starFill
+                      : SFSymbols.star)
                 .foregroundStyle(.yellow)
             }
         }

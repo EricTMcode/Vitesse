@@ -116,7 +116,7 @@ private extension CandidateDetailView {
 private extension CandidateDetailView {
     var noteSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label("Note", systemImage: "note.text")
+            Label("Note", systemImage: SFSymbols.noteText)
 
             if viewModel.isEditing {
                 TextEditor(
@@ -162,8 +162,8 @@ private extension CandidateDetailView {
 private extension CandidateDetailView {
     var favoriteIcon: some View {
         Image(systemName: viewModel.candidate.isFavorite
-              ? SFsymbols.starFill
-              : SFsymbols.star
+              ? SFSymbols.starFill
+              : SFSymbols.star
         )
         .foregroundStyle(viewModel.candidate.isFavorite ? .yellow : .gray)
         .font(.system(size: 20))
@@ -249,7 +249,7 @@ struct InfosRow: View {
 
             Spacer()
 
-            Image(systemName: "chevron.right")
+            Image(systemName: SFSymbols.chevronRight)
                 .foregroundStyle(.secondary)
                 .font(.caption)
         }
@@ -263,7 +263,7 @@ struct LinkedInRow: View {
 
     var body: some View {
         RowContainer {
-            Image(systemName: "link.circle.fill")
+            Image(systemName: SFSymbols.linkCircle)
                 .font(.system(size: 20))
                 .foregroundStyle(.blue)
                 .frame(width: 28)
@@ -293,7 +293,7 @@ struct LinkedInRow: View {
 
             Spacer()
 
-            Image(systemName: "arrow.up.right")
+            Image(systemName: SFSymbols.arrowUpRight )
                 .font(.system(size: 14))
                 .foregroundStyle(linkedinURL == nil ? Color(.secondaryLabel) : .blue)
         }
