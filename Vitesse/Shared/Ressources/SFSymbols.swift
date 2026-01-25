@@ -15,4 +15,6 @@ enum SFSymbols {
     static let chevronRight = "chevron.right"
     static let arrowUpRight = "arrow.up.right"
     static let noteText = "note.text"
+    static let envelopeFill = "envelope.fill"
+    static let phoneFill = "phone.fill"
 }

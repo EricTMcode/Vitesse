@@ -14,7 +14,7 @@ struct CandidateDetailView: View {
         _viewModel = StateObject(
             wrappedValue: CandidateDetailViewModel(
                 candidate: candidate,
-                isAdmin: UserDefaults.standard.bool(forKey: "isAdmin")
+                isAdmin: UserDefaults.standard.bool(forKey: CandidatesStrings.CandidateDetail.isAdmin)
             )
         )
     }
@@ -70,29 +70,29 @@ private extension CandidateDetailView {
     var infoSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             InfosRow(
-                icon: "phone.fill",
+                icon: SFSymbols.phoneFill,
                 iconColor: .green,
-                label: "Phone",
+                label: CandidatesStrings.CandidateDetail.phone.capitalized,
                 isEditing: viewModel.isEditing,
                 editableValue: Binding(
                     get: { viewModel.displayedCandidate.wrappedValue.phone ?? "" },
                     set: { viewModel.displayedCandidate.wrappedValue.phone = $0 }
                 ),
-                displayValue: viewModel.candidate.phone ?? "Ajoutez un numéro",
-                placeholder: "Phone",
+                displayValue: viewModel.candidate.phone ?? CandidatesStrings.CandidateDetail.noPhone,
+                placeholder: CandidatesStrings.CandidateDetail.phone.capitalized,
                 keyboardType: .phonePad,
                 textContentType: .telephoneNumber,
                 autocapitalization: .never,
                 autocorrection: false)
 
             InfosRow(
-                icon: "envelope.fill",
+                icon: SFSymbols.envelopeFill,
                 iconColor: .blue,
-                label: "Email",
+                label: CandidatesStrings.CandidateDetail.email.capitalized,
                 isEditing: viewModel.isEditing,
                 editableValue: viewModel.displayedCandidate.email,
                 displayValue: viewModel.candidate.email,
-                placeholder: "Email",
+                placeholder: CandidatesStrings.CandidateDetail.email.capitalized,
                 keyboardType: .emailAddress,
                 textContentType: .emailAddress,
                 autocapitalization: .never,

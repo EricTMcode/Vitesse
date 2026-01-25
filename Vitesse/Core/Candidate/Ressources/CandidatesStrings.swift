@@ -27,9 +27,13 @@ enum CandidatesStrings {
     }
 
     enum CandidateDetail {
+        static let isAdmin = "isAdmin"
         static let linkedin = NSLocalizedString("linkedIn", comment: "")
         static let goOnLinkedin = NSLocalizedString("Voir sur LinkedIn", comment: "")
         static let note = NSLocalizedString("note", comment: "")
         static let noLinkedInAccount = NSLocalizedString("Pas de compte LinkedIn", comment: "")
+        static let phone = NSLocalizedString("téléphone", comment: "")
+        static let noPhone = NSLocalizedString("Ajoutez un numéro", comment: "")
+        static let email = NSLocalizedString("email", comment: "")
     }
 }
