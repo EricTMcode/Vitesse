@@ -147,8 +147,8 @@ struct CandidatesToolbar: ToolbarContent {
 
     private var editButtonTitle: String {
         viewModel.showIsEditing
-        ? CandidatesStrings.CandidatesList.cancel.capitalized
-        : CandidatesStrings.CandidatesList.edit.capitalized
+        ? CandidatesStrings.Common.cancel.capitalized
+        : CandidatesStrings.Common.edit.capitalized
     }
 
     @ViewBuilder
@@ -157,7 +157,7 @@ struct CandidatesToolbar: ToolbarContent {
             Button {
                 Task { await viewModel.deleteCandidates() }
             } label: {
-                Text(CandidatesStrings.CandidatesList.delete.capitalized)
+                Text(CandidatesStrings.Common.delete.capitalized)
                     .fontWeight(.bold)
                     .foregroundStyle(viewModel.selectedCandidate.isEmpty ? .gray : .red)
             }

@@ -179,7 +179,7 @@ struct CandidateDetailToolbar: ToolbarContent {
                 Button {
                     viewModel.cancelEditing()
                 } label: {
-                    Text("Cancel")
+                    Text(CandidatesStrings.Common.cancel.capitalized)
                         .fontWeight(.semibold)
                         .foregroundStyle(.red)
                 }
@@ -190,7 +190,7 @@ struct CandidateDetailToolbar: ToolbarContent {
                 Button {
                     Task { await viewModel.saveChanges() }
                 } label: {
-                    Text("Done")
+                    Text(CandidatesStrings.Common.saved.capitalized)
                         .fontWeight(.semibold)
                         .foregroundStyle(viewModel.draftCandidate == viewModel.candidate ? .gray : .blue)
                 }
@@ -199,7 +199,7 @@ struct CandidateDetailToolbar: ToolbarContent {
                 Button {
                     viewModel.startEditing()
                 } label: {
-                    Text("Editer")
+                    Text(CandidatesStrings.Common.edit.capitalized)
                         .fontWeight(.semibold)
                         .foregroundStyle(.blue)
                 }

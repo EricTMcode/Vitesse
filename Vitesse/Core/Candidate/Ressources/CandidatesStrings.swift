@@ -8,11 +8,16 @@
 import Foundation
 
 enum CandidatesStrings {
-    enum CandidatesList {
-        static let title = NSLocalizedString("Candidats", comment: "")
+    enum Common {
         static let edit = NSLocalizedString("editer", comment: "")
         static let cancel = NSLocalizedString("annuler", comment: "")
         static let delete = NSLocalizedString("effacer", comment: "")
+        static let saved = NSLocalizedString("enregistrer", comment: "")
+    }
+
+    enum CandidatesList {
+        static let title = NSLocalizedString("Candidats", comment: "")
+
         static let searchCandidate = NSLocalizedString("Rechercher un candidat", comment: "")
         static let loadingCandidates = NSLocalizedString("Chargement des candidats", comment: "")
         static let noCandidatesAvailable = NSLocalizedString("Aucun Candidats", comment: "")
