@@ -14,9 +14,12 @@ protocol HTTPClientProtocol {
 
 class HTTPClient: HTTPClientProtocol {
     private let keychain: KeychainHelper
+    private let session: URLSessionProtocol
 
-    init(keychain: KeychainHelper = .shared) {
+    init(session: URLSessionProtocol = URLSession.shared, keychain: KeychainHelper = .shared) {
+        self.session = session
         self.keychain = keychain
+
     }
 
     func fetchData<T: Codable>(_ endpoint: APIEndpoint) async throws -> T {
@@ -28,8 +31,8 @@ class HTTPClient: HTTPClientProtocol {
             attachAuthHeader(to: &url)
         }
 
-        let (data, response) = try await URLSession.shared.data(for: url)
-        
+        let (data, response) = try await session.data(for: url)
+
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.networkError
         }
@@ -52,7 +55,7 @@ class HTTPClient: HTTPClientProtocol {
             attachAuthHeader(to: &url)
         }
 
-        let (data, response) = try await URLSession.shared.data(for: url)
+        let (data, response) = try await session.data(for: url)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.invalidResponse
