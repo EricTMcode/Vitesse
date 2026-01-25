@@ -101,7 +101,7 @@ private extension CandidateDetailView {
             LinkedInRow(
                 isEditing: viewModel.isEditing,
                 editableValue: Binding(
-                    get: { viewModel.displayedCandidate.wrappedValue.linkedinURL ?? "Pas de compte LinkedIn" },
+                    get: { viewModel.displayedCandidate.wrappedValue.linkedinURL ?? CandidatesStrings.CandidateDetail.noLinkedInAccount },
                     set: { viewModel.displayedCandidate.wrappedValue.linkedinURL = $0 }
                 ),
                 linkedinURL: viewModel.candidate.linkedinLink)
@@ -116,7 +116,7 @@ private extension CandidateDetailView {
 private extension CandidateDetailView {
     var noteSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label("Note", systemImage: SFSymbols.noteText)
+            Label(CandidatesStrings.CandidateDetail.note.capitalized, systemImage: SFSymbols.noteText)
 
             if viewModel.isEditing {
                 TextEditor(
@@ -269,12 +269,12 @@ struct LinkedInRow: View {
                 .frame(width: 28)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text("LinkedIn")
+                Text(CandidatesStrings.CandidateDetail.linkedin.capitalized)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
 
                 if isEditing {
-                    TextField("LinkedIn", text: editableValue)
+                    TextField(CandidatesStrings.CandidateDetail.linkedin.capitalized, text: editableValue)
                         .editTextFieldStyle()
                         .keyboardType(.URL)
                         .textContentType(.URL)
@@ -282,7 +282,7 @@ struct LinkedInRow: View {
                 } else {
                     if let linkedinURL {
                         Link(destination: linkedinURL) {
-                            Text("Go on LinkedIn")
+                            Text(CandidatesStrings.CandidateDetail.goOnLinkedin)
                                 .font(.body)
                                 .foregroundStyle(.primary)
                         }

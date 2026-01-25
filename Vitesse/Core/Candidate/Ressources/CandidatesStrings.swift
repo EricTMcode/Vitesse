@@ -27,6 +27,9 @@ enum CandidatesStrings {
     }
 
     enum CandidateDetail {
-        
+        static let linkedin = NSLocalizedString("linkedIn", comment: "")
+        static let goOnLinkedin = NSLocalizedString("Voir sur LinkedIn", comment: "")
+        static let note = NSLocalizedString("note", comment: "")
+        static let noLinkedInAccount = NSLocalizedString("Pas de compte LinkedIn", comment: "")
     }
 }
