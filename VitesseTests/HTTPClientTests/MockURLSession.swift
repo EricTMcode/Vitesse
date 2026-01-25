@@ -28,3 +28,16 @@ final class MockURLSession: URLSessionProtocol {
         return (data, response)
     }
 }
+
+final class MockKeychainHelper: KeychainHelper {
+
+    private let token: String?
+
+    init(token: String?) {
+        self.token = token
+    }
+
+    override func read(account: String) -> Data? {
+        token?.data(using: .utf8)
+    }
+}

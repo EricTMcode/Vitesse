@@ -40,6 +40,7 @@
 				AuthenticationTests/Mock/MockRegisterService.swift,
 				CandidateTests/Mock/MockCandidateService.swift,
 				CandidateTests/Mock/MockCandidateUpdateService.swift,
+				HTTPClientTests/MockURLSession.swift,
 			);
 			target = 07D3B5AF2F13A5B100EDB6E5 /* VitesseTests */;
 		};
