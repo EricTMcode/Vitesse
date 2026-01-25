@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CandidateDetailView: View {
     @StateObject var viewModel: CandidateDetailViewModel
-    @AppStorage("isAdmin") private var isAdmin = false
 
     init(candidate: Candidate) {
         _viewModel = StateObject(
@@ -148,7 +147,7 @@ private extension CandidateDetailView {
 private extension CandidateDetailView {
     @ViewBuilder
     private var favoriteView: some View {
-        if viewModel.isEditing && isAdmin {
+        if viewModel.isEditing && viewModel.isAdmin {
             Button {
                 Task { await viewModel.toggleFavorite() }
             } label: {

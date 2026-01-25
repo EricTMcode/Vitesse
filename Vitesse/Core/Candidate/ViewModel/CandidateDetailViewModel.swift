@@ -15,8 +15,6 @@ class CandidateDetailViewModel: ObservableObject {
     @Published var isEditing = false
     @Published var errorMessage : String?
 
-//    @Published var isAdmin = false
-
     var isAdmin: Bool
 
     private let candidatesUpdateService: CandidateUpdateServiceProtocol
