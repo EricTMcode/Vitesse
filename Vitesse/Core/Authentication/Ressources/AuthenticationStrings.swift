@@ -10,13 +10,19 @@ import Foundation
 enum AuthenticationStrings {
     enum LoginView {
         static let accessibilityLabelLogo = NSLocalizedString("Vitesse Logo", comment: "")
-        static let emailField = NSLocalizedString("Entrez votre e-mail", comment: "")
-        static let passwordField = NSLocalizedString("Mot de passe", comment: "")
-        static let forgotPassword = NSLocalizedString("Mot de passe oublié ?", comment: "")
-        static let connexionButton = NSLocalizedString("Connexion", comment: "")
-        static let createAccount = NSLocalizedString("Créer un compte", comment: "")
-        static let noAccount = NSLocalizedString("Pas de compte ?", comment: "")
-        static let signUp = NSLocalizedString("Inscrivez-vous", comment: "")
+        static let emailField = NSLocalizedString("Enter your email", comment: "")
+        static let passwordField = NSLocalizedString("Password", comment: "")
+        static let forgotPassword = NSLocalizedString("Forget password?", comment: "")
+        static let connexionButton = NSLocalizedString("Sign in", comment: "")
+        static let createAccount = NSLocalizedString("Register", comment: "")
+        static let noAccount = NSLocalizedString("No account?", comment: "")
+        static let signUp = NSLocalizedString("Register", comment: "")
+    }
 
+    enum RegisterView {
+        static let success = NSLocalizedString("success", comment: "")
+        static let ok = NSLocalizedString("ok", comment: "")
+        static let error = NSLocalizedString("error", comment: "")
+        static let accountCreatedSuccessfully = NSLocalizedString("Your account has been successfully created", comment: "")
     }
 }

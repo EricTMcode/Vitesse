@@ -25,17 +25,17 @@ struct RegisterView: View {
             Spacer()
             footer
         }
-        .alert("Success", isPresented: $viewModel.isRegistrationSuccessful) {
-            Button("OK", role: .cancel) { Task {
+        .alert(AuthenticationStrings.RegisterView.success.capitalized, isPresented: $viewModel.isRegistrationSuccessful) {
+            Button(AuthenticationStrings.RegisterView.ok.uppercased(), role: .cancel) { Task {
                 await loginService.login(email: viewModel.registerRequest.email, password: viewModel.registerRequest.password)
                 dismiss()
                 viewModel.reset()
             } }
         } message: {
-            Text("Account created successfully!")
+            Text(AuthenticationStrings.RegisterView.accountCreatedSuccessfully)
         }
         .alert(item: $viewModel.errorMessage) { message in
-            Alert(title: Text("Error"), message: Text(message.text), dismissButton: .default(Text("OK")))
+            Alert(title: Text(AuthenticationStrings.RegisterView.error.uppercased()), message: Text(message.text), dismissButton: .default(Text(AuthenticationStrings.RegisterView.ok.uppercased())))
         }
     }
 }
