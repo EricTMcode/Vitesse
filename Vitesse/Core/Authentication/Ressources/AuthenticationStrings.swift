@@ -44,6 +44,5 @@ enum AuthenticationStrings {
         static let createYourAccount = NSLocalizedString("Create your account", comment: "")
         static let getAccount = NSLocalizedString("Already have an account?", comment: "")
         static let signIn = NSLocalizedString("Sign In", comment: "")
-
     }
 }

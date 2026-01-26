@@ -10,11 +10,11 @@ import SwiftUI
 struct LoginView: View {
     @ObservedObject var viewModel: LoginViewModel
     @FocusState private var focusedField: Field?
-    
+
     enum Field {
         case email, password
     }
-    
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -97,7 +97,7 @@ private extension LoginView {
 private extension LoginView {
     var forgotPasswordButton: some View {
         Button {
-            print("DEBUG: Show forgot password")
+            
         } label: {
             Text(AuthenticationStrings.LoginView.forgotPassword)
                 .font(.footnote)
@@ -154,7 +154,7 @@ private extension LoginView {
     var footer: some View {
         VStack {
             Divider()
-            
+
             NavigationLink {
                 RegisterView(loginService: viewModel)
                     .navigationBarBackButtonHidden()
@@ -182,11 +182,11 @@ struct CustomSeparatorView: View {
             HStack {
                 Rectangle()
                     .frame(width: width, height: 0.5)
-                
+
                 Text(AuthenticationStrings.LoginView.or)
                     .font(.footnote)
                     .fontWeight(.semibold)
-                
+
                 Rectangle()
                     .frame(width: width, height: 0.5)
             }
