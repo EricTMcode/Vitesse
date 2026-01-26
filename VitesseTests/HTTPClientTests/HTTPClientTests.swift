@@ -54,6 +54,29 @@ final class HTTPClientTests: XCTestCase {
         XCTAssertEqual(header, "Bearer token123")
     }
 
+    func test_authHeader_notAdded_forPublicEndpoint() async throws {
+        let session = MockURLSession()
+        let keychain = MockKeychainHelper(token: "token123")
+        let client = HTTPClient(session: session, keychain: keychain)
+
+        session.data = Data()
+        session.response = HTTPURLResponse(
+            url: URL(string: "http://localhost")!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil
+        )
+
+        try await client.perform(.login(credentials: .init(email: "", password: "")))
+
+        let header = session.lastRequest?
+            .value(forHTTPHeaderField: "Authorization")
+
+        XCTAssertNil(header)
+    }
+
+    
+
 
 
 }
