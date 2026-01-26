@@ -8,10 +8,10 @@
 import Foundation
 
 final class CandidatesListViewModel: ObservableObject {
-    @Published var candidates = [Candidate]()
-    @Published var isLoading = false
-    @Published var loadingState: ContentLoadingState = .loading
-    @Published var errorMessage: String?
+    @Published private(set) var candidates = [Candidate]()
+    @Published private(set) var isLoading = false
+    @Published private(set) var loadingState: ContentLoadingState = .loading
+    @Published private(set) var errorMessage: String?
     @Published var searchText: String = ""
     @Published var showIsFavorite = false
     @Published var showIsEditing = false

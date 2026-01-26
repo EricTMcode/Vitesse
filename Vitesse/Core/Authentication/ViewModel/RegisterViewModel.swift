@@ -9,12 +9,12 @@ import Foundation
 
 final class RegisterViewModel: ObservableObject {
     @Published var registerRequest = User()
-    @Published var isLoading = false
     @Published var isRegistrationSuccessful = false
     @Published var errorMessage: ErrorMessage?
-    @Published var emailError: String?
-    @Published var passwordError: String?
-    @Published var confirmPasswordError: String?
+    @Published private(set) var isLoading = false
+    @Published private(set) var emailError: String?
+    @Published private(set) var passwordError: String?
+    @Published private(set) var confirmPasswordError: String?
 
     private let registerService: RegisterServiceProtocol
     private let validationService: ValidationService

@@ -8,11 +8,11 @@
 import SwiftUI
 
 final class CandidateDetailViewModel: ObservableObject {
-    @Published var candidate: Candidate
+    @Published private(set) var candidate: Candidate
     @Published var draftCandidate: Candidate?
-    @Published var isLoading = false
-    @Published var isEditing = false
-    @Published var errorMessage : String?
+    @Published private(set) var isLoading = false
+    @Published private(set) var isEditing = false
+    @Published private(set) var errorMessage : String?
 
     var isAdmin: Bool
 

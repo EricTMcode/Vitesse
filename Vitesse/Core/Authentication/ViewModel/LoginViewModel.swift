@@ -10,9 +10,9 @@ import Foundation
 final class LoginViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
-    @Published var isLoading = false
-    @Published var errorMessage: String?
-    @Published var isAuthenticated = false
+    @Published private(set) var isLoading = false
+    @Published private(set) var errorMessage: String?
+    @Published private(set) var isAuthenticated = false
 
     private let loginService: LoginServiceProtocol
     private let validationService: ValidationService

@@ -110,11 +110,12 @@ struct CandidatesCardView: View {
             }
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(candidate.fullName)
+                Text(candidate.fullName.formattedShortName)
+                    .font(.body)
                     .fontWeight(.semibold)
 
                 Text(CandidatesStrings.CandidatesList.candidate)
-                    .font(.system(size: 14))
+                    .font(.subheadline)
                     .foregroundColor(.secondary)
             }
 
