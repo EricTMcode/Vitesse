@@ -88,7 +88,11 @@ private extension CandidatesListView {
 
 private extension CandidatesListView {
     var emptySearchView: some View {
-        ContentUnavailableView("No candidates found", systemImage: "person.crop.circle.badge.questionmark", description: Text("Try searching with a different name or email"))
+        ContentUnavailableView(
+            CandidatesStrings.CandidatesList.noCandidatesFound,
+            systemImage: SFSymbols.personCropCircleBadgeQuestionmark,
+            description: Text(CandidatesStrings.CandidatesList.trySearchingDifferent)
+        )
     }
 }
 

@@ -18,4 +18,5 @@ enum SFSymbols {
     static let envelopeFill = "envelope.fill"
     static let phoneFill = "phone.fill"
     static let magnifyingglass = "magnifyingglass"
+    static let personCropCircleBadgeQuestionmark = "person.crop.circle.badge.questionmark"
 }
