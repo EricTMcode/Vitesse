@@ -52,6 +52,11 @@ private extension CandidateDetailView {
                 .font(.title)
                 .fontWeight(.semibold)
                 .foregroundStyle(.primary)
+
+            if let error = viewModel.errorMessage {
+                Text(error)
+                    .foregroundColor(.red)
+            }
         }
         .padding(.top, 30)
         .padding(.bottom, 24)
