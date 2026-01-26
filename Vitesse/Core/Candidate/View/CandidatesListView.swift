@@ -102,15 +102,7 @@ struct CandidatesCardView: View {
     var body: some View {
         HStack {
             ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color.blue.opacity(0.6), Color.purple.opacity(0.6)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 56, height: 56)
+                GradientCircleView(size: 56)
 
                 Text(candidate.initials)
                     .font(.system(size: 20, weight: .semibold))

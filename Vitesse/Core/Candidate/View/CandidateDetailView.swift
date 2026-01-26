@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CandidateDetailView: View {
     @StateObject var viewModel: CandidateDetailViewModel
-
+    
     init(candidate: Candidate) {
         _viewModel = StateObject(
             wrappedValue: CandidateDetailViewModel(
@@ -18,7 +18,7 @@ struct CandidateDetailView: View {
             )
         )
     }
-
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .center, spacing: 16) {
@@ -35,15 +35,7 @@ private extension CandidateDetailView {
     var candidateDetails: some View {
         VStack(spacing: 16) {
             ZStack(alignment: .topTrailing) {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color.blue.opacity(0.6), Color.purple.opacity(0.6)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 100, height: 100)
+                GradientCircleView(size: 100)
                     .overlay(
                         Text(viewModel.candidate.initials)
                             .font(.title)
@@ -51,11 +43,11 @@ private extension CandidateDetailView {
                             .foregroundStyle(.white)
                     )
                     .shadow(color: .blue.opacity(0.3), radius: 10, x: 0, y: 5)
-
+                
                 favoriteView
                     .offset(x: 8, y: -8)
             }
-
+            
             Text(viewModel.candidate.fullName.formattedShortName)
                 .font(.title)
                 .fontWeight(.semibold)
@@ -84,7 +76,7 @@ private extension CandidateDetailView {
                 textContentType: .telephoneNumber,
                 autocapitalization: .never,
                 autocorrection: false)
-
+            
             InfosRow(
                 icon: SFSymbols.envelopeFill,
                 iconColor: .blue,
@@ -97,7 +89,7 @@ private extension CandidateDetailView {
                 textContentType: .emailAddress,
                 autocapitalization: .never,
                 autocorrection: false)
-
+            
             LinkedInRow(
                 isEditing: viewModel.isEditing,
                 editableValue: Binding(
@@ -105,9 +97,9 @@ private extension CandidateDetailView {
                     set: { viewModel.displayedCandidate.wrappedValue.linkedinURL = $0 }
                 ),
                 linkedinURL: viewModel.candidate.linkedinLink)
-
+            
             noteSection
-
+            
         }
         .padding(.horizontal)
     }
@@ -117,7 +109,7 @@ private extension CandidateDetailView {
     var noteSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Label(CandidatesStrings.CandidateDetail.note.capitalized, systemImage: SFSymbols.noteText)
-
+            
             if viewModel.isEditing {
                 TextEditor(
                     text: Binding(
@@ -172,7 +164,7 @@ private extension CandidateDetailView {
 
 struct CandidateDetailToolbar: ToolbarContent {
     @ObservedObject var viewModel: CandidateDetailViewModel
-
+    
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             if viewModel.isEditing {
@@ -220,19 +212,19 @@ struct InfosRow: View {
     var textContentType: UITextContentType? = nil
     var autocapitalization: TextInputAutocapitalization = .sentences
     var autocorrection: Bool = true
-
+    
     var body: some View {
         RowContainer {
             Image(systemName: icon)
                 .font(.system(size: 20))
                 .foregroundStyle(iconColor)
                 .frame(width: 28)
-
+            
             VStack(alignment: .leading, spacing: 2) {
                 Text(label)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-
+                
                 if isEditing {
                     TextField(placeholder, text: editableValue)
                         .editTextFieldStyle()
@@ -246,9 +238,9 @@ struct InfosRow: View {
                         .foregroundStyle(.primary)
                 }
             }
-
+            
             Spacer()
-
+            
             Image(systemName: SFSymbols.chevronRight)
                 .foregroundStyle(.secondary)
                 .font(.caption)
@@ -260,19 +252,19 @@ struct LinkedInRow: View {
     let isEditing: Bool
     let editableValue: Binding<String>
     let linkedinURL: URL?
-
+    
     var body: some View {
         RowContainer {
             Image(systemName: SFSymbols.linkCircle)
                 .font(.system(size: 20))
                 .foregroundStyle(.blue)
                 .frame(width: 28)
-
+            
             VStack(alignment: .leading, spacing: 2) {
                 Text(CandidatesStrings.CandidateDetail.linkedin.capitalized)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-
+                
                 if isEditing {
                     TextField(CandidatesStrings.CandidateDetail.linkedin.capitalized, text: editableValue)
                         .editTextFieldStyle()
@@ -290,9 +282,9 @@ struct LinkedInRow: View {
                     }
                 }
             }
-
+            
             Spacer()
-
+            
             Image(systemName: SFSymbols.arrowUpRight )
                 .font(.system(size: 14))
                 .foregroundStyle(linkedinURL == nil ? Color(.secondaryLabel) : .blue)
@@ -306,7 +298,7 @@ struct RowContainer<Content: View>: View {
     init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
-
+    
     var body: some View {
         HStack {
             content
