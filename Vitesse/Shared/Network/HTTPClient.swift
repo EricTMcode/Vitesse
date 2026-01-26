@@ -19,7 +19,6 @@ class HTTPClient: HTTPClientProtocol {
     init(session: URLSessionProtocol = URLSession.shared, keychain: KeychainHelper = .shared) {
         self.session = session
         self.keychain = keychain
-
     }
 
     func fetchData<T: Codable>(_ endpoint: APIEndpoint) async throws -> T {
