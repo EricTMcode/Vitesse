@@ -17,4 +17,5 @@ enum SFSymbols {
     static let noteText = "note.text"
     static let envelopeFill = "envelope.fill"
     static let phoneFill = "phone.fill"
+    static let magnifyingglass = "magnifyingglass"
 }

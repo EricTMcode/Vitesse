@@ -10,7 +10,7 @@ import SwiftUI
 struct CandidatesListView: View {
     @ObservedObject var loginViewModel: LoginViewModel
     @StateObject var viewModel = CandidatesListViewModel()
-    
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -22,7 +22,7 @@ struct CandidatesListView: View {
                 case .error(let error):
                     Text(error.localizedDescription)
                 case .completed:
-                    SearchBarView(searchText: $viewModel.searchText)
+                    searchBar
                     candidatesList
                 }
             }
@@ -40,16 +40,27 @@ struct CandidatesListView: View {
 }
 
 private extension CandidatesListView {
+    @ViewBuilder
     var candidatesList: some View {
-        List(selection: $viewModel.selectedCandidate) {
-            ForEach(viewModel.filteredCandidats) { candidate in
-                NavigationLink(value: candidate) {
-                    CandidatesCardView(candidate: candidate)
+        if viewModel.filteredCandidats.isEmpty && !viewModel.searchText.isEmpty {
+            emptySearchView
+        } else {
+            List(selection: $viewModel.selectedCandidate) {
+                ForEach(viewModel.filteredCandidats) { candidate in
+                    NavigationLink(value: candidate) {
+                        CandidatesCardView(candidate: candidate)
+                    }
                 }
             }
+            .listStyle(.plain)
+            .padding(.horizontal, 5)
         }
-        .listStyle(.plain)
-        .padding(.horizontal, 5)
+    }
+}
+
+private extension CandidatesListView {
+    var searchBar: some View {
+        SearchBarView(searchText: $viewModel.searchText)
     }
 }
 
@@ -75,9 +86,15 @@ private extension CandidatesListView {
     }
 }
 
+private extension CandidatesListView {
+    var emptySearchView: some View {
+        ContentUnavailableView("No candidates found", systemImage: "person.crop.circle.badge.questionmark", description: Text("Try searching with a different name or email"))
+    }
+}
+
 struct CandidatesCardView: View {
     let candidate: Candidate
-    
+
     var body: some View {
         HStack {
             ZStack {
@@ -90,23 +107,23 @@ struct CandidatesCardView: View {
                         )
                     )
                     .frame(width: 56, height: 56)
-                
+
                 Text(candidate.initials)
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
             }
-            
+
             VStack(alignment: .leading, spacing: 4) {
                 Text(candidate.fullName)
                     .fontWeight(.semibold)
-                
+
                 Text(CandidatesStrings.CandidatesList.candidate)
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
             }
-            
+
             Spacer()
-            
+
             Image(systemName: candidate.isFavorite ? SFSymbols.starFill : SFSymbols.star)
                 .imageScale(.large)
                 .foregroundColor(candidate.isFavorite ? .yellow : .gray.opacity(0.4))
@@ -117,7 +134,7 @@ struct CandidatesCardView: View {
 struct CandidatesToolbar: ToolbarContent {
     @ObservedObject var viewModel: CandidatesListViewModel
     @ObservedObject var loginViewModel: LoginViewModel
-    
+
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Button {
@@ -128,7 +145,7 @@ struct CandidatesToolbar: ToolbarContent {
                     .foregroundStyle(viewModel.showIsEditing ? .red : .blue)
             }
         }
-        
+
         ToolbarItem(placement: .topBarLeading) {
             Button {
                 loginViewModel.logout()
@@ -136,18 +153,18 @@ struct CandidatesToolbar: ToolbarContent {
                 Image(systemName: "person.fill")
             }
         }
-        
+
         ToolbarItem(placement: .topBarTrailing) {
             trailingButton
         }
     }
-    
+
     private var editButtonTitle: String {
         viewModel.showIsEditing
         ? CandidatesStrings.Common.cancel.capitalized
         : CandidatesStrings.Common.edit.capitalized
     }
-    
+
     @ViewBuilder
     private var trailingButton: some View {
         if viewModel.showIsEditing {
@@ -172,7 +189,7 @@ struct CandidatesToolbar: ToolbarContent {
             }
         }
     }
-    
+
     private func toggleEditMode() {
         viewModel.showIsEditing.toggle()
         if !viewModel.showIsEditing {
