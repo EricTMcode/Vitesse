@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CandidatesListViewModel: ObservableObject {
+final class CandidatesListViewModel: ObservableObject {
     @Published var candidates = [Candidate]()
     @Published var isLoading = false
     @Published var loadingState: ContentLoadingState = .loading
@@ -16,7 +16,7 @@ class CandidatesListViewModel: ObservableObject {
     @Published var showIsFavorite = false
     @Published var showIsEditing = false
     @Published var selectedCandidate = Set<String>()
-    
+
     private let candidatsService: CanditatesServiceProtocol
     
     init(service: CanditatesServiceProtocol = CanditatesService()) {
@@ -34,19 +34,19 @@ class CandidatesListViewModel: ObservableObject {
                 candidat.lastName.localizedCaseInsensitiveContains(searchText)
             }
     }
-    
+
+    @MainActor
     func getCandidates() async {
         self.errorMessage = nil
-        
+
         do {
             self.candidates = try await candidatsService.getCandidates()
             self.loadingState = candidates.isEmpty ? .empty : .completed
-            print(candidates.count)
         } catch {
             self.loadingState = .error(error: error)
         }
     }
-    
+
     func refresh() async {
         await getCandidates()
     }

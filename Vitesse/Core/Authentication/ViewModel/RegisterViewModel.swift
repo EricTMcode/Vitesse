@@ -7,11 +7,10 @@
 
 import Foundation
 
-class RegisterViewModel: ObservableObject {
+final class RegisterViewModel: ObservableObject {
     @Published var registerRequest = User()
     @Published var isLoading = false
     @Published var isRegistrationSuccessful = false
-
     @Published var errorMessage: ErrorMessage?
     @Published var emailError: String?
     @Published var passwordError: String?
@@ -52,6 +51,7 @@ class RegisterViewModel: ObservableObject {
         )
     }
 
+    @MainActor
     func register() async {
         guard isFormValid else { return }
 

@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-class CandidateDetailViewModel: ObservableObject {
+final class CandidateDetailViewModel: ObservableObject {
     @Published var candidate: Candidate
     @Published var draftCandidate: Candidate?
-
     @Published var isLoading = false
     @Published var isEditing = false
     @Published var errorMessage : String?

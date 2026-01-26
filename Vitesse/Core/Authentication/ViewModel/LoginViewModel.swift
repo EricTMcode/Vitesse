@@ -7,7 +7,7 @@
 
 import Foundation
 
-class LoginViewModel: ObservableObject {
+final class LoginViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
     @Published var isLoading = false
@@ -29,6 +29,7 @@ class LoginViewModel: ObservableObject {
         && password.count >= 6
     }
 
+    @MainActor
     func login(email: String, password: String) async {
         self.errorMessage = nil
         self.isLoading = true
@@ -45,9 +46,9 @@ class LoginViewModel: ObservableObject {
         }
     }
 
+    @MainActor
     func loginIfPossible() {
         guard formIsValid, !isLoading else { return }
-
         Task {
             await login(email: email, password: password)
         }
