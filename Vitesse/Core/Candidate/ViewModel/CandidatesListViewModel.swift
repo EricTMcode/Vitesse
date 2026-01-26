@@ -77,6 +77,7 @@ class CandidatesListViewModel: ObservableObject {
             candidates = previousCandidates
             selectedCandidate = idsToDelete
             showIsEditing = true
+            self.errorMessage = "Failed to delete candidates."
             self.loadingState = .error(error: error)
             await getCandidates()
         }

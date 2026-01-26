@@ -30,7 +30,7 @@ final class CandidateDetailViewModelTests: XCTestCase {
     }
 
     func testInit() {
-        XCTAssertNotNil(viewModel, "The vie model should not be nil")
+        XCTAssertNotNil(viewModel, "The view model should not be nil")
     }
 
     func test_startEditing_setsDraftAndEditingState() {

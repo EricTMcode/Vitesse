@@ -105,19 +105,18 @@ final class CandidatesListViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.loadingState, .completed)
     }
 
-    func test_deleteCandidates_failure_setsErrorState() async {
+    func test_deleteCandidates_failure_rollsBackState() async {
+        // GIVEN
         mockService.deleteCandidateError = APIError.networkError
-
+        viewModel.candidates = mockCandidates
         viewModel.selectedCandidate = ["1"]
 
+        // WHEN
         await viewModel.deleteCandidates()
 
-        switch viewModel.loadingState {
-        case .error:
-            XCTAssertTrue(true)
-        default:
-            XCTFail("Expected error state")
-        }
+        // THEN
+        XCTAssertEqual(viewModel.candidates, mockCandidates)
+        XCTAssertEqual(viewModel.selectedCandidate, ["1"])
     }
 
     func test_filteredCandidates() async {
