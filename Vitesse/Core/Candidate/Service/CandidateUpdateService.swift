@@ -14,15 +14,15 @@ protocol CandidateUpdateServiceProtocol {
 
 class CandidateUpdateService: CandidateUpdateServiceProtocol {
     private let client: HTTPClientProtocol
-
+    
     init(client: HTTPClientProtocol = HTTPClient()) {
         self.client = client
     }
-
+    
     func updateCandidate(data: Candidate) async throws {
         try await client.perform(.updateCandidate(data: data))
     }
-
+    
     func toggleFavorite(id: String) async throws {
         try await client.perform(.toogleFavorite(id: id))
     }

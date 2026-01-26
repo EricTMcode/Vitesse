@@ -63,9 +63,7 @@ class RegisterViewModel: ObservableObject {
         do {
             try await registerService.register(with: registerRequest)
             self.isRegistrationSuccessful = true
-            print("DEBUG: REGISTRATION Successfull!")
         } catch {
-            print("DEBUG: ERROR: \(error.localizedDescription)")
             self.errorMessage = ErrorMessage(text: error.localizedDescription)
         }
     }

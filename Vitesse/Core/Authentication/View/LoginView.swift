@@ -183,7 +183,7 @@ struct CustomSeparatorView: View {
                 Rectangle()
                     .frame(width: width, height: 0.5)
                 
-                Text("ou")
+                Text(AuthenticationStrings.LoginView.or)
                     .font(.footnote)
                     .fontWeight(.semibold)
                 

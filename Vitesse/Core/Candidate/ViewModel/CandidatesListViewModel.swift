@@ -16,13 +16,13 @@ class CandidatesListViewModel: ObservableObject {
     @Published var showIsFavorite = false
     @Published var showIsEditing = false
     @Published var selectedCandidate = Set<String>()
-
+    
     private let candidatsService: CanditatesServiceProtocol
-
+    
     init(service: CanditatesServiceProtocol = CanditatesService()) {
         self.candidatsService = service
     }
-
+    
     var filteredCandidats: [Candidate] {
         candidates
             .filter { candidat in
@@ -34,10 +34,10 @@ class CandidatesListViewModel: ObservableObject {
                 candidat.lastName.localizedCaseInsensitiveContains(searchText)
             }
     }
-
+    
     func getCandidates() async {
         self.errorMessage = nil
-
+        
         do {
             self.candidates = try await candidatsService.getCandidates()
             self.loadingState = candidates.isEmpty ? .empty : .completed
@@ -46,33 +46,39 @@ class CandidatesListViewModel: ObservableObject {
             self.loadingState = .error(error: error)
         }
     }
-
+    
     func refresh() async {
-            await getCandidates()
-        }
-
+        await getCandidates()
+    }
+    
     @MainActor
     func deleteCandidates() async {
         self.errorMessage = nil
+        self.loadingState = .loading
+        
+        let previousCandidates = self.candidates
+        let idsToDelete = self.selectedCandidate
         
         do {
             try await withThrowingTaskGroup(of: Void.self) { group in
-                for id in selectedCandidate {
+                for id in idsToDelete {
                     group.addTask {
                         try await self.candidatsService.deleteCandidate(id: id)
                     }
                 }
                 try await group.waitForAll()
-
-                self.loadingState = .completed
-
-                selectedCandidate.removeAll()
-                showIsEditing = false
-                
-                await getCandidates()
             }
+            
+            self.selectedCandidate.removeAll()
+            self.showIsEditing = false
+            self.loadingState = .completed
+            await getCandidates()
         } catch {
+            candidates = previousCandidates
+            selectedCandidate = idsToDelete
+            showIsEditing = true
             self.loadingState = .error(error: error)
+            await getCandidates()
         }
     }
 }

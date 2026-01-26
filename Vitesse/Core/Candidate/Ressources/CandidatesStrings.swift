@@ -10,14 +10,13 @@ import Foundation
 enum CandidatesStrings {
     enum Common {
         static let edit = NSLocalizedString("edit", comment: "")
-        static let cancel = NSLocalizedString("cancer", comment: "")
+        static let cancel = NSLocalizedString("cancel", comment: "")
         static let delete = NSLocalizedString("delete", comment: "")
         static let saved = NSLocalizedString("save", comment: "")
     }
 
     enum CandidatesList {
         static let title = NSLocalizedString("Candidats", comment: "")
-
         static let searchCandidate = NSLocalizedString("Search a candidat", comment: "")
         static let loadingCandidates = NSLocalizedString("Loading of candidats", comment: "")
         static let noCandidatesAvailable = NSLocalizedString("No candidates available", comment: "")

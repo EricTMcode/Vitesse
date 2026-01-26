@@ -62,7 +62,6 @@ class CandidateDetailViewModel: ObservableObject {
         do {
             try await candidatesUpdateService.updateCandidate(data: body)
             self.candidate = body
-            print("DEBUG: update saved!")
             self.draftCandidate = nil
             self.isEditing = false
         } catch {

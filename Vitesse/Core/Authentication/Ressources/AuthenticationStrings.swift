@@ -21,6 +21,7 @@ enum AuthenticationStrings {
         static let createAccount = NSLocalizedString("Register", comment: "")
         static let noAccount = NSLocalizedString("Don't have an account?", comment: "")
         static let signUp = NSLocalizedString("Sign Up", comment: "")
+        static let or = NSLocalizedString("or", comment: "")
     }
 
     enum RegisterView {

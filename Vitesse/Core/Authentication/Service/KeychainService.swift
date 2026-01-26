@@ -20,12 +20,12 @@ class KeychainHelper {
             kSecAttrService: service,
             kSecAttrAccount: account
         ] as [CFString: Any]
-
+        
         // Add to keychain (delete first to ensure we overwrite)
         SecItemDelete(query as CFDictionary)
         SecItemAdd(query as CFDictionary, nil)
     }
-
+    
     // Read data securely
     func read(account: String) -> Data? {
         let query = [
@@ -34,13 +34,13 @@ class KeychainHelper {
             kSecClass: kSecClassGenericPassword,
             kSecReturnData: true
         ] as [CFString: Any]
-
+        
         var result: AnyObject?
         SecItemCopyMatching(query as CFDictionary, &result)
-
+        
         return result as? Data
     }
-
+    
     // Delete data
     func delete(account: String) {
         let query = [
@@ -48,10 +48,8 @@ class KeychainHelper {
             kSecAttrAccount: account,
             kSecClass: kSecClassGenericPassword
         ] as [CFString: Any]
-
+        
         SecItemDelete(query as CFDictionary)
-
-        print("DEBUG: Token successfully deleted")
     }
 }
 

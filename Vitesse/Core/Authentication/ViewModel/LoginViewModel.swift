@@ -16,13 +16,13 @@ class LoginViewModel: ObservableObject {
 
     private let loginService: LoginServiceProtocol
     private let validationService: ValidationService
-    
+
     init(service: LoginServiceProtocol = LoginService(), validationService: ValidationService = ValidationService()) {
         self.loginService = service
         self.isAuthenticated = service.isAuthenticated
         self.validationService = validationService
     }
-    
+
     var formIsValid: Bool {
         validationService.validateEmail(email)
         && !password.isEmpty
@@ -36,7 +36,7 @@ class LoginViewModel: ObservableObject {
         let request = LoginRequest(email: email, password: password)
 
         defer { self.isLoading = false }
-        
+
         do {
             try await loginService.login(with: request)
             self.isAuthenticated = loginService.isAuthenticated

@@ -43,11 +43,8 @@ class LoginService: LoginServiceProtocol {
             throw APIError.decodingError("Error decoding token")
         }
 
-        print("DEBUG: TokenData: \(response.token)")
-
         keychain.save(tokenData, account: "authToken")
         userDefaults.set(response.isAdmin, forKey: isAdminKey)
-        print("DEBUG: Token saved securely.")
     }
 
     func logout() {
