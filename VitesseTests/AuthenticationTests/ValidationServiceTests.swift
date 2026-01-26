@@ -47,4 +47,40 @@ final class ValidationServiceTests: XCTestCase {
             XCTAssertFalse(service.validateEmail($0), "Expected \($0) to be invalid")
         }
     }
+
+    func test_validatePassword_failsIfTooShort() {
+        XCTAssertFalse(service.validatePassword("Ab1!"))
+    }
+
+    func test_validatePassword_failsIfMissingUppercase() {
+        XCTAssertFalse(service.validatePassword("abc123!"))
+    }
+
+    func test_validatePassword_failsIfMissingLowercase() {
+        XCTAssertFalse(service.validatePassword("ABC123!"))
+    }
+
+    func test_validatePassword_failsIfMissingNumber() {
+        XCTAssertFalse(service.validatePassword("Abcdef!"))
+    }
+
+    func test_validatePassword_failsIfMissingSpecialCharacter() {
+        XCTAssertFalse(service.validatePassword("Abc1234"))
+    }
+
+    func test_validatePassword_validPassword() {
+        XCTAssertTrue(service.validatePassword("Abc123!"))
+    }
+
+    func test_validatePasswordsMatch_success() {
+        XCTAssertTrue(service.validatePasswordsMatch("Abc123!", "Abc123!"))
+    }
+
+    func test_validatePasswordsMatch_failure() {
+        XCTAssertFalse(service.validatePasswordsMatch("Abc123!", "Abc1234!"))
+    }
+
+    func test_validatePasswordsMatch_failsIfEmpty() {
+        XCTAssertFalse(service.validatePasswordsMatch("", ""))
+    }
 }
