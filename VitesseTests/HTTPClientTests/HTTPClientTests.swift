@@ -74,9 +74,4 @@ final class HTTPClientTests: XCTestCase {
 
         XCTAssertNil(header)
     }
-
-    
-
-
-
 }

@@ -67,17 +67,33 @@ enum APIEndpoint {
 
         switch self {
         case .login(let credentials):
-            request.httpBody = try? JSONEncoder().encode(credentials)
+            do {
+                request.httpBody = try JSONEncoder().encode(credentials)
+            } catch {
+                assertionFailure("Encoding failed: \(error)")
+            }
         case .register(let user):
-            request.httpBody = try? JSONEncoder().encode(user)
+            do {
+                request.httpBody = try JSONEncoder().encode(user)
+            } catch {
+                assertionFailure("Encoding failed: \(error)")
+            }
         case .candidates:
             break
-        case .deleteCandidate(let id):
-            request.httpBody = try? JSONEncoder().encode(id)
+        case .deleteCandidate:
+            break
         case .updateCandidate(let data):
-            request.httpBody = try? JSONEncoder().encode(data)
+            do {
+                request.httpBody = try JSONEncoder().encode(data)
+            } catch {
+                assertionFailure("Encoding failed: \(error)")
+            }
         case .toogleFavorite(let id):
-            request.httpBody = try? JSONEncoder().encode(id)
+            do {
+                request.httpBody = try JSONEncoder().encode(id)
+            } catch {
+                assertionFailure("Encoding failed: \(error)")
+            }
         }
         
         return request
