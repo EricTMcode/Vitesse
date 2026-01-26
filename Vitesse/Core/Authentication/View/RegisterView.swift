@@ -47,9 +47,9 @@ private extension RegisterView {
                 .resizable()
                 .scaledToFill()
                 .frame(width: 220, height: 120)
-                .accessibilityLabel("Vitesse Logo")
+                .accessibilityLabel(AuthenticationStrings.Common.accessibilityLabelLogo)
 
-            Text("Enregistrez-vous")
+            Text(AuthenticationStrings.RegisterView.registerTitle.capitalized)
                 .font(.title2.bold())
                 .padding(.bottom, 30)
         }
@@ -61,9 +61,9 @@ private extension RegisterView {
         VStack(spacing: 10) {
             // FirstName Field
             VStack(alignment: .leading, spacing: 4) {
-                FormLabel(title: "Nom")
+                FormLabel(title: AuthenticationStrings.RegisterView.firstName.capitalized)
 
-                TextField("Entrez votre nom", text: $viewModel.registerRequest.firstName)
+                TextField(AuthenticationStrings.RegisterView.firstNameField, text: $viewModel.registerRequest.firstName)
                     .formTextFieldStyle()
                     .textContentType(.familyName)
                     .focused($focusedField, equals: .firstname)
@@ -73,9 +73,9 @@ private extension RegisterView {
 
             // LastName Field
             VStack(alignment: .leading, spacing: 4) {
-                FormLabel(title: "Prénom")
+                FormLabel(title: AuthenticationStrings.RegisterView.lastName.capitalized)
 
-                TextField("Entrez votre prénom", text: $viewModel.registerRequest.lastName)
+                TextField(AuthenticationStrings.RegisterView.lastNameField, text: $viewModel.registerRequest.lastName)
                     .formTextFieldStyle()
                     .textContentType(.name)
                     .padding(.top, 5)
@@ -86,9 +86,9 @@ private extension RegisterView {
 
             // Email Field
             VStack(alignment: .leading, spacing: 4) {
-                FormLabel(title: "Email")
+                FormLabel(title: AuthenticationStrings.RegisterView.email.capitalized)
 
-                TextField("Entrez votre email", text: $viewModel.registerRequest.email)
+                TextField(AuthenticationStrings.RegisterView.emailField, text: $viewModel.registerRequest.email)
                     .formTextFieldStyle()
                     .textContentType(.emailAddress)
                     .keyboardType(.emailAddress)
@@ -113,9 +113,9 @@ private extension RegisterView {
 
             // Password Field
             VStack(alignment: .leading, spacing: 4) {
-                FormLabel(title: "Mot de passe")
+                FormLabel(title: AuthenticationStrings.RegisterView.password.capitalized)
 
-                SecureField("Entrez votre mot de passe", text: $viewModel.registerRequest.password)
+                SecureField(AuthenticationStrings.RegisterView.passwordField, text: $viewModel.registerRequest.password)
                     .formTextFieldStyle()
                     .textContentType(.password)
                     .textInputAutocapitalization(.never)
@@ -135,7 +135,7 @@ private extension RegisterView {
                         .font(.caption)
                         .foregroundStyle(.red)
                 } else {
-                    Text("Must include uppercase, lowercase, number, and special character")
+                    Text(AuthenticationStrings.RegisterView.mustInclude)
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -143,9 +143,9 @@ private extension RegisterView {
 
             // Confirm Password Field
             VStack(alignment: .leading, spacing: 4) {
-                FormLabel(title: "Confirmation mot de passe")
+                FormLabel(title: AuthenticationStrings.RegisterView.confirmPassword)
 
-                SecureField("Confirmez votre mot de passe", text: $viewModel.registerRequest.confirmPassword)
+                SecureField(AuthenticationStrings.RegisterView.confirmPasswordField, text: $viewModel.registerRequest.confirmPassword)
                     .formTextFieldStyle()
                     .textContentType(.password)
                     .focused($focusedField, equals: .comfirmPassword)
@@ -173,7 +173,7 @@ private extension RegisterView {
         Button {
             Task { await viewModel.register() }
         } label: {
-            Text("Créez votre compte")
+            Text(AuthenticationStrings.RegisterView.createYourAccount)
                 .primaryButtonStyle()
                 .overlay {
                     if viewModel.isLoading {
@@ -194,8 +194,12 @@ private extension RegisterView {
             Button {
                 dismiss()
             } label: {
-                Text("Vous avez déjà un compte ? **Connectez-vous**")
-                    .font(.footnote)
+                HStack {
+                    Text(AuthenticationStrings.RegisterView.getAccount)
+                    Text(AuthenticationStrings.RegisterView.signIn)
+                        .bold()
+                }
+                .font(.footnote)
             }
             .padding(.vertical, 16)
         }

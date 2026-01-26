@@ -40,7 +40,7 @@ private extension LoginView {
             .resizable()
             .scaledToFill()
             .frame(width: 220, height: 220)
-            .accessibilityLabel(AuthenticationStrings.LoginView.accessibilityLabelLogo)
+            .accessibilityLabel(AuthenticationStrings.Common.accessibilityLabelLogo)
     }
 }
 
