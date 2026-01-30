@@ -58,7 +58,7 @@ This separation improves:
 
 ---
 
-## 🌐 Backend (Vapor)
+## ⚙️ Backend (Vapor)
 
 The backend is built with **Vapor**, a server-side Swift framework.
 
