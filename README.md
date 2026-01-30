@@ -14,7 +14,7 @@ This project was designed as a technical exercise to demonstrate best practices 
 - User registration with form validation
 - Secure login using email and password
 - Password confirmation and protected input fields
-- Authentication handled via a **Vapor backend**
+- Authentication and data handled via a **Vapor backend**
 - Authentication based on **JWT (JSON Web Token)** issued by the server
 - The JWT token is securely stored and used to maintain the authenticated session
 - Robust error handling with clear user feedback
