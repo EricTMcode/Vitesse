@@ -208,7 +208,11 @@ By leveraging **Apple Keychain Services**, the application follows iOS security 
 - **MVVM Architecture**
 - **Async / Await**
 - **Protocol-Oriented Programming**
+- **Custom Networking Layer (HTTPClient)**
+- **URLSession with Dependency Injection**
+- **JWT-based Authentication**
 - **Apple Keychain Services**
+- **Centralized API Error Handling**
 
 ---
 
