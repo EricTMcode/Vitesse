@@ -57,6 +57,69 @@ This separation improves:
 
 ---
 
+## 🌐 Networking Layer (HTTP Client & API Endpoints)
+
+The application uses a **custom networking layer** designed to be reusable, testable, and easy to maintain.
+
+### HTTP Client
+
+Network requests are handled by a dedicated `HTTPClient`, responsible for:
+- Executing HTTP requests
+- Attaching authentication headers when required
+- Decoding API responses
+- Centralizing error handling
+
+Key characteristics:
+- Built on top of **async / await**
+- Abstracted behind the `HTTPClientProtocol`
+- Uses dependency injection for:
+  - `URLSessionProtocol` (to allow mocking during tests)
+  - `KeychainHelper` (for secure token access)
+
+When an endpoint requires authentication, the HTTP client automatically:
+- Retrieves the JWT token from the **Apple Keychain**
+- Injects it into the `Authorization` header using the `Bearer` scheme
+
+This design allows ViewModels and Services to remain completely agnostic of networking and authentication details.
+
+---
+
+### APIEndpoint Abstraction
+
+All backend endpoints are defined using a centralized `APIEndpoint` enum.
+
+Each endpoint explicitly describes:
+- The URL path
+- The HTTP method (GET, POST, PUT, DELETE)
+- Whether authentication is required
+- Whether a request body is needed
+- How the request body is encoded
+
+This approach provides:
+- Strong typing for all API calls
+- A single source of truth for backend routes
+- Improved readability and maintainability
+- Reduced risk of malformed requests
+
+By combining `APIEndpoint` with the `HTTPClient`, the networking layer enforces consistency and makes API interactions predictable and easy to test.
+
+---
+
+### Error Handling
+
+HTTP responses are validated centrally:
+- Success responses (2xx) are processed normally
+- Authentication errors (401) are mapped to explicit domain errors
+- Client and server errors are converted into meaningful error messages
+- Unexpected responses are handled gracefully
+
+This ensures:
+- Clear feedback to the user
+- No leaking of technical or sensitive details
+- Consistent error handling across the entire app
+
+---
+
 ## 📝 Screens & Functionalities
 
 ### 1️⃣ Register Screen
