@@ -149,6 +149,17 @@ By leveraging **Apple Keychain Services**, the application follows iOS security 
 
 ---
 
+## 📸 Screenshots
+
+<div>
+  <img src="Screenshots/screen_1.png" width="350">
+  <img src="Screenshots/screen_2.png" width="350">
+  <img src="Screenshots/screen_3.png" width="350">
+  <img src="Screenshots/screen_4.png" width="350">
+</div>
+
+---
+
 ## 🚀 Getting Started
 
 1. Clone the repository  
